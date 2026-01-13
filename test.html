@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <title>Spektrogram příklad</title>
+  <style>
+    #waveform { height: 100px; margin-bottom: 10px; }
+    #spectrogram { height: 300px; }
+  </style>
+</head>
+<body>
+
+<h1>Spektrogram na mém webu</h1>
+
+<div id="waveform"></div>
+<div id="spectrogram"></div>
+
+<script src="https://unpkg.com/wavesurfer.js"></script>
+<script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.spectrogram.min.js"></script>
+<script src="https://unpkg.com/colormap@2.3.2/colormap.min.js"></script>
+
+<script>
+const wavesurfer = WaveSurfer.create({
+  container: '#waveform',
+  waveColor: '#444',
+  progressColor: '#2196F3',
+  height: 100,
+  plugins: [
+    WaveSurfer.spectrogram.create({
+      container: '#spectrogram',
+      labels: true,
+      colorMap: colormap({ colormap:'jet', nshades:256 })
+    })
+  ]
+});
+
+wavesurfer.load('audio/my-track.mp3');
+</script>
+
+</body>
+</html>
