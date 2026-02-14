@@ -171,15 +171,15 @@ function vykresli(data, targetId, jeToRecorded) {
             const formatText = col[5] || '';
 
             tr.innerHTML = `
-                <td class="px-4 py-4">${col[0] || ''}</td>
-                <td class="px-4 py-4">${col[1] || ''}</td>
-                <td class="px-4 py-4">${col[2] || ''}</td>
-                <td class="px-4 py-4 text-center">
+                <td class="px-4 py-3">${col[0] || ''}</td>
+                <td class="px-4 py-3">${col[1] || ''}</td>
+                <td class="px-4 py-3">${col[2] || ''}</td>
+                <td class="px-4 py-3 text-center">
                     ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors underline">link</a>` : '❌'}
                 </td>
-                <td class="px-4 py-4 text-center">${col[4] === 'Ano' ? '✅' : '❌'}</td>
+                <td class="px-4 py-3 text-center">${col[4] === 'Ano' ? '✅' : '❌'}</td>
                 
-                <td class="px-4 py-4 text-center">
+                <td class="px-4 py-3 text-center">
                     ${imgPath 
                         ? `<a href="${imgPath}" target="_blank" class="hover:text-white transition-colors underline decoration-gray-600">${formatText}</a>` 
                         : formatText}
