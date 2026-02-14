@@ -459,20 +459,25 @@
 
 </main>
 <footer class="text-center text-sm text-gray-500 py-6 border-t border-gray-700 bg-black/70">
-<div class="flex flex-col items-center gap-2 mt-12 text-white text-sm flex justify-center gap-6 flex-wrap" id="yt-subscribers">
-<a class="flex items-center gap-2" href="https://www.youtube.com/@rammfanCZE" rel="noopener noreferrer" target="_blank">
-<img alt="YouTube" class="w-5 h-5" src="https://www.svgrepo.com/show/13671/youtube.svg"/>
-<span id="subscriber-count">
-      Loading subscribers...
-     </span>
-</a>
-<div class="mt-6 flex flex-col items-center gap-2 text-sm text-gray-300"><div class="flex gap-6 justify-center items-center"></i></a></div></div></div>
-   © 2025
-   <span class="text-red-500 font-bold">
-    rammfancze
-   </span>
-   — Created with love for live sound 🎤
-  </footer>
+  <div id="yt-subscribers" class="flex justify-center items-center gap-2 mt-4">
+    <a class="flex items-center gap-2 text-white" 
+       href="https://www.youtube.com/@rammfanCZE" 
+       target="_blank" 
+       rel="noopener noreferrer">
+       
+      <img src="https://www.svgrepo.com/show/13671/youtube.svg"
+           alt="YouTube"
+           class="w-5 h-5" />
+
+      <span id="subscriber-count">Loading subscribers…</span>
+    </a>
+  </div>
+
+  <div class="mt-4 text-gray-400">
+    © 2025 <span class="text-red-500 font-bold">rammfancze</span> — Created with love for live sound 🎤
+  </div>
+</footer>
+
 <script>
    async function fetchSubscribers() {
   const apiKey = 'AIzaSyDDXVwQNZmlOyHiZqQIUYgMZ-w0QgZIX5g';
