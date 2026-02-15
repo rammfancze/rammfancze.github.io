@@ -184,7 +184,6 @@ function vykresli(data, targetId, jeToRecorded) {
                 <td class="px-4 py-3 text-center">${col[4] === 'Ano' ? '✅' : '❌'}</td>
                 
                 <td class="px-4 py-3 text-center">   
-                    // Univerzální verze pro linky i cesty k souborům:
 ${imgUrl 
     ? `<a href="${imgUrl.startsWith('http') ? imgUrl : imgUrl}" target="_blank" class="hover:text-white underline decoration-gray-600">${formatText}</a>` 
     : formatText}
