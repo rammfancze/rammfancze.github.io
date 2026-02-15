@@ -155,29 +155,26 @@ async function nactiTabulky() {
 
 function vykresli(data, targetId, jeToRecorded) {
     const tbody = document.getElementById(targetId);
-    let radky = data.split('\n'); // Rozdělení na řádky
+    let radky = data.split('\n'); 
     
-    // 1. Odstraníme záhlaví (první řádek), abychom ho neotočili mezi data
     const zahlavi = radky.shift(); 
-    
-    // 2. OTOČENÍ: Teď budou nejnovější koncerty (ze spodu tabulky) nahoře
     radky.reverse(); 
 
     tbody.innerHTML = ''; 
 
-    for (let i = 0; i < radky.length; i++) { // Teď jedeme od 0, protože shift() už ubral záhlaví
+    for (let i = 0; i < radky.length; i++) {
         const radek = radky[i].trim();
         if (!radek) continue;
         const col = radek.split('\t'); 
         const tr = document.createElement('tr');
-        
-        // ... zbytek tvého kódu pro vykreslení buněk (tr.innerHTML = ...)
         tr.className = "border-b border-gray-800 hover:bg-gray-800/30 transition-colors";
 
         if (jeToRecorded) {
-            // Kontrola sloupce H (index 7) - funguje i pro relativní cesty jako spek/...
-            const imgPath = col[7] && col[7].trim() !== "" ? col[7].trim() : null;
+            // Indexy pro list 'recorded': 
+            // 0:Artist, 1:Date, 2:Venue, 3:YT, 4:IEM, 5:Format, 6:AudioUrl, 7:ImgUrl
             const formatText = col[5] || '';
+            const audioUrl = col[6] ? col[6].trim() : '';
+            const imgUrl = col[7] ? col[7].trim() : '';
 
             tr.innerHTML = `
                 <td class="px-4 py-3">${col[0] || ''}</td>
@@ -189,17 +186,21 @@ function vykresli(data, targetId, jeToRecorded) {
                 <td class="px-4 py-3 text-center">${col[4] === 'Ano' ? '✅' : '❌'}</td>
                 
                 <td class="px-4 py-3 text-center">   
-                    ${imgPath 
-                        ? `<a href="${imgPath}" target="_blank" class="hover:text-white transition-colors underline decoration-gray-600">${formatText}</a>` 
+                    ${imgUrl.includes('http') 
+                        ? `<a href="${imgUrl}" target="_blank" class="hover:text-white transition-colors underline decoration-gray-600 text-red-400 font-semibold">${formatText}</a>` 
                         : formatText}
                 </td>
 
                 <td class="px-2 py-1">
-                    ${col[6]?.includes('http') ? `<audio controls class="h-8 w-48 opacity-80 hover:opacity-100 transition-opacity"><source src="${col[6]}" type="audio/mpeg"></audio>` : ''}
+                    ${audioUrl.includes('http') 
+                        ? `<audio controls class="h-8 w-48 opacity-80 hover:opacity-100 transition-opacity">
+                             <source src="${audioUrl}" type="audio/mpeg">
+                           </audio>` 
+                        : '<span class="text-gray-600 italic text-xs">No sample</span>'}
                 </td>
             `;
-        }
-         else {
+        } else {
+            // Pro Upcoming (Artist, Date, Venue)
             tr.innerHTML = `
                 <td class="px-4 py-3">${col[0] || ''}</td>
                 <td class="px-4 py-3">${col[1] || ''}</td>
