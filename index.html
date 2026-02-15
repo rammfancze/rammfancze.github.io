@@ -155,14 +155,23 @@ async function nactiTabulky() {
 
 function vykresli(data, targetId, jeToRecorded) {
     const tbody = document.getElementById(targetId);
-    const radky = data.split('\n');
+    let radky = data.split('\n'); // Rozdělení na řádky
+    
+    // 1. Odstraníme záhlaví (první řádek), abychom ho neotočili mezi data
+    const zahlavi = radky.shift(); 
+    
+    // 2. OTOČENÍ: Teď budou nejnovější koncerty (ze spodu tabulky) nahoře
+    radky.reverse(); 
+
     tbody.innerHTML = ''; 
 
-    for (let i = 1; i < radky.length; i++) {
+    for (let i = 0; i < radky.length; i++) { // Teď jedeme od 0, protože shift() už ubral záhlaví
         const radek = radky[i].trim();
         if (!radek) continue;
         const col = radek.split('\t'); 
         const tr = document.createElement('tr');
+        
+        // ... zbytek tvého kódu pro vykreslení buněk (tr.innerHTML = ...)
         tr.className = "border-b border-gray-800 hover:bg-gray-800/30 transition-colors";
 
         if (jeToRecorded) {
