@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>rammfanCZE IEM archive</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+
+    <style>
+        :root {
+            --bg-color: #0d0e12;
+            --card-bg: #15171e;
+            --accent-red: #e11d48;
+            --border-color: #262933;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-color);
+            color: #e2e8f0;
+        }
+
+        /* Skrytí tabulky na mobilu, zobrazení karet */
+        .desktop-table { display: none; }
+        .mobile-cards { display: block; }
+
+        @media (min-width: 768px) {
+            .desktop-table { display: table; }
+            .mobile-cards { display: none; }
+        }
+
+        /* Design karet pro mobil */
+        .show-card {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), var(--card-bg);
+            background-size: cover;
+            background-position: center;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Vylepšený Audio Player */
+        audio {
+            height: 30px;
+            width: 100%;
+            filter: invert(100%) hue-rotate(180deg) brightness(1.5); /* Jednoduchý trik pro dark mode player */
+            opacity: 0.7;
+        }
+
+        .status-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .badge-yt { background: #ff000033; color: #ff4d4d; border: 1px solid #ff000044; }
+        .badge-iem { background: #22c55e33; color: #4ade80; border: 1px solid #22c55e44; }
+        .badge-format { background: #ffffff11; color: #cbd5e1; border: 1px solid #ffffff22; }
+
+        /* Vzhled tabulky jako na obrázku */
+        .custom-table thead {
+            border-bottom: 1px solid var(--border-color);
+        }
+        .custom-table th {
+            color: #64748b;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.75rem;
+        }
+        .custom-table tr {
+            border-bottom: 1px solid #1e2128;
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-12">
+
+<header class="max-w-6xl mx-auto mb-12 flex justify-between items-center">
+    <div>
+        <h1 class="text-3xl font-bold tracking-tighter text-red-600">rammfan<span class="text-white">CZE</span></h1>
+        <p class="text-gray-500 text-sm italic">live video recordings // IEM archive</p>
+    </div>
+    <button class="bg-gray-800 p-2 px-4 rounded-md text-sm border border-gray-700">
+        <i class="fa-solid fa-user-group mr-2"></i> Menu
+    </button>
+</header>
+
+<main class="max-w-6xl mx-auto">
+    
+    <section class="mb-16">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+            <i class="fa-solid fa-clapperboard text-gray-400"></i> Recorded shows
+        </h2>
+        
+        <div class="overflow-hidden">
+            <table class="w-full desktop-table custom-table">
+                <thead>
+                    <tr>
+                        <th class="text-left py-4 px-2">Artist</th>
+                        <th class="text-left py-4 px-2">Date</th>
+                        <th class="text-center py-4 px-2">YT</th>
+                        <th class="text-center py-4 px-2">IEM</th>
+                        <th class="text-center py-4 px-2">Format</th>
+                        <th class="text-left py-4 px-2">Sample</th>
+                    </tr>
+                </thead>
+                <tbody id="recorded-tbody-desktop">
+                    </tbody>
+            </table>
+        </div>
+
+        <div id="recorded-mobile-container" class="mobile-cards">
+            </div>
+    </section>
+
+    <section>
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+            <i class="fa-regular fa-calendar-days text-gray-400"></i> Upcoming shows
+        </h2>
+        <div class="bg-card-bg rounded-xl overflow-hidden border border-gray-800">
+            <table class="w-full custom-table">
+                <thead class="bg-black/20">
+                    <tr>
+                        <th class="text-left py-4 px-6">Artist / Event</th>
+                        <th class="text-left py-4 px-6">Date</th>
+                        <th class="text-left py-4 px-6">Venue</th>
+                    </tr>
+                </thead>
+                <tbody id="upcoming-tbody">
+                    </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer class="max-w-6xl mx-auto mt-20 pt-8 border-t border-gray-800 text-center pb-10">
+    <div class="flex flex-col items-center gap-2">
+        <a href="https://www.youtube.com/@rammfanCZE" target="_blank" class="flex items-center gap-2 text-sm text-gray-400 hover:text-red-500">
+            <i class="fab fa-youtube text-red-600"></i> <span id="subscriber-count">...</span>
+        </a>
+        <p class="text-xs text-gray-600 mt-2">Created with love for live sound</p>
+    </div>
+</footer>
+
+<script>
+const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
+const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=314502273&single=true&output=tsv';
+
+async function nactiData() {
+    try {
+        const resRec = await fetch(URL_RECORDED);
+        const textRec = await resRec.text();
+        vykresliRecorded(textRec);
+
+        const resUp = await fetch(URL_UPCOMING);
+        const textUp = await resUp.text();
+        vykresliUpcoming(textUp);
+        
+        fetchSubscribers();
+    } catch (e) { console.error("Chyba:", e); }
+}
+
+function vykresliRecorded(data) {
+    const desktopTbody = document.getElementById('recorded-tbody-desktop');
+    const mobileContainer = document.getElementById('recorded-mobile-container');
+    let radky = data.split('\n');
+    radky.shift(); // Smazat hlavičku
+    radky.reverse();
+
+    desktopTbody.innerHTML = '';
+    mobileContainer.innerHTML = '';
+
+    radky.forEach(radek => {
+        if (!radek.trim()) return;
+        const col = radek.split('\t');
+        const artist = col[0], date = col[1], venue = col[2], yt = col[3], iem = col[4], format = col[5], audio = col[6], img = col[7];
+
+        // 1. DESKTOP ŘÁDEK
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-white/5 transition-colors";
+        tr.innerHTML = `
+            <td class="py-4 px-2 font-semibold text-white">${artist}</td>
+            <td class="py-4 px-2 text-gray-500 text-xs">${date} <span class="block text-[10px] opacity-50">${venue}</span></td>
+            <td class="py-4 px-2 text-center">${yt.includes('http') ? `<a href="${yt}"><i class="fab fa-youtube text-red-600"></i></a>` : '❌'}</td>
+            <td class="py-4 px-2 text-center">${iem === 'Ano' ? '<i class="fa-solid fa-square-check text-green-500"></i>' : '❌'}</td>
+            <td class="py-4 px-2 text-center text-xs font-mono text-gray-400">${format}</td>
+            <td class="py-4 px-2">${audio.includes('http') ? `<audio controls src="${audio}"></audio>` : ''}</td>
+        `;
+        desktopTbody.appendChild(tr);
+
+        // 2. MOBILNÍ KARTA
+        const card = document.createElement('div');
+        card.className = "show-card";
+        if(img && img.includes('http')) card.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('${img.trim()}')`;
+        
+        card.innerHTML = `
+            <h3 class="text-lg font-bold text-white">${artist}</h3>
+            <p class="text-xs text-gray-400 mb-4">${date} • ${venue}</p>
+            <div class="flex gap-2 mb-4">
+                ${yt.includes('http') ? `<span class="status-badge badge-yt"><i class="fab fa-youtube"></i> YT</span>` : ''}
+                ${iem === 'Ano' ? `<span class="status-badge badge-iem"><i class="fa-solid fa-check"></i> IEM</span>` : ''}
+                <span class="status-badge badge-format">${format}</span>
+            </div>
+            ${audio.includes('http') ? `<audio controls src="${audio}"></audio>` : ''}
+        `;
+        mobileContainer.appendChild(card);
+    });
+}
+
+function vykresliUpcoming(data) {
+    const tbody = document.getElementById('upcoming-tbody');
+    let radky = data.split('\n');
+    radky.shift();
+    tbody.innerHTML = '';
+
+    radky.forEach(radek => {
+        if (!radek.trim()) return;
+        const col = radek.split('\t');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="py-4 px-6 font-medium">${col[0]}</td>
+            <td class="py-4 px-6 text-gray-400">${col[1]}</td>
+            <td class="py-4 px-6 text-gray-500 text-xs">${col[2]}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+async function fetchSubscribers() {
+    const apiKey = 'AIzaSyDDXVwQNZmlOyHiZqQIUYgMZ-w0QgZIX5g';
+    const channelId = 'UCRnSUbTJ-cS-ORYCEF9PEsQ';
+    try {
+        const response = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`);
+        const data = await response.json();
+        const count = data.items[0].statistics.subscriberCount;
+        document.getElementById("subscriber-count").innerText = `${parseInt(count).toLocaleString()} subscribers`;
+    } catch (err) { document.getElementById("subscriber-count").innerText = 'YouTube'; }
+}
+
+nactiData();
+</script>
+</body>
+</html>
