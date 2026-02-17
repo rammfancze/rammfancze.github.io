@@ -8,144 +8,160 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 
     <style>
-        :root { --plyr-color-main: #ef4444; }
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
+        body { font-family: 'Inter', sans-serif; background: #0b0f1a; color: white; }
+        h1, h2 { font-family: 'Orbitron', sans-serif; }
 
-        .format-btn { color: #ef4444; text-decoration: underline; cursor: pointer; }
-        .spec-drawer { display: none; background: #000; border-radius: 8px; padding: 15px; margin: 10px 0; border: 1px solid #374151; }
-        .loading-spec { font-size: 0.75rem; color: #9ca3af; }
+        /* Styl tlačítka formátu */
+        .format-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .format-btn:hover { background: #ef4444; color: white; }
+
+        /* Kontejner pro přehrávač a spektrogram */
+        .audio-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .spec-container {
+            display: none; /* Schováme, dokud se neklikne na Format */
+            margin-top: 10px;
+            background: #000;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .play-btn {
+            width: 35px;
+            height: 35px;
+            background: #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
 
         @media (max-width: 768px) {
             thead { display: none; }
-            tbody tr { display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.75rem; margin-bottom: 1rem; padding: 1rem; }
-            tbody td { display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-            tbody td::before { content: attr(data-label); font-weight: 600; color: #9ca3af; font-size: 0.75rem; text-transform: uppercase; }
+            tbody tr { display: block; margin-bottom: 1.5rem; padding: 1rem; background: rgba(255,255,255,0.02); border-radius: 12px; }
+            tbody td { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+            tbody td::before { content: attr(data-label); font-weight: bold; color: #6b7280; font-size: 0.7rem; }
         }
     </style>
 </head>
+<body>
 
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen">
-
-<header class="p-6 md:p-8 bg-black/70 backdrop-blur border-b border-gray-700 shadow-xl">
-    <div class="max-w-6xl mx-auto"><h1 class="text-3xl font-bold text-red-500 tracking-wide">rammfanCZE</h1></div>
+<header class="p-6 bg-black/50 border-b border-gray-800">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-red-500">rammfanCZE</h1>
+        <p class="text-gray-400">IEM archive & Spectrograms</p>
+    </div>
 </header>
 
-<main class="max-w-6xl mx-auto p-4 md:p-12">
-    <section class="mb-16">
-        <h2 class="text-2xl font-semibold text-white mb-4 border-b border-gray-600 pb-2">📋 Recorded shows</h2>
-        <div class="overflow-visible md:overflow-auto">
-            <table class="w-full text-sm text-left text-gray-300">
-                <thead>
-                    <tr class="bg-gray-800 text-gray-100">
-                        <th class="px-4 py-3">Artist</th>
-                        <th class="px-4 py-3">Date</th>
-                        <th class="px-4 py-3 text-center">Format</th>
-                        <th class="px-4 py-3 text-center" style="width: 280px;">Audio Sample</th>
-                    </tr>
-                </thead>
-                <tbody id="recorded-tbody"></tbody>
-            </table>
-        </div>
-    </section>
+<main class="max-w-7xl mx-auto p-4 md:p-12">
+    <table class="w-full text-sm text-left">
+        <thead>
+            <tr class="text-gray-500 border-b border-gray-800">
+                <th class="px-4 py-3">Artist</th>
+                <th class="px-4 py-3">Date</th>
+                <th class="px-4 py-3 text-center">Format</th>
+                <th class="px-4 py-3 text-right">Player</th>
+            </tr>
+        </thead>
+        <tbody id="main-tbody"></tbody>
+    </table>
 </main>
 
-<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
 <script src="https://unpkg.com/wavesurfer.js@7"></script>
 <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/spectrogram.min.js"></script>
 
 <script>
-const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
+const URL_DATA = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
 
-async function nactiTabulku() {
-    const res = await fetch(URL_RECORDED);
+const wavesurfers = {};
+
+async function nactiData() {
+    const res = await fetch(URL_DATA);
     const text = await res.text();
     const radky = text.split('\n').slice(1).reverse();
-    const tbody = document.getElementById('recorded-tbody');
+    const tbody = document.getElementById('main-tbody');
 
     radky.forEach((radek, i) => {
         const col = radek.trim().split('\t');
         if (!col[0]) return;
-        const audioUrl = col[6]?.trim() || '';
+        const audioUrl = col[6]?.trim();
 
         const tr = document.createElement('tr');
-        tr.className = "md:border-b md:border-gray-800 transition-colors";
+        tr.className = "border-b border-gray-800/50 hover:bg-white/5";
         tr.innerHTML = `
-            <td class="px-4 py-3" data-label="Artist">${col[0]}</td>
-            <td class="px-4 py-3" data-label="Date">${col[1]}</td>
-            <td class="px-4 py-3 text-center" data-label="Format">
-                <span class="format-btn" onclick="toggleSpec(${i}, '${audioUrl}')">${col[5] || 'WAV'}</span>
+            <td class="px-4 py-6" data-label="Artist">${col[0]}</td>
+            <td class="px-4 py-6 text-gray-400" data-label="Date">${col[1]}</td>
+            <td class="px-4 py-6 text-center" data-label="Format">
+                <button class="format-btn" onclick="toggleSpec(${i})">${col[5] || 'WAV'}</button>
             </td>
-            <td class="px-4 py-3" data-label="Audio">
-                <div style="width: 250px; margin-left: auto;">
-                    <audio id="audio-ptr-${i}" class="js-player" controls src="${audioUrl}" crossorigin="anonymous"></audio>
+            <td class="px-4 py-6" data-label="Player">
+                <div class="audio-card ml-auto max-w-xs md:max-w-sm">
+                    <div class="flex items-center gap-3">
+                        <button onclick="playAudio(${i})" id="btn-${i}" class="play-btn text-white">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <div id="wave-${i}" class="flex-grow"></div>
+                    </div>
+                    <div id="spec-${i}" class="spec-container"></div>
                 </div>
             </td>
         `;
         tbody.appendChild(tr);
 
-        const specRow = document.createElement('tr');
-        specRow.id = `spec-row-${i}`;
-        specRow.style.display = 'none';
-        specRow.innerHTML = `
-            <td colspan="4" class="px-4">
-                <div id="spec-container-${i}" class="spec-drawer">
-                    <div id="loader-${i}" class="loading-spec">⏳ Načítám audio data pro spektrogram...</div>
-                    <div id="spec-view-${i}"></div>
-                </div>
-            </td>
-        `;
-        tbody.appendChild(specRow);
+        if (audioUrl) initPlayer(i, audioUrl);
     });
-
-    Plyr.setup('.js-player');
 }
 
-function toggleSpec(id, url) {
-    const row = document.getElementById(`spec-row-${id}`);
-    const container = document.getElementById(`spec-container-${id}`);
-    
-    if (row.style.display === 'table-row') {
-        row.style.display = 'none';
-        container.style.display = 'none';
-    } else {
-        row.style.display = 'table-row';
-        container.style.display = 'block';
-        if (!document.getElementById(`spec-view-${id}`).innerHTML) {
-            initWavesurfer(id, url);
-        }
-    }
-}
-
-function initWavesurfer(id, url) {
+function initPlayer(id, url) {
     const ws = WaveSurfer.create({
-        container: document.createElement('div'), // Skrytý kontejner pro vlnovku
+        container: `#wave-${id}`,
+        waveColor: '#4b5563',
+        progressColor: '#ef4444',
+        height: 30,
+        barWidth: 2,
         url: url,
-        backend: 'WebAudio',
         plugins: [
             WaveSurfer.Spectrogram.create({
-                container: `#spec-view-${id}`,
+                container: `#spec-${id}`,
                 labels: true,
-                height: 150,
-                colorMap: [[0, 0, 0, 1], [0.5, 0, 0, 1], [1, 1, 0, 1]]
+                height: 120,
+                colorMap: [[0, 0, 0, 1], [0.1, 0, 0, 1], [1, 0.2, 0, 1], [1, 1, 0, 1]] 
             })
         ]
     });
 
-    ws.on('ready', () => {
-        document.getElementById(`loader-${id}`).style.display = 'none';
-    });
+    ws.on('play', () => document.getElementById(`btn-${id}`).innerHTML = '<i class="fas fa-pause"></i>');
+    ws.on('pause', () => document.getElementById(`btn-${id}`).innerHTML = '<i class="fas fa-play"></i>');
     
-    ws.on('error', (e) => {
-        document.getElementById(`loader-${id}`).innerHTML = "❌ Chyba: Audio soubor nelze analyzovat (CORS)";
-        console.error(e);
-    });
+    wavesurfers[id] = ws;
 }
 
-nactiTabulky();
+function playAudio(id) {
+    wavesurfers[id].playPause();
+}
+
+function toggleSpec(id) {
+    const spec = document.getElementById(`spec-${id}`);
+    spec.style.display = (spec.style.display === 'block') ? 'none' : 'block';
+}
+
+nactiData();
 </script>
 </body>
 </html>
