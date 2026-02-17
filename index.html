@@ -35,6 +35,7 @@
         /* Styl pro vyhledávání */
         .search-wrapper {
             position: relative;
+            width: 100%;
             max-width: 300px;
         }
         .search-input {
@@ -60,22 +61,71 @@
             color: #6b7280;
             font-size: 0.8rem;
         }
+
+        /* --- RESPONZIVNÍ TABULKA (Table to Cards) --- */
+        @media (max-width: 768px) {
+            /* Skryjeme hlavičku tabulky na mobilu */
+            thead {
+                display: none;
+            }
+
+            /* Řádek tabulky se změní na blok (kartu) */
+            tbody tr {
+                display: flex;
+                flex-direction: column;
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 0.75rem;
+                margin-bottom: 1rem;
+                padding: 1rem;
+            }
+
+            /* Buňky se změní na flex položky */
+            tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+
+            tbody td:last-child {
+                border-bottom: none;
+            }
+
+            /* Využití data-label atributu pro název sloupce vlevo */
+            tbody td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #9ca3af;
+                font-size: 0.85rem;
+                margin-right: 1rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            /* Speciální úprava pro audio na mobilu */
+            audio {
+                width: 100% !important;
+                max-width: 200px;
+            }
+        }
     </style>
 </head>
 
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen">
 
-<header class="p-8 bg-black/70 backdrop-blur border-b border-gray-700 shadow-xl">
+<header class="p-6 md:p-8 bg-black/70 backdrop-blur border-b border-gray-700 shadow-xl">
     <div class="max-w-6xl mx-auto flex flex-col gap-2">
-        <h1 class="text-4xl font-bold text-red-500 tracking-wide">rammfanCZE</h1>
-        <p class="text-gray-400 text-lg">live video recordings // IEM archive</p>
+        <h1 class="text-3xl md:text-4xl font-bold text-red-500 tracking-wide">rammfanCZE</h1>
+        <p class="text-gray-400 text-base md:text-lg">live video recordings // IEM archive</p>
     </div>
 </header>
 
-<main class="max-w-6xl mx-auto p-6 md:p-12">
-        <section class="mb-16">
-        <h2 class="text-3xl font-semibold text-white mb-4 border-b border-gray-600 pb-2">📅 Upcoming shows</h2>
-        <div class="overflow-auto bg-black/20 rounded-lg">
+<main class="max-w-6xl mx-auto p-4 md:p-12">
+    <section class="mb-12 md:mb-16">
+        <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4 border-b border-gray-600 pb-2">📅 Upcoming shows</h2>
+        <div class="overflow-visible md:overflow-auto bg-transparent md:bg-black/20 md:rounded-lg">
             <table class="w-full table-auto text-sm text-left text-gray-300">
                 <thead>
                     <tr class="bg-gray-800 text-gray-100">
@@ -86,9 +136,9 @@
                 </thead>
                 <tbody id="upcoming-tbody">
                     <tr class="animate-skeleton">
-                        <td class="px-4 py-3"><div class="skeleton-bar"></div></td>
-                        <td class="px-4 py-3"><div class="skeleton-bar"></div></td>
-                        <td class="px-4 py-3"><div class="skeleton-bar"></div></td>
+                        <td class="px-4 py-3" data-label="Loading"><div class="skeleton-bar"></div></td>
+                        <td class="px-4 py-3" data-label=""><div class="skeleton-bar"></div></td>
+                        <td class="px-4 py-3" data-label=""><div class="skeleton-bar"></div></td>
                     </tr>
                 </tbody>
             </table>
@@ -97,15 +147,15 @@
     
     <section class="mb-16">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 border-b border-gray-600 pb-2">
-            <h2 class="text-3xl font-semibold text-white">📋 Recorded shows</h2>
+            <h2 class="text-2xl md:text-3xl font-semibold text-white">📋 Recorded shows</h2>
             
             <div class="search-wrapper">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="recorded-search" class="search-input" placeholder="" onkeyup="filterTable()">
+                <input type="text" id="recorded-search" class="search-input" placeholder="Search artist, venue..." onkeyup="filterTable()">
             </div>
         </div>
 
-        <div class="overflow-auto bg-black/20 rounded-lg">
+        <div class="overflow-visible md:overflow-auto bg-transparent md:bg-black/20 md:rounded-lg">
             <table class="w-full table-auto text-sm text-left text-gray-300" id="recorded-table">
                 <thead>
                     <tr class="bg-gray-800 text-gray-100">
@@ -151,7 +201,7 @@ function filterTable() {
 
     for (let i = 0; i < rows.length; i++) {
         const text = rows[i].textContent.toLowerCase();
-        rows[i].style.display = text.includes(filter) ? "" : "none";
+        rows[i].style.display = text.includes(filter) ? "" : "none"; // Na mobilu je TR flex/block, na PC table-row (CSS to pořeší samo při display: "")
     }
 }
 
@@ -200,28 +250,30 @@ function vykresli(data, targetId, jeToRecorded) {
         if (!radek) continue;
         const col = radek.split('\t'); 
         const tr = document.createElement('tr');
-        tr.className = "border-b border-gray-800 hover:bg-gray-800/30 transition-colors";
+        // Přidána třída pro hover efekt jen na desktopu, na mobilu je to karta
+        tr.className = "md:border-b md:border-gray-800 md:hover:bg-gray-800/30 transition-colors";
 
         if (jeToRecorded) {
             const formatText = col[5] || '';
             const audioUrl = col[6] ? col[6].trim() : '';
             const imgUrl = col[7] ? col[7].trim() : '';
 
-                        tr.innerHTML = `
-                <td class="px-4 py-3">${col[0] || ''}</td>
-                <td class="px-4 py-3">${col[1] || ''}</td>
-                <td class="px-4 py-3">${col[2] || ''}</td>
-                <td class="px-4 py-3 text-center">
-                    ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600 text-lg hover:text-red-400"><i class="fab fa-youtube"></i></a>` : '<span class="text-gray-800 text-xs">❌</span>'}
+            // Přidány data-label atributy pro mobilní zobrazení
+            tr.innerHTML = `
+                <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist">${col[0] || ''}</td>
+                <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
+                <td class="px-4 py-3" data-label="Venue">${col[2] || ''}</td>
+                <td class="px-4 py-3 text-right md:text-center" data-label="YT">
+                    ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600 text-lg hover:text-red-400"><i class="fab fa-youtube"></i></a>` : '<span class="text-gray-600 text-xs">❌</span>'}
                 </td>
-                <td class="px-4 py-3 text-center">${col[4] === 'Ano' ? '✅' : '❌'}</td>
+                <td class="px-4 py-3 text-right md:text-center" data-label="IEM">${col[4] === 'Ano' ? '✅' : '❌'}</td>
                 
-                <td class="px-4 py-3 text-center">        
+                <td class="px-4 py-3 text-right md:text-center" data-label="Format">        
                     ${imgUrl 
                         ? `<a href="${imgUrl}" target="_blank" class="hover:text-white underline decoration-gray-600">${formatText}</a>` 
                         : formatText}
                 </td>
-                <td class="px-2 py-1">
+                <td class="px-2 py-1 flex justify-end md:table-cell" data-label="Audio">
                     ${audioUrl.includes('http') 
                         ? `<audio controls class="h-8 w-48 opacity-80 hover:opacity-100 transition-opacity" src="${audioUrl}"></audio>` 
                         : ''} 
@@ -230,9 +282,9 @@ function vykresli(data, targetId, jeToRecorded) {
         } else {
             // Pro Upcoming (Artist, Date, Venue)
             tr.innerHTML = `
-                <td class="px-4 py-3">${col[0] || ''}</td>
-                <td class="px-4 py-3">${col[1] || ''}</td>
-                <td class="px-4 py-3">${col[2] || ''}</td>
+                <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist / Event">${col[0] || ''}</td>
+                <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
+                <td class="px-4 py-3" data-label="Venue">${col[2] || ''}</td>
             `;
         }
         tbody.appendChild(tr);
