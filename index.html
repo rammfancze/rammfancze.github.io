@@ -287,7 +287,7 @@ function vykresli(data, targetId, jeToRecorded) {
     ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600 text-lg hover:text-red-600"><i class="fab fa-youtube"></i></a>` : '<i class="fa-solid fa-xmark text-gray-600 text-base"></i>'}
 </td>
                 <td class="px-4 py-3 text-right md:text-center" data-label="IEM">
-    ${col[4] === 'Ano' ? '<i class="fa-solid fa-check text-green-800 text-base"></i>' : '<i class="fa-solid fa-xmark text-red-600 text-base"></i>'}
+    ${col[4] === 'Ano' ? '<i class="fa-solid fa-check text-green-400 text-base"></i>' : '<i class="fa-solid fa-xmark text-red-600 text-base"></i>'}
 </td>
                 <td class="px-4 py-3 text-right md:text-center" data-label="Format">        
                     ${imgUrl ? `<a data-fslightbox="gallery" href="${imgUrl}" class="hover:text-white underline decoration-gray-600">${formatText}</a>` : formatText}
