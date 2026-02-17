@@ -5,53 +5,125 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>rammfanCZE IEM archive</title>
     
+    <meta property="og:title" content="rammfanCZE IEM archive" />
+    <meta property="og:description" content="live video recordings // IEM archive" />
+    <meta property="og:image" content="https://raw.githubusercontent.com/rammfancze/rammfancze.github.io/refs/heads/main/logo.png" />
+    
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+    
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 
     <style>
-        :root { --plyr-color-main: #ef4444; }
+        :root {
+            --plyr-color-main: #ef4444;
+        }
+
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
-        /* Kontejner pro přehrávač a spektrum */
-        .player-wrapper {
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .animate-skeleton {
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .skeleton-bar {
+            height: 12px;
+            background: rgba(156, 163, 175, 0.3);
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .search-wrapper {
             position: relative;
-            width: 280px;
-            margin-left: auto;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            padding: 4px;
+            width: 100%;
+            max-width: 300px;
         }
-
-        /* Canvas pro spektrum - umístěný za ovládacími prvky Plyru nebo nad nimi */
-        .spectrum-canvas {
+        .search-input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            padding: 8px 12px 8px 35px;
+            color: white;
+            outline: none;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        .search-input:focus {
+            background: rgba(255,255,255,0.1);
+            border-color: #ef4444;
+        }
+        .search-icon {
             position: absolute;
-            top: 5px;
-            left: 50px; /* Posunuto za play button */
-            width: 120px;
-            height: 30px;
-            pointer-events: none; /* Aby šlo klikat na Plyr pod ním */
-            z-index: 10;
-            opacity: 0.6;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            font-size: 0.8rem;
         }
 
-        /* Úprava Plyru, aby spektrum vypadalo integrovaně */
-        .plyr--audio .plyr__controls { background: transparent !important; }
-        .plyr__progress__container { margin-top: 10px; }
+        .plyr--audio .plyr__controls {
+            background: transparent !important;
+            padding: 0;
+            color: white;
+        }
+
+        /* --- STYLY PRO SPEKTROGRAM --- */
+        .format-btn {
+            color: #ef4444;
+            text-decoration: underline;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .format-btn:hover { opacity: 0.7; }
+        
+        .spec-drawer {
+            display: none;
+            background: #000;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #374151;
+        }
+        .loading-spec {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-bottom: 5px;
+        }
 
         @media (max-width: 768px) {
-            .player-wrapper { width: 100%; margin-left: 0; }
             thead { display: none; }
             tbody tr {
-                display: flex; flex-direction: column;
+                display: flex;
+                flex-direction: column;
                 background: rgba(255, 255, 255, 0.03);
                 border: 1px solid rgba(255, 255, 255, 0.1);
-                border-radius: 0.75rem; margin-bottom: 1rem; padding: 1rem;
+                border-radius: 0.75rem;
+                margin-bottom: 1rem;
+                padding: 1rem;
             }
-            tbody td { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; }
-            tbody td::before { content: attr(data-label); font-weight: 600; color: #9ca3af; font-size: 0.75rem; text-transform: uppercase; }
+            tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.6rem 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+            tbody td:last-child { border-bottom: none; }
+            tbody td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #9ca3af;
+                font-size: 0.75rem;
+                margin-right: 1rem;
+                text-transform: uppercase;
+                flex-shrink: 0;
+            }
+            .plyr { width: 100%; min-width: 180px; }
         }
     </style>
 </head>
@@ -59,146 +131,244 @@
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen">
 
 <header class="p-6 md:p-8 bg-black/70 backdrop-blur border-b border-gray-700 shadow-xl">
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-6xl mx-auto flex flex-col gap-2">
         <h1 class="text-3xl md:text-4xl font-bold text-red-500 tracking-wide">rammfanCZE</h1>
-        <p class="text-gray-400">live video recordings // IEM archive</p>
+        <p class="text-gray-400 text-base md:text-lg">live video recordings // IEM archive</p>
     </div>
 </header>
 
 <main class="max-w-6xl mx-auto p-4 md:p-12">
-    <section class="mb-12">
-        <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2 text-white">📅 Upcoming shows</h2>
-        <div class="overflow-hidden bg-black/20 rounded-lg">
-            <table class="w-full text-sm text-left text-gray-300">
-                <tbody id="upcoming-tbody"></tbody>
+    <section class="mb-12 md:mb-16">
+        <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4 border-b border-gray-600 pb-2">📅 Upcoming shows</h2>
+        <div class="overflow-visible md:overflow-auto bg-transparent md:bg-black/20 md:rounded-lg">
+            <table class="w-full table-auto text-sm text-left text-gray-300">
+                <thead>
+                    <tr class="bg-gray-800 text-gray-100">
+                        <th class="px-4 py-3">Artist / Event</th>
+                        <th class="px-4 py-3">Date</th>
+                        <th class="px-4 py-3">Venue</th>
+                    </tr>
+                </thead>
+                <tbody id="upcoming-tbody">
+                    <tr class="animate-skeleton">
+                        <td class="px-4 py-3" data-label="Artist"><div class="skeleton-bar"></div></td>
+                        <td class="px-4 py-3" data-label="Date"><div class="skeleton-bar"></div></td>
+                        <td class="px-4 py-3" data-label="Venue"><div class="skeleton-bar"></div></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </section>
-
+    
     <section class="mb-16">
-        <div class="flex flex-col md:flex-row justify-between gap-4 mb-4 border-b border-gray-600 pb-2">
-            <h2 class="text-2xl font-semibold text-white">📋 Recorded shows</h2>
-            <input type="text" id="recorded-search" class="bg-white/5 border border-white/10 rounded px-4 py-1 text-sm outline-none focus:border-red-500" placeholder="Search..." onkeyup="filterTable()">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 border-b border-gray-600 pb-2">
+            <h2 class="text-2xl md:text-3xl font-semibold text-white">📋 Recorded shows</h2>
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="recorded-search" class="search-input" placeholder="Search artist, venue..." onkeyup="filterTable()">
+            </div>
         </div>
-        <div class="overflow-visible bg-black/20 rounded-lg">
-            <table class="w-full text-sm text-left text-gray-300" id="recorded-table">
+
+        <div class="overflow-visible md:overflow-auto bg-transparent md:bg-black/20 md:rounded-lg">
+            <table class="w-full table-auto text-sm text-left text-gray-300" id="recorded-table">
                 <thead>
                     <tr class="bg-gray-800 text-gray-100">
-                        <th class="px-4 py-3">Artist</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Venue</th>
-                        <th class="px-4 py-3 text-center">YT</th><th class="px-4 py-3 text-center">IEM</th>
-                        <th class="px-4 py-3 text-center">Format</th><th class="px-4 py-3 text-right">Audio Sample</th>
+                        <th class="px-4 py-3">Artist</th>
+                        <th class="px-4 py-3">Date</th>
+                        <th class="px-4 py-3">Venue</th>
+                        <th class="px-4 py-3 text-center">YT</th>
+                        <th class="px-4 py-3 text-center">IEM</th>
+                        <th class="px-4 py-3 text-center">Format</th>
+                        <th class="px-4 py-3 text-center" style="width: 280px;">Audio Sample</th>
                     </tr>
                 </thead>
-                <tbody id="recorded-tbody"></tbody>
+                <tbody id="recorded-tbody">
+                </tbody>
             </table>
         </div>
     </section>
 </main>
 
+<footer class="text-center text-sm text-gray-500 py-6 border-t border-gray-700 bg-black/70">
+    <div id="yt-subscribers" class="flex justify-center items-center gap-2 mt-4">
+        <a class="flex items-center gap-2 text-white hover:text-red-500 transition-colors" href="https://www.youtube.com/@rammfanCZE" target="_blank">
+            <i class="fab fa-youtube text-red-600 text-xl"></i>
+            <span id="subscriber-count">Loading subscribers…</span>
+        </a>
+    </div>
+    <div class="mt-4 text-gray-400">
+        © 2026 <span class="text-red-500 font-bold">rammfanCZE</span> — Created with love for live sound 🎤
+    </div>
+</footer>
+
 <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+<script src="https://unpkg.com/wavesurfer.js@7"></script>
+<script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/spectrogram.min.js"></script>
 
 <script>
 const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
 const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=314502273&single=true&output=tsv';
 
-let audioContext;
+let plyrInstances = [];
+let specInstances = {};
+
+function filterTable() {
+    const input = document.getElementById('recorded-search');
+    const filter = input.value.toLowerCase();
+    const tbody = document.getElementById('recorded-tbody');
+    const rows = tbody.querySelectorAll('tr:not(.spec-row)');
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(filter) ? "" : "none";
+        // Pokud skryjeme hlavní řádek, musíme skrýt i jeho spektrogram
+        const nextRow = row.nextElementSibling;
+        if (nextRow && nextRow.classList.contains('spec-row')) {
+            nextRow.style.display = "none";
+        }
+    });
+}
+
+async function fetchSubscribers() {
+    const apiKey = 'AIzaSyDDXVwQNZmlOyHiZqQIUYgMZ-w0QgZIX5g';
+    const channelId = 'UCRnSUbTJ-cS-ORYCEF9PEsQ';
+    try {
+        const response = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`);
+        const data = await response.json();
+        const count = data.items[0].statistics.subscriberCount;
+        document.getElementById("subscriber-count").innerText = `${parseInt(count).toLocaleString()} subscribers`;
+    } catch (err) {
+        document.getElementById("subscriber-count").innerText = 'YouTube channel';
+    }
+}
 
 async function nactiTabulky() {
-    const resR = await fetch(URL_RECORDED);
-    const textR = await resR.text();
-    vykresli(textR, 'recorded-tbody', true);
-
-    const resU = await fetch(URL_UPCOMING);
-    const textU = await resU.text();
-    vykresli(textU, 'upcoming-tbody', false);
+    const stahni = async (url, targetId, isRecorded) => {
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error("Chyba stahování");
+            const text = await res.text();
+            vykresli(text, targetId, isRecorded);
+            
+            if (isRecorded) {
+                plyrInstances.forEach(p => p.destroy());
+                plyrInstances = Plyr.setup('.js-player', {
+                    controls: ['play', 'progress', 'current-time', 'mute', 'volume'],
+                    settings: []
+                });
+            }
+        } catch (e) {
+            console.error(e);
+            document.getElementById(targetId).innerHTML = '<tr><td colspan="7" class="p-4 text-red-400 text-center">Data momentálně nejsou dostupná.</td></tr>';
+        }
+    };
+    stahni(URL_RECORDED, 'recorded-tbody', true);
+    stahni(URL_UPCOMING, 'upcoming-tbody', false);
 }
 
 function vykresli(data, targetId, jeToRecorded) {
     const tbody = document.getElementById(targetId);
-    let radky = data.split('\n'); radky.shift(); radky.reverse();
-    tbody.innerHTML = '';
+    let radky = data.split('\n'); 
+    radky.shift(); 
+    radky.reverse(); 
+    tbody.innerHTML = ''; 
 
     radky.forEach((radek, i) => {
-        if (!radek.trim()) return;
-        const col = radek.split('\t');
+        const radekTrim = radek.trim();
+        if (!radekTrim) return;
+        const col = radekTrim.split('\t'); 
         const tr = document.createElement('tr');
         tr.className = "md:border-b md:border-gray-800 md:hover:bg-gray-800/30 transition-colors";
 
         if (jeToRecorded) {
+            const formatText = col[5] || 'WAV';
             const audioUrl = col[6] ? col[6].trim() : '';
+
             tr.innerHTML = `
-                <td class="px-4 py-3 font-semibold" data-label="Artist">${col[0]}</td>
-                <td class="px-4 py-3" data-label="Date">${col[1]}</td>
-                <td class="px-4 py-3" data-label="Venue">${col[2]}</td>
-                <td class="px-4 py-3 text-right md:text-center" data-label="YT">${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600"><i class="fab fa-youtube text-lg"></i></a>` : '❌'}</td>
+                <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist">${col[0] || ''}</td>
+                <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
+                <td class="px-4 py-3" data-label="Venue">${col[2] || ''}</td>
+                <td class="px-4 py-3 text-right md:text-center" data-label="YT">
+                    ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600 text-lg hover:text-red-400"><i class="fab fa-youtube"></i></a>` : '<span class="text-gray-600 text-xs">❌</span>'}
+                </td>
                 <td class="px-4 py-3 text-right md:text-center" data-label="IEM">${col[4] === 'Ano' ? '✅' : '❌'}</td>
-                <td class="px-4 py-3 text-right md:text-center" data-label="Format">${col[5] || ''}</td>
-                <td class="px-4 py-3" data-label="Audio">
-                    ${audioUrl ? `
-                    <div class="player-wrapper">
-                        <canvas id="canvas-${i}" class="spectrum-canvas"></canvas>
-                        <audio id="audio-${i}" class="js-player" crossorigin="anonymous" src="${audioUrl}"></audio>
-                    </div>` : ''}
+                <td class="px-4 py-3 text-right md:text-center" data-label="Format">        
+                    <span class="format-btn" onclick="toggleSpec(${i}, '${audioUrl}')">${formatText}</span>
+                </td>
+                <td class="px-4 py-3 md:table-cell" data-label="Audio">
+                    <div style="width: 250px; margin-left: auto;">
+                        ${audioUrl.includes('http') ? `<audio class="js-player" controls src="${audioUrl}" crossorigin="anonymous"></audio>` : ''}
+                    </div>
                 </td>
             `;
             tbody.appendChild(tr);
-            if (audioUrl) setupPlayerWithSpectrum(i);
+
+            // Skrytý řádek pro spektrogram
+            const specRow = document.createElement('tr');
+            specRow.className = "spec-row hidden";
+            specRow.id = `spec-row-${i}`;
+            specRow.innerHTML = `
+                <td colspan="7" class="px-4 py-2">
+                    <div id="spec-container-${i}" class="spec-drawer">
+                        <div id="loader-${i}" class="loading-spec">⏳ Generuji spektrogram...</div>
+                        <div id="wave-hidden-${i}" style="display:none"></div>
+                        <div id="spec-view-${i}"></div>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(specRow);
+
         } else {
-            tr.innerHTML = `<td class="px-4 py-3">${col[0]}</td><td class="px-4 py-3">${col[1]}</td><td class="px-4 py-3">${col[2]}</td>`;
+            tr.innerHTML = `
+                <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist">${col[0] || ''}</td>
+                <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
+                <td class="px-4 py-3" data-label="Venue">${col[2] || ''}</td>
+            `;
             tbody.appendChild(tr);
         }
     });
 }
 
-function setupPlayerWithSpectrum(id) {
-    const audio = document.getElementById(`audio-${id}`);
-    const canvas = document.getElementById(`canvas-${id}`);
-    const player = new Plyr(audio, { controls: ['play', 'progress', 'current-time', 'mute', 'volume'] });
+function toggleSpec(id, url) {
+    const row = document.getElementById(`spec-row-${id}`);
+    const isHidden = row.classList.contains('hidden');
 
-    player.on('play', () => {
-        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioContext.state === 'suspended') audioContext.resume();
-        
-        // Inicializace analyseru jen jednou pro daný element
-        if (!audio.dataset.connected) {
-            const analyser = audioContext.createAnalyser();
-            const source = audioContext.createMediaElementSource(audio);
-            source.connect(analyser);
-            analyser.connect(audioContext.destination);
-            analyser.fftSize = 64;
-            audio.dataset.connected = "true";
-            
-            const bufferLength = analyser.frequencyBinCount;
-            const dataArray = new Uint8Array(bufferLength);
-            const ctx = canvas.getContext('2d');
-
-            function draw() {
-                requestAnimationFrame(draw);
-                analyser.getByteFrequencyData(dataArray);
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                const barWidth = (canvas.width / bufferLength) * 2;
-                let x = 0;
-                for (let j = 0; j < bufferLength; j++) {
-                    const barHeight = (dataArray[j] / 255) * canvas.height;
-                    ctx.fillStyle = '#ef4444';
-                    ctx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
-                    x += barWidth;
-                }
-            }
-            draw();
+    // Zavřít ostatní otevřené? (nepovinné)
+    
+    if (isHidden) {
+        row.classList.remove('hidden');
+        if (!specInstances[id] && url) {
+            initSpectrogram(id, url);
         }
-    });
-}
-
-function filterTable() {
-    const filter = document.getElementById('recorded-search').value.toLowerCase();
-    const rows = document.getElementById('recorded-tbody').getElementsByTagName('tr');
-    for (let row of rows) {
-        row.style.display = row.textContent.toLowerCase().includes(filter) ? "" : "none";
+    } else {
+        row.classList.add('hidden');
     }
 }
 
+function initSpectrogram(id, url) {
+    const ws = WaveSurfer.create({
+        container: `#wave-hidden-${id}`,
+        url: url,
+        plugins: [
+            WaveSurfer.Spectrogram.create({
+                container: `#spec-view-${id}`,
+                labels: true,
+                height: 150,
+                splitChannels: false,
+                colorMap: [[0, 0, 0, 1], [0.1, 0.5, 0, 1], [1, 1, 0, 1]] // Žluto-zeleno-černá mapa
+            })
+        ]
+    });
+
+    ws.on('ready', () => {
+        document.getElementById(`loader-${id}`).style.display = 'none';
+    });
+    
+    specInstances[id] = ws;
+}
+
+fetchSubscribers();
 nactiTabulky();
 </script>
+
 </body>
 </html>
