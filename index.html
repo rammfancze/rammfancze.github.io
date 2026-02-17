@@ -13,7 +13,6 @@
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
-        /* Styl pro vyhledávání */
         .search-wrapper { position: relative; width: 100%; max-width: 300px; }
         .search-input {
             width: 100%; background: rgba(255,255,255,0.05);
@@ -23,7 +22,6 @@
         .search-input:focus { border-color: #ef4444; }
         .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; font-size: 0.8rem; }
 
-        /* Původní styl audio přehrávače */
         audio { 
             height: 30px; 
             width: 100%; 
@@ -32,11 +30,10 @@
             opacity: 0.8;
         }
 
-        /* Responzivita */
         @media (max-width: 768px) {
             .desktop-only { display: none; }
             .mobile-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-            audio { max-width: 100%; } /* Na mobilu přes celou šířku karty */
+            audio { max-width: 100%; }
         }
         @media (min-width: 769px) {
             .mobile-only { display: none; }
@@ -73,85 +70,10 @@
                         <th class="px-4 py-3">Venue</th>
                     </tr>
                 </thead>
-                <tbody id="upcoming-tbody-desktop"></tbody>
+                <tbody id="upcoming-tbody-desktop">
+                    <tr><td colspan="3" class="p-4 text-center text-gray-500 italic">Loading data...</td></tr>
+                </tbody>
             </table>
         </div>
         <div id="upcoming-mobile" class="mobile-only mobile-grid"></div>
     </section>
-    
-    <section class="mb-16">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 border-b border-gray-600 pb-2">
-            <h2 class="text-3xl font-semibold text-white">📋 Recorded shows</h2>
-            <div class="search-wrapper">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="recorded-search" class="search-input" placeholder="" onkeyup="filterContent()">
-            </div>
-        </div>
-
-        <div class="desktop-only overflow-hidden rounded-lg bg-black/20">
-            <table class="w-full table-auto text-sm text-left text-gray-300">
-                <thead>
-                    <tr class="bg-gray-800 text-gray-100">
-                        <th class="px-4 py-3">Artist</th>
-                        <th class="px-4 py-3">Date</th>
-                        <th class="px-4 py-3">Venue</th>
-                        <th class="px-4 py-3 text-center">YT</th>
-                        <th class="px-4 py-3 text-center">IEM</th>
-                        <th class="px-4 py-3 text-center">Format</th>
-                        <th class="px-4 py-3 text-center">Audio Sample</th>
-                    </tr>
-                </thead>
-                <tbody id="recorded-tbody-desktop"></tbody>
-            </table>
-        </div>
-        <div id="recorded-mobile" class="mobile-only mobile-grid"></div>
-    </section>
-
-</main>
-
-<footer class="text-center text-sm text-gray-500 py-6 border-t border-gray-700 bg-black/70">
-    <div class="flex justify-center items-center gap-2 mt-4">
-        <a class="flex items-center gap-2 text-white hover:text-red-500 transition-colors" href="https://www.youtube.com/@rammfanCZE" target="_blank">
-            <i class="fab fa-youtube text-red-600 text-xl"></i>
-            <span id="subscriber-count">Loading subscribers…</span>
-        </a>
-    </div>
-    <div class="mt-4 text-gray-400">
-        © 2026 <span class="text-red-500 font-bold">rammfanCZE</span> — Created with love for live sound 🎤
-    </div>
-</footer>
-
-<script>
-const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
-const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=314502273&single=true&output=tsv';
-
-function filterContent() {
-    const filter = document.getElementById('recorded-search').value.toLowerCase();
-    const rows = document.getElementById('recorded-tbody-desktop').getElementsByTagName('tr');
-    for (let row of rows) { row.style.display = row.textContent.toLowerCase().includes(filter) ? "" : "none"; }
-    const cards = document.getElementById('recorded-mobile').getElementsByClassName('concert-card');
-    for (let card of cards) { card.style.display = card.textContent.toLowerCase().includes(filter) ? "" : "none"; }
-}
-
-async function nactiData() {
-    try {
-        const [resRec, resUpc] = await Promise.all([fetch(URL_RECORDED), fetch(URL_UPCOMING)]);
-        vykresliRecorded(await resRec.text());
-        vykresliUpcoming(await resUpc.text());
-        fetchSubscribers();
-    } catch (e) { console.error(e); }
-}
-
-function vykresliRecorded(data) {
-    const tbody = document.getElementById('recorded-tbody-desktop');
-    const mobileGrid = document.getElementById('recorded-mobile');
-    let radky = data.split('\n').slice(1).reverse();
-
-    radky.forEach(radek => {
-        if (!radek.trim()) return;
-        const col = radek.split('\t');
-        const [artist, date, venue, yt, iem, format, audio, img] = col.map(s => s?.trim() || '');
-
-        // Desktop
-        const tr = document.createElement('tr');
-        tr.className = "border-b border-gray-800 hover:bg-gray-800/3
