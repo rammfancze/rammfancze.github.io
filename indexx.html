@@ -15,99 +15,93 @@
         body { font-family: 'Inter', sans-serif; background-color: #0b0f1a; color: white; }
         h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
-        /* Styl pro vyhledávání */
-        .search-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 8px 12px 8px 35px; color: white; outline: none; transition: all 0.2s; }
-        .search-input:focus { border-color: #ef4444; }
-
-        /* Styl pro proklik na formát */
         .format-clickable { color: #ef4444; cursor: pointer; text-decoration: underline; font-weight: 600; }
 
-        /* --- MODAL (LIGHTBOX) STYL --- */
+        /* --- MODAL (PILLOWCASE STYLE) --- */
         #spec-modal { 
             display: none; 
             position: fixed; 
             inset: 0; 
             z-index: 9999; 
-            background: rgba(0,0,0,0.9); 
+            background: rgba(0,0,0,0.95); 
             align-items: center; 
             justify-content: center; 
+        }
+        .modal-inner {
+            width: 90%;
+            max-width: 1200px;
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
             padding: 20px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,1);
         }
-        .modal-content { 
-            background: #000; 
-            width: 100%; 
-            max-width: 900px; 
-            border: 1px solid #333; 
-            border-radius: 12px; 
-            position: relative; 
-            padding: 30px 20px 20px 20px;
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.2s;
         }
-        .close-modal { 
-            position: absolute; 
-            top: 10px; 
-            right: 15px; 
-            color: #fff; 
-            font-size: 24px; 
-            cursor: pointer; 
-            z-index: 10001;
+        .close-btn:hover { color: #fff; }
+
+        #spectrogram-canvas {
+            width: 100%;
+            background: #000;
+            min-height: 400px;
         }
 
         /* Responzivita tabulky */
         @media (max-width: 768px) {
             thead { display: none; }
             tbody tr { display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.75rem; margin-bottom: 1rem; padding: 1rem; }
-            tbody td { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+            tbody td { display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
             tbody td::before { content: attr(data-label); font-weight: 600; color: #9ca3af; font-size: 0.75rem; text-transform: uppercase; }
         }
     </style>
 </head>
 
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen">
+<body>
 
 <div id="spec-modal" onclick="closeModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
-        <h3 id="modal-title" class="text-red-500 mb-4 text-sm font-bold uppercase tracking-widest">Spectrogram Analysis</h3>
-        <div id="loader-box" class="text-xs text-gray-500 mb-2 font-mono">⏳ ANALYZING AUDIO...</div>
-        <div id="spectrogram-view"></div>
-        <div id="wave-hidden" style="display:none"></div>
+    <div class="modal-inner" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3 id="modal-title" class="text-red-500 mb-6 text-xl font-bold uppercase tracking-tighter"></h3>
+        
+        <div id="loader-status" class="flex items-center gap-3 text-sm text-gray-400 font-mono mb-4">
+            <span class="animate-pulse">⌛ ANALYZING FREQUENCIES...</span>
+        </div>
+
+        <div id="spectrogram-canvas"></div>
+        <div id="waveform-hidden" style="display:none"></div>
     </div>
 </div>
 
-<header class="p-6 md:p-8 bg-black/70 backdrop-blur border-b border-gray-700 shadow-xl">
+<header class="p-6 md:p-8 bg-black/70 border-b border-gray-700">
     <div class="max-w-6xl mx-auto">
-        <h1 class="text-3xl md:text-4xl font-bold text-red-500 tracking-wide">rammfanCZE</h1>
-        <p class="text-gray-400">live video recordings // IEM archive</p>
+        <h1 class="text-3xl font-bold text-red-500">rammfanCZE</h1>
+        <p class="text-gray-400 italic">IEM archive & Spectrograms</p>
     </div>
 </header>
 
-<main class="max-w-6xl mx-auto p-4 md:p-12">
-    <section class="mb-12">
-        <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2">📅 Upcoming shows</h2>
-        <div class="bg-black/20 rounded-lg overflow-hidden">
-            <table class="w-full text-sm text-left text-gray-300">
-                <thead><tr class="bg-gray-800 text-gray-100"><th class="px-4 py-3">Artist</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Venue</th></tr></thead>
-                <tbody id="upcoming-tbody"></tbody>
-            </table>
-        </div>
-    </section>
-    
+<main class="max-w-7xl mx-auto p-4 md:p-12">
     <section class="mb-16">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 border-b border-gray-600 pb-2">
-            <h2 class="text-2xl font-semibold">📋 Recorded shows</h2>
-            <div class="relative w-full max-w-xs">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-500"></i>
-                <input type="text" id="recorded-search" class="search-input" placeholder="Search..." onkeyup="filterTable()">
-            </div>
+        <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-2">
+            <h2 class="text-2xl font-bold uppercase tracking-widest">Recorded shows</h2>
+            <input type="text" id="recorded-search" class="bg-gray-900 border border-gray-700 rounded px-4 py-2 text-sm focus:border-red-500 outline-none" placeholder="Search artist..." onkeyup="filterTable()">
         </div>
 
-        <div class="bg-black/20 rounded-lg overflow-hidden">
-            <table class="w-full text-sm text-left text-gray-300">
+        <div class="overflow-x-auto bg-black/40 rounded-xl">
+            <table class="w-full text-left text-sm">
                 <thead>
-                    <tr class="bg-gray-800 text-gray-100">
-                        <th class="px-4 py-3">Artist</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Venue</th>
-                        <th class="px-4 py-3 text-center">YT</th><th class="px-4 py-3 text-center">IEM</th>
-                        <th class="px-4 py-3 text-center">Format</th><th class="px-4 py-3 text-right">Audio Sample</th>
+                    <tr class="bg-gray-800/50 text-gray-400 uppercase text-xs">
+                        <th class="px-6 py-4">Artist</th>
+                        <th class="px-6 py-4">Date</th>
+                        <th class="px-6 py-4 text-center">Format</th>
+                        <th class="px-6 py-4 text-right">Player</th>
                     </tr>
                 </thead>
                 <tbody id="recorded-tbody"></tbody>
@@ -116,115 +110,102 @@
     </section>
 </main>
 
-<footer class="text-center text-sm text-gray-500 py-10 border-t border-gray-700 bg-black/70">
-    <div class="flex justify-center items-center gap-2 mb-4">
-        <a class="flex items-center gap-2 text-white hover:text-red-500" href="https://www.youtube.com/@rammfanCZE" target="_blank">
-            <i class="fab fa-youtube text-red-600 text-xl"></i>
-            <span id="subscriber-count">Loading subscribers…</span>
-        </a>
-    </div>
-    <p>© 2026 rammfanCZE — Professional IEM Archive</p>
-</footer>
-
 <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
 <script src="https://unpkg.com/wavesurfer.js@7"></script>
 <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/spectrogram.min.js"></script>
 
 <script>
 const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
-const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=314502273&single=true&output=tsv';
 
-let currentWs = null;
-
-async function fetchSubscribers() {
-    const apiKey = 'AIzaSyDDXVwQNZmlOyHiZqQIUYgMZ-w0QgZIX5g';
-    const channelId = 'UCRnSUbTJ-cS-ORYCEF9PEsQ';
-    try {
-        const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`);
-        const data = await res.json();
-        const count = data.items[0].statistics.subscriberCount;
-        document.getElementById("subscriber-count").innerText = `${parseInt(count).toLocaleString()} subscribers`;
-    } catch { }
-}
-
-function filterTable() {
-    const filter = document.getElementById('recorded-search').value.toLowerCase();
-    const rows = document.querySelectorAll('#recorded-tbody tr');
-    rows.forEach(row => row.style.display = row.textContent.toLowerCase().includes(filter) ? "" : "none");
-}
+let activeWs = null;
 
 async function loadData() {
-    const fetchTSV = async (url) => {
-        const res = await fetch(url);
-        const text = await res.text();
-        return text.split('\n').slice(1).reverse();
-    };
+    const res = await fetch(URL_RECORDED);
+    const text = await res.text();
+    const rows = text.split('\n').slice(1).reverse();
+    const tbody = document.getElementById('recorded-tbody');
 
-    const upcoming = await fetchTSV(URL_UPCOMING);
-    const recorded = await fetchTSV(URL_RECORDED);
-
-    const upTbody = document.getElementById('upcoming-tbody');
-    upcoming.forEach(line => {
-        const col = line.trim().split('\t');
+    rows.forEach((line, i) => {
+        const col = line.split('\t');
         if (!col[0]) return;
-        upTbody.innerHTML += `<tr><td class="px-4 py-3">${col[0]}</td><td class="px-4 py-3">${col[1]}</td><td class="px-4 py-3">${col[2]}</td></tr>`;
-    });
+        const audioUrl = col[6]?.trim();
 
-    const recTbody = document.getElementById('recorded-tbody');
-    recorded.forEach((line) => {
-        const col = line.trim().split('\t');
-        if (!col[0]) return;
-        const audioUrl = col[6]?.trim() || '';
-        
         const tr = document.createElement('tr');
-        tr.className = "border-b border-gray-800 hover:bg-gray-800/30 transition-colors";
+        tr.className = "border-b border-gray-800/50 hover:bg-gray-800/20 transition-all";
         tr.innerHTML = `
-            <td class="px-4 py-4 font-semibold text-white" data-label="Artist">${col[0]}</td>
-            <td class="px-4 py-4 text-gray-400" data-label="Date">${col[1]}</td>
-            <td class="px-4 py-4" data-label="Venue">${col[2]}</td>
-            <td class="px-4 py-4 text-center" data-label="YT">${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600"><i class="fab fa-youtube text-lg"></i></a>` : '❌'}</td>
-            <td class="px-4 py-4 text-center" data-label="IEM">${col[4] === 'Ano' ? '✅' : '❌'}</td>
-            <td class="px-4 py-4 text-center" data-label="Format"><span class="format-clickable" onclick="openSpec('${col[0]}', '${audioUrl}')">${col[5] || 'WAV'}</span></td>
-            <td class="px-4 py-4" data-label="Audio"><div style="width: 250px; margin-left: auto;"><audio class="js-player" controls src="${audioUrl}"></audio></div></td>
+            <td class="px-6 py-5 font-semibold text-white" data-label="Artist">${col[0]}</td>
+            <td class="px-6 py-5 text-gray-400" data-label="Date">${col[1]}</td>
+            <td class="px-6 py-5 text-center" data-label="Format">
+                <span class="format-clickable" onclick="openSpectrogram('${col[0]}', '${audioUrl}')">${col[5] || 'WAV'}</span>
+            </td>
+            <td class="px-6 py-5" data-label="Audio">
+                <div style="width:250px; margin-left:auto;">
+                    <audio class="js-player" controls src="${audioUrl}"></audio>
+                </div>
+            </td>
         `;
-        recTbody.appendChild(tr);
+        tbody.appendChild(tr);
     });
-
-    Plyr.setup('.js-player', { controls: ['play', 'progress', 'current-time', 'mute', 'volume'] });
+    Plyr.setup('.js-player');
 }
 
-function openSpec(artist, url) {
+function openSpectrogram(artist, url) {
+    if (!url || url === "") {
+        alert("Odkaz na audio chybí.");
+        return;
+    }
+
     const modal = document.getElementById('spec-modal');
-    const loader = document.getElementById('loader-box');
-    const view = document.getElementById('spectrogram-view');
-    
     modal.style.display = 'flex';
-    document.getElementById('modal-title').innerText = artist + " - Analysis";
-    view.innerHTML = '';
-    loader.style.display = 'block';
+    document.getElementById('modal-title').innerText = artist;
+    document.getElementById('loader-status').style.display = 'flex';
+    document.getElementById('spectrogram-canvas').innerHTML = '';
 
-    if (currentWs) currentWs.destroy();
+    if (activeWs) activeWs.destroy();
 
-    currentWs = WaveSurfer.create({
-        container: '#wave-hidden',
+    // DŮLEŽITÉ: Přidání crossorigin, aby se předešlo zaseknutí na "Analyzing"
+    activeWs = WaveSurfer.create({
+        container: '#waveform-hidden',
         url: url,
-        plugins: [WaveSurfer.Spectrogram.create({
-            container: '#spectrogram-view',
-            labels: true,
-            height: 250,
-            colorMap: [[0,0,0,1], [0.1,0,0,1], [0.3,0,1,1], [0.5,0,1,0], [0.7,1,1,0], [1,1,0,0]]
-        })]
+        fetchParams: { mode: 'cors' }, // Vynutí CORS režim
+        plugins: [
+            WaveSurfer.Spectrogram.create({
+                container: '#spectrogram-canvas',
+                labels: true,
+                height: 400, // Velké jako na obrázku
+                splitChannels: false,
+                colorMap: [
+                    [0, 0, 0, 1],         // Černá (ticho)
+                    [0.1, 0, 0, 0.5],     // Tmavá
+                    [0.4, 0, 1, 0],       // Zelená (středy) - tohle dělá ten libavfilter efekt
+                    [0.8, 1, 1, 0],       // Žlutá
+                    [1, 1, 0, 0]          // Červená (špičky)
+                ]
+            })
+        ]
     });
 
-    currentWs.on('ready', () => loader.style.display = 'none');
+    activeWs.on('ready', () => {
+        document.getElementById('loader-status').style.display = 'none';
+    });
+
+    activeWs.on('error', (err) => {
+        console.error(err);
+        document.getElementById('loader-status').innerHTML = `<span class="text-red-500">❌ ERROR: Access denied. The file host blocks analysis.</span>`;
+    });
 }
 
 function closeModal() {
     document.getElementById('spec-modal').style.display = 'none';
-    if (currentWs) currentWs.destroy();
+    if (activeWs) activeWs.destroy();
 }
 
-fetchSubscribers();
+function filterTable() {
+    const val = document.getElementById('recorded-search').value.toLowerCase();
+    const rows = document.querySelectorAll('#recorded-tbody tr');
+    rows.forEach(r => r.style.display = r.textContent.toLowerCase().includes(val) ? "" : "none");
+}
+
 loadData();
 </script>
 </body>
