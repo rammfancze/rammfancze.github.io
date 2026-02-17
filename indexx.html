@@ -12,8 +12,15 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+    
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 
     <style>
+        :root {
+            /* Nastavení barvy přehrávače na tvou červenou */
+            --plyr-color-main: #ef4444;
+        }
+
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
@@ -62,11 +69,19 @@
             font-size: 0.8rem;
         }
 
+        /* Stylování Plyr přehrávače pro tabulku */
+        .plyr--audio .plyr__controls {
+            background: transparent !important;
+            padding: 0;
+            color: white;
+        }
+        .plyr__control--overlaid {
+            background: #ef4444 !important;
+        }
+
         /* --- RESPONZIVNÍ TABULKA (Table to Cards) --- */
         @media (max-width: 768px) {
-            thead {
-                display: none;
-            }
+            thead { display: none; }
 
             tbody tr {
                 display: flex;
@@ -86,9 +101,7 @@
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             }
 
-            tbody td:last-child {
-                border-bottom: none;
-            }
+            tbody td:last-child { border-bottom: none; }
 
             tbody td::before {
                 content: attr(data-label);
@@ -101,11 +114,10 @@
                 flex-shrink: 0;
             }
 
-            /* Audio fix na mobilu */
-            audio {
-                width: 100% !important;
-                max-width: 280px;
-                height: 30px;
+            /* Plyr fix na mobilu */
+            .plyr {
+                width: 100%;
+                min-width: 180px;
             }
         }
     </style>
@@ -163,7 +175,7 @@
                         <th class="px-4 py-3 text-center">YT</th>
                         <th class="px-4 py-3 text-center">IEM</th>
                         <th class="px-4 py-3 text-center">Format</th>
-                        <th class="px-4 py-3 text-center" style="width: 260px;">Audio Sample</th>
+                        <th class="px-4 py-3 text-center" style="width: 280px;">Audio Sample</th>
                     </tr>
                 </thead>
                 <tbody id="recorded-tbody">
@@ -185,9 +197,13 @@
     </div>
 </footer>
 
+<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+
 <script>
 const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
 const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=314502273&single=true&output=tsv';
+
+let plyrInstances = [];
 
 function filterTable() {
     const input = document.getElementById('recorded-search');
@@ -220,6 +236,17 @@ async function nactiTabulky() {
             if (!res.ok) throw new Error("Chyba stahování");
             const text = await res.text();
             vykresli(text, targetId, isRecorded);
+            
+            // AKTIVACE PLYR PŘEHRÁVAČŮ PO VYKRESLENÍ
+            if (isRecorded) {
+                // Zničíme staré instance, aby se to nehádalo
+                plyrInstances.forEach(p => p.destroy());
+                // Vytvoříme nové
+                plyrInstances = Plyr.setup('.js-player', {
+                    controls: ['play', 'progress', 'current-time', 'mute', 'volume'],
+                    settings: [] // Odstraní zbytečné ozubené kolečko
+                });
+            }
         } catch (e) {
             console.error(e);
             document.getElementById(targetId).innerHTML = '<tr><td colspan="7" class="p-4 text-red-400 text-center">Data momentálně nejsou dostupná.</td></tr>';
@@ -260,7 +287,9 @@ function vykresli(data, targetId, jeToRecorded) {
                     ${imgUrl ? `<a href="${imgUrl}" target="_blank" class="hover:text-white underline decoration-gray-600">${formatText}</a>` : formatText}
                 </td>
                 <td class="px-4 py-3 md:table-cell" data-label="Audio">
-                    ${audioUrl.includes('http') ? `<audio controls class="h-8 w-62 opacity-80 hover:opacity-100 transition-opacity" src="${audioUrl}"></audio>` : ''} 
+                    <div style="width: 250px; margin-left: auto;">
+                        ${audioUrl.includes('http') ? `<audio class="js-player" controls src="${audioUrl}"></audio>` : ''}
+                    </div>
                 </td>
             `;
         } else {
