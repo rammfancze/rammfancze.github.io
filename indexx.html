@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
     <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>rammfanCZE IEM archive</title>
     
     <meta property="og:title" content="rammfanCZE IEM archive" />
@@ -17,81 +17,100 @@
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
+        /* Skeleton loading */
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
         }
-        .animate-skeleton { animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        .skeleton-bar { height: 12px; background: rgba(156, 163, 175, 0.3); border-radius: 4px; width: 100%; }
+        .animate-skeleton { animation: pulse 1.5s cubic-bezier(0.4,0,0.6,1) infinite; }
+        .skeleton-bar {
+            height: 12px;
+            background: rgba(156,163,175,0.3);
+            border-radius: 4px;
+            width: 100%;
+        }
 
+        /* Search */
         .search-wrapper { position: relative; max-width: 300px; }
         .search-input {
-            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 6px; padding: 8px 12px 8px 35px; color: white; outline: none; font-size: 0.875rem; transition: all 0.2s;
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            padding: 8px 12px 8px 35px;
+            color: white;
+            outline: none;
+            font-size: 0.875rem;
+            transition: all 0.2s;
         }
-        .search-input:focus { background: rgba(255,255,255,0.1); border-color: #ef4444; }
-        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; font-size: 0.8rem; }
+        .search-input:focus {
+            background: rgba(255,255,255,0.1);
+            border-color: #ef4444;
+        }
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            font-size: 0.8rem;
+        }
 
-        /* OPRAVENÁ RESPONZIVITA - MOBILNÍ KARTY */
-        @media (max-width: 768px) {
-            table, thead, tbody, th, td, tr { display: block; width: 100%; }
-            thead { display: none; }
-            tr { 
-                margin-bottom: 1.5rem; 
-                border: 1px solid rgba(255,255,255,0.1) !important; 
-                border-radius: 12px; 
-                background: rgba(0,0,0,0.3); 
-                padding: 0.75rem;
-            }
-            td { 
-                display: flex; 
-                justify-content: space-between; 
-                align-items: center; 
-                border: none !important; 
-                padding: 0.5rem 0.25rem !important; 
-                text-align: right !important;
-                min-height: 2.5rem;
-            }
-            /* Generování popisků z data-label atributu */
-            td::before { 
-                content: attr(data-label); 
-                font-weight: 600; 
-                font-size: 0.7rem; 
-                color: #6b7280; 
-                text-transform: uppercase; 
-                text-align: left;
-                padding-right: 1rem;
-            }
-            /* Interpret jako nadpis */
-            td:first-child { 
-                justify-content: center; 
-                font-size: 1.2rem; 
-                font-weight: bold; 
-                color: #ef4444;
-                border-bottom: 1px solid rgba(255,255,255,0.1) !important; 
-                margin-bottom: 0.5rem; 
-                padding-bottom: 0.75rem !important;
-            }
-            td:first-child::before { content: none; }
-            audio { width: 100% !important; height: 32px; margin-top: 0.5rem; }
+        /* Karty na mobilu */
+        .card-row {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .card-row:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+        }
+        .card-bg {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .card-overlay {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.85) 60%, #000 100%);
+            padding: 1.25rem 1rem 1rem;
+        }
+        .info-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            margin-top: 0.75rem;
+        }
+        .badge {
+            background: rgba(255,255,255,0.08);
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
         }
     </style>
 </head>
 
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen">
 
-<header class="p-8 bg-black/70 backdrop-blur border-b border-gray-700 shadow-xl">
+<header class="p-6 sm:p-8 bg-black/70 backdrop-blur border-b border-gray-700 shadow-xl">
     <div class="max-w-6xl mx-auto flex flex-col gap-2">
-        <h1 class="text-4xl font-bold text-red-500 tracking-wide">rammfanCZE</h1>
-        <p class="text-gray-400 text-lg">live video recordings // IEM archive</p>
+        <h1 class="text-4xl sm:text-5xl font-bold text-red-500 tracking-wide">rammfanCZE</h1>
+        <p class="text-gray-400 text-base sm:text-lg">live video recordings // IEM archive</p>
     </div>
 </header>
 
-<main class="max-w-6xl mx-auto p-6 md:p-12">
-    <section class="mb-16">
-        <h2 class="text-3xl font-semibold text-white mb-4 border-b border-gray-600 pb-2">📅 Upcoming shows</h2>
-        <div class="overflow-x-auto bg-black/20 rounded-lg">
-            <table class="w-full table-auto text-sm text-left text-gray-300">
+<main class="max-w-6xl mx-auto p-4 sm:p-6 md:p-12">
+
+    <section class="mb-12 md:mb-16">
+        <h2 class="text-2xl sm:text-3xl font-semibold text-white mb-4 border-b border-gray-600 pb-2">📅 Upcoming shows</h2>
+        <div class="overflow-x-auto bg-black/20 rounded-lg border border-gray-700">
+            <table class="w-full min-w-[600px] md:min-w-full table-auto text-sm text-left text-gray-300">
                 <thead>
                     <tr class="bg-gray-800 text-gray-100">
                         <th class="px-4 py-3">Artist / Event</th>
@@ -110,17 +129,17 @@
         </div>
     </section>
     
-    <section class="mb-16">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 border-b border-gray-600 pb-2">
-            <h2 class="text-3xl font-semibold text-white">📋 Recorded shows</h2>
-            <div class="search-wrapper">
+    <section class="mb-12 md:mb-16">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 border-b border-gray-600 pb-2">
+            <h2 class="text-2xl sm:text-3xl font-semibold text-white">📋 Recorded shows</h2>
+            <div class="search-wrapper w-full sm:w-64 md:w-80">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="recorded-search" class="search-input" placeholder="" onkeyup="filterTable()">
+                <input type="text" id="recorded-search" class="search-input" placeholder="Hledat..." onkeyup="filterTable()">
             </div>
         </div>
 
-        <div class="overflow-x-auto bg-black/20 rounded-lg">
-            <table class="w-full table-auto text-sm text-left text-gray-300" id="recorded-table">
+        <div id="recorded-container" class="space-y-5 md:space-y-0">
+            <table id="recorded-table" class="hidden md:table w-full table-auto text-sm text-left text-gray-300 bg-black/20 rounded-lg border border-gray-700">
                 <thead>
                     <tr class="bg-gray-800 text-gray-100">
                         <th class="px-4 py-3">Artist</th>
@@ -132,24 +151,136 @@
                         <th class="px-4 py-3 text-center">Audio Sample</th>
                     </tr>
                 </thead>
-                <tbody id="recorded-tbody"></tbody>
+                <tbody id="recorded-tbody" class="divide-y divide-gray-800"></tbody>
             </table>
+
+            <!-- Mobilní karty budou přidány sem přes JS -->
+            <div id="mobile-cards" class="md:hidden space-y-5"></div>
         </div>
     </section>
 </main>
 
-<footer class="text-center text-sm text-gray-500 py-6 border-t border-gray-700 bg-black/70">
-    <div id="yt-subscribers" class="flex justify-center items-center gap-2 mt-4">
+<footer class="text-center text-sm text-gray-500 py-8 border-t border-gray-700 bg-black/70">
+    <div id="yt-subscribers" class="flex justify-center items-center gap-2 mb-4">
         <a class="flex items-center gap-2 text-white hover:text-red-500 transition-colors" href="https://www.youtube.com/@rammfanCZE" target="_blank">
-            <i class="fab fa-youtube text-red-600 text-xl"></i>
+            <i class="fab fa-youtube text-red-600 text-2xl"></i>
             <span id="subscriber-count">Loading subscribers…</span>
         </a>
     </div>
-    <div class="mt-4 text-gray-400">
+    <div class="text-gray-400">
         © 2026 <span class="text-red-500 font-bold">rammfanCZE</span> — Created with love for live sound 🎤
     </div>
 </footer>
 
 <script>
+// KONFIGURACE
 const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
-const URL_UPCOMING = '
+const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=314502273&single=true&output=tsv';
+
+// Filtrování (funguje pro obě verze)
+function filterTable() {
+    const input = document.getElementById('recorded-search');
+    const filter = input.value.toLowerCase().trim();
+    
+    // Desktop tabulka
+    const rows = document.querySelectorAll('#recorded-tbody tr');
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(filter) ? '' : 'none';
+    });
+
+    // Mobilní karty
+    const cards = document.querySelectorAll('#mobile-cards .card-row');
+    cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(filter) ? 'block' : 'none';
+    });
+}
+
+// YouTube subscribers
+async function fetchSubscribers() {
+    const apiKey = 'AIzaSyDDXVwQNZmlOyHiZqQIUYgMZ-w0QgZIX5g';
+    const channelId = 'UCRnSUbTJ-cS-ORYCEF9PEsQ';
+    try {
+        const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`);
+        const data = await res.json();
+        const count = data.items[0].statistics.subscriberCount;
+        document.getElementById("subscriber-count").innerText = `${parseInt(count).toLocaleString()} subscribers`;
+    } catch {
+        document.getElementById("subscriber-count").innerText = 'YouTube channel';
+    }
+}
+
+// Načítání dat
+async function nactiTabulky() {
+    const stahni = async (url, targetId, isRecorded) => {
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error();
+            const text = await res.text();
+            vykresli(text, targetId, isRecorded);
+        } catch {
+            const target = document.getElementById(targetId);
+            if (targetId === 'recorded-tbody') {
+                target.innerHTML = '<tr><td colspan="7" class="p-6 text-red-400 text-center">Data momentálně nejsou dostupná.</td></tr>';
+                document.getElementById('mobile-cards').innerHTML = '<div class="p-6 text-red-400 text-center">Data momentálně nejsou dostupná.</div>';
+            } else {
+                target.innerHTML = '<tr><td colspan="3" class="p-6 text-red-400 text-center">Data momentálně nejsou dostupná.</td></tr>';
+            }
+        }
+    };
+
+    stahni(URL_RECORDED, 'recorded-tbody', true);
+    stahni(URL_UPCOMING, 'upcoming-tbody', false);
+}
+
+function vykresli(data, targetId, jeToRecorded) {
+    const radky = data.split('\n').slice(1).filter(r => r.trim()).reverse();
+
+    if (!jeToRecorded) {
+        // Upcoming – zůstává tabulka
+        const tbody = document.getElementById(targetId);
+        tbody.innerHTML = '';
+        radky.forEach(radek => {
+            const col = radek.split('\t');
+            const tr = document.createElement('tr');
+            tr.className = "border-b border-gray-800 hover:bg-gray-800/30 transition-colors";
+            tr.innerHTML = `
+                <td class="px-4 py-3">${col[0]||''}</td>
+                <td class="px-4 py-3">${col[1]||''}</td>
+                <td class="px-4 py-3">${col[2]||''}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+        return;
+    }
+
+    // Recorded – desktop + mobil verze
+    const tbody = document.getElementById('recorded-tbody');
+    const mobileContainer = document.getElementById('mobile-cards');
+    tbody.innerHTML = '';
+    mobileContainer.innerHTML = '';
+
+    radky.forEach(radek => {
+        const col = radek.split('\t');
+        const artist   = col[0] || '';
+        const date     = col[1] || '';
+        const venue    = col[2] || '';
+        const ytLink   = col[3]?.includes('http') ? col[3] : '';
+        const hasIEM   = col[4] === 'Ano';
+        const format   = col[5] || '';
+        const formatUrl= col[6]?.trim() || '';
+        const audioUrl = col[7]?.trim() || '';
+        const bgImage  = col[8]?.trim() || '';   // ← sloupec s URL obrázku (přidej do sheetu!)
+
+        // Desktop řádek
+        const tr = document.createElement('tr');
+        tr.className = "border-b border-gray-800 hover:bg-gray-800/30 transition-colors";
+        tr.innerHTML = `
+            <td class="px-4 py-3">${artist}</td>
+            <td class="px-4 py-3">${date}</td>
+            <td class="px-4 py-3">${venue}</td>
+            <td class="px-4 py-3 text-center">
+                ${ytLink ? `<a href="${ytLink}" target="_blank" class="text-red-600 text-xl hover:text-red-400"><i class="fab fa-youtube"></i></a>` : '<span class="text-gray-600">–</span>'}
+            </td>
+            <td class="px-4 py-
