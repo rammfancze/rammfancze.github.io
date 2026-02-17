@@ -179,8 +179,11 @@ function vykresli(data, targetId, jeToRecorded) {
                 <td class="px-4 py-3">${col[1] || ''}</td>
                 <td class="px-4 py-3">${col[2] || ''}</td>
                 <td class="px-4 py-3 text-center">
-                    ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600 text-lg hover:text-red-400"><i class="fab fa-youtube"></i></a>` : '<span class="text-gray-800 text-xs">❌</span>'}
+                    ${ytLink?.startsWith('http') ? `<a href="${ytLink}" target="_blank" class="text-red-600 text-lg hover:text-red-400"><i class="fab fa-youtube"></i></a>` : '<span class="text-gray-800 text-xs">❌</span>'}
                 </td>
+
+                    
+                <td class="px-4 py-3 text-center">${col[4] === 'Ano' ? '✅' : '❌'}</td>
                 
                 <td class="px-4 py-3 text-center">   
 ${imgUrl 
