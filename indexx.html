@@ -60,6 +60,52 @@
             color: #6b7280;
             font-size: 0.8rem;
         }
+
+        /* RESPONZIVNÍ TABULKA -> KARTY */
+        @media (max-width: 768px) {
+            thead { display: none; } /* Skryje záhlaví tabulky */
+            
+            tbody tr {
+                display: flex;
+                flex-direction: column;
+                background: rgba(0, 0, 0, 0.3);
+                margin-bottom: 1.5rem;
+                padding: 1rem;
+                border: 1px solid rgba(255, 255, 255, 0.1) !important;
+                border-radius: 12px;
+            }
+
+            tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 0 !important;
+                border: none !important;
+            }
+
+            /* Štítky pro mobilní zobrazení */
+            tbody td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                color: #6b7280;
+            }
+
+            /* První buňka (Artist) bude výraznější */
+            tbody td:first-child {
+                font-size: 1.25rem;
+                font-weight: bold;
+                color: white;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+                margin-bottom: 0.5rem;
+                padding-bottom: 0.75rem !important;
+            }
+            tbody td:first-child::before { display: none; }
+
+            /* Audio na celou šířku */
+            audio { width: 100% !important; }
+        }
     </style>
 </head>
 
@@ -73,9 +119,9 @@
 </header>
 
 <main class="max-w-6xl mx-auto p-6 md:p-12">
-        <section class="mb-16">
+    <section class="mb-16">
         <h2 class="text-3xl font-semibold text-white mb-4 border-b border-gray-600 pb-2">📅 Upcoming shows</h2>
-        <div class="overflow-auto bg-black/20 rounded-lg">
+        <div class="bg-black/20 rounded-lg">
             <table class="w-full table-auto text-sm text-left text-gray-300">
                 <thead>
                     <tr class="bg-gray-800 text-gray-100">
@@ -105,7 +151,7 @@
             </div>
         </div>
 
-        <div class="overflow-auto bg-black/20 rounded-lg">
+        <div class="bg-black/20 rounded-lg">
             <table class="w-full table-auto text-sm text-left text-gray-300" id="recorded-table">
                 <thead>
                     <tr class="bg-gray-800 text-gray-100">
@@ -119,7 +165,7 @@
                     </tr>
                 </thead>
                 <tbody id="recorded-tbody">
-                    </tbody>
+                </tbody>
             </table>
         </div>
     </section>
@@ -127,121 +173,4 @@
 
 <footer class="text-center text-sm text-gray-500 py-6 border-t border-gray-700 bg-black/70">
     <div id="yt-subscribers" class="flex justify-center items-center gap-2 mt-4">
-        <a class="flex items-center gap-2 text-white hover:text-red-500 transition-colors" href="https://www.youtube.com/@rammfanCZE" target="_blank">
-            <i class="fab fa-youtube text-red-600 text-xl"></i>
-            <span id="subscriber-count">Loading subscribers…</span>
-        </a>
-    </div>
-    <div class="mt-4 text-gray-400">
-        © 2026 <span class="text-red-500 font-bold">rammfanCZE</span> — Created with love for live sound 🎤
-    </div>
-</footer>
-
-<script>
-// KONFIGURACE ODKAZŮ
-const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
-const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=314502273&single=true&output=tsv';
-
-// FUNKCE PRO FILTROVÁNÍ TABULKY
-function filterTable() {
-    const input = document.getElementById('recorded-search');
-    const filter = input.value.toLowerCase();
-    const tbody = document.getElementById('recorded-tbody');
-    const rows = tbody.getElementsByTagName('tr');
-
-    for (let i = 0; i < rows.length; i++) {
-        const text = rows[i].textContent.toLowerCase();
-        rows[i].style.display = text.includes(filter) ? "" : "none";
-    }
-}
-
-// NAČÍTÁNÍ YOUTUBE SUBS
-async function fetchSubscribers() {
-    const apiKey = 'AIzaSyDDXVwQNZmlOyHiZqQIUYgMZ-w0QgZIX5g';
-    const channelId = 'UCRnSUbTJ-cS-ORYCEF9PEsQ';
-    try {
-        const response = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`);
-        const data = await response.json();
-        const count = data.items[0].statistics.subscriberCount;
-        document.getElementById("subscriber-count").innerText = `${parseInt(count).toLocaleString()} subscribers`;
-    } catch (err) {
-        document.getElementById("subscriber-count").innerText = 'YouTube channel';
-    }
-}
-
-// NAČÍTÁNÍ TABULEK
-async function nactiTabulky() {
-    const stahni = async (url, targetId, isRecorded) => {
-        try {
-            const res = await fetch(url);
-            if (!res.ok) throw new Error("Chyba stahování");
-            const text = await res.text();
-            vykresli(text, targetId, isRecorded);
-        } catch (e) {
-            console.error(e);
-            document.getElementById(targetId).innerHTML = '<tr><td colspan="7" class="p-4 text-red-400 text-center">Data momentálně nejsou dostupná.</td></tr>';
-        }
-    };
-
-    stahni(URL_RECORDED, 'recorded-tbody', true);
-    stahni(URL_UPCOMING, 'upcoming-tbody', false);
-}
-
-function vykresli(data, targetId, jeToRecorded) {
-    const tbody = document.getElementById(targetId);
-    let radky = data.split('\n'); 
-    radky.shift(); 
-    radky.reverse(); 
-
-    tbody.innerHTML = ''; 
-
-    for (let i = 0; i < radky.length; i++) {
-        const radek = radky[i].trim();
-        if (!radek) continue;
-        const col = radek.split('\t'); 
-        const tr = document.createElement('tr');
-        tr.className = "border-b border-gray-800 hover:bg-gray-800/30 transition-colors";
-
-        if (jeToRecorded) {
-            const formatText = col[5] || '';
-            const audioUrl = col[6] ? col[6].trim() : '';
-            const imgUrl = col[7] ? col[7].trim() : '';
-
-                        tr.innerHTML = `
-                <td class="px-4 py-3">${col[0] || ''}</td>
-                <td class="px-4 py-3">${col[1] || ''}</td>
-                <td class="px-4 py-3">${col[2] || ''}</td>
-                <td class="px-4 py-3 text-center">
-                    ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600 text-lg hover:text-red-400"><i class="fab fa-youtube"></i></a>` : '<span class="text-gray-800 text-xs">❌</span>'}
-                </td>
-                <td class="px-4 py-3 text-center">${col[4] === 'Ano' ? '✅' : '❌'}</td>
-                
-                <td class="px-4 py-3 text-center">        
-                    ${imgUrl 
-                        ? `<a href="${imgUrl}" target="_blank" class="hover:text-white underline decoration-gray-600">${formatText}</a>` 
-                        : formatText}
-                </td>
-                <td class="px-2 py-1">
-                    ${audioUrl.includes('http') 
-                        ? `<audio controls class="h-8 w-48 opacity-80 hover:opacity-100 transition-opacity" src="${audioUrl}"></audio>` 
-                        : ''} 
-                </td>
-            `;
-        } else {
-            // Pro Upcoming (Artist, Date, Venue)
-            tr.innerHTML = `
-                <td class="px-4 py-3">${col[0] || ''}</td>
-                <td class="px-4 py-3">${col[1] || ''}</td>
-                <td class="px-4 py-3">${col[2] || ''}</td>
-            `;
-        }
-        tbody.appendChild(tr);
-    }
-}
-
-fetchSubscribers();
-nactiTabulky();
-</script>
-
-</body>
-</html>
+        <a class="flex items-center gap-2 text-white hover:text-red-500 transition-colors" href="https://www
