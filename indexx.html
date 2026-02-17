@@ -228,10 +228,11 @@ function vykresli(data, targetId, jeToRecorded) {
                 </td>
             `;
         } else {
+            // Pro Upcoming (Artist, Date, Venue)
             tr.innerHTML = `
-                <td class="px-4 py-3 font-semibold">${col[0] || ''}</td>
-                <td class="px-4 py-3 text-gray-400">${col[1] || ''}</td>
-                <td class="px-4 py-3 text-gray-400 text-xs uppercase font-medium">${col[2] || ''}</td>
+                <td class="px-4 py-3">${col[0] || ''}</td>
+                <td class="px-4 py-3">${col[1] || ''}</td>
+                <td class="px-4 py-3">${col[2] || ''}</td>
             `;
         }
         tbody.appendChild(tr);
