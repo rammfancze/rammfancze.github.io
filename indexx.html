@@ -6,172 +6,123 @@
     <title>rammfanCZE IEM archive</title>
     
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 
     <style>
         body { font-family: 'Inter', sans-serif; background: #111827; color: white; }
-        h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
-
-        /* Waveform Wrapper podle tvého obrázku */
+        
         .waveform-wrapper {
             display: flex;
             align-items: center;
             gap: 12px;
             background: rgba(255, 255, 255, 0.05);
-            padding: 6px 14px;
+            padding: 8px 16px;
             border-radius: 8px;
-            width: 300px; /* Fixní šířka pro desktop */
+            width: 450px; /* Dostatek místa pro vše v jedné řadě */
         }
+
         .waveform-container {
             flex-grow: 1;
-            height: 30px;
-            cursor: pointer;
+            height: 35px;
+            min-width: 150px;
         }
+
         .time-display {
             font-family: monospace;
             font-size: 0.75rem;
             color: #9ca3af;
-            min-width: 70px;
-            text-align: right;
-        }
-        .play-btn {
-            background: none;
-            border: none;
-            color: #ef4444;
-            cursor: pointer;
-            font-size: 1.1rem;
-            width: 20px;
-            display: flex;
-            justify-content: center;
+            white-space: nowrap;
         }
 
-        /* Responsivita */
-        @media (max-width: 768px) {
-            thead { display: none; }
-            tbody tr {
-                display: flex; flex-direction: column;
-                background: rgba(255, 255, 255, 0.03);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                border-radius: 0.75rem; margin-bottom: 1rem; padding: 1rem;
-            }
-            tbody td {
-                display: flex; justify-content: space-between; align-items: center;
-                padding: 0.6rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            }
-            tbody td::before {
-                content: attr(data-label); font-weight: 600; color: #9ca3af;
-                font-size: 0.75rem; text-transform: uppercase;
-            }
-            .waveform-wrapper { width: 100%; max-width: 220px; margin-left: auto; }
+        .volume-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .volume-slider {
+            width: 60px;
+            height: 4px;
+            accent-color: #ef4444;
+            cursor: pointer;
+        }
+
+        .play-btn, .mute-btn {
+            color: #ef4444;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            width: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .waveform-wrapper { width: 100%; max-width: 350px; }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen">
+<body>
 
-<header class="p-6 md:p-8 bg-black/70 backdrop-blur border-b border-gray-700">
-    <div class="max-w-6xl mx-auto">
-        <h1 class="text-3xl md:text-4xl font-bold text-red-500 tracking-wide">rammfanCZE</h1>
-        <p class="text-gray-400">live video recordings // IEM archive</p>
+<main class="max-w-7xl mx-auto p-4 md:p-12">
+    <h2 class="text-2xl font-bold mb-6 border-b border-gray-700 pb-2">📋 Recorded shows</h2>
+    <div class="overflow-x-auto bg-gray-900/50 rounded-lg">
+        <table class="w-full text-sm text-left text-gray-300">
+            <thead class="bg-gray-800 text-gray-100 uppercase text-xs">
+                <tr>
+                    <th class="px-4 py-3">Artist</th>
+                    <th class="px-4 py-3">Date</th>
+                    <th class="px-4 py-3 text-center">Format</th>
+                    <th class="px-4 py-3 text-right">Audio Sample</th>
+                </tr>
+            </thead>
+            <tbody id="recorded-tbody"></tbody>
+        </table>
     </div>
-</header>
-
-<main class="max-w-6xl mx-auto p-4 md:p-12">
-    <section class="mb-12">
-        <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2">📅 Upcoming shows</h2>
-        <div class="overflow-hidden bg-black/20 rounded-lg">
-            <table class="w-full text-sm text-left text-gray-300">
-                <thead>
-                    <tr class="bg-gray-800"><th class="px-4 py-3">Event</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Venue</th></tr>
-                </thead>
-                <tbody id="upcoming-tbody"></tbody>
-            </table>
-        </div>
-    </section>
-
-    <section class="mb-16">
-        <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2">📋 Recorded shows</h2>
-        <div class="overflow-visible md:overflow-auto bg-black/20 md:rounded-lg">
-            <table class="w-full text-sm text-left text-gray-300">
-                <thead>
-                    <tr class="bg-gray-800">
-                        <th class="px-4 py-3">Artist</th>
-                        <th class="px-4 py-3">Date</th>
-                        <th class="px-4 py-3">Venue</th>
-                        <th class="px-4 py-3 text-center">YT</th>
-                        <th class="px-4 py-3 text-center">IEM</th>
-                        <th class="px-4 py-3 text-center">Format</th>
-                        <th class="px-4 py-3 text-center" style="width: 320px;">Audio Sample</th>
-                    </tr>
-                </thead>
-                <tbody id="recorded-tbody"></tbody>
-            </table>
-        </div>
-    </section>
 </main>
-
-<footer class="text-center text-sm text-gray-500 py-6 border-t border-gray-700 bg-black/70">
-    <a class="flex justify-center items-center gap-2 text-white hover:text-red-500 transition-colors" href="https://www.youtube.com/@rammfanCZE" target="_blank">
-        <i class="fab fa-youtube text-red-600 text-xl"></i>
-        <span id="subscriber-count">YouTube Channel</span>
-    </a>
-</footer>
 
 <script src="https://unpkg.com/wavesurfer.js@7"></script>
 
 <script>
 const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
-const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=314502273&single=true&output=tsv';
+
+// Falešná data pro vlnovku, aby tam byla hned
+const fakePeaks = [0.1, 0.4, 0.2, 0.5, 0.8, 0.6, 0.3, 0.5, 0.9, 0.7, 0.4, 0.6, 0.8, 0.3, 0.5, 0.2, 0.4, 0.7, 0.5, 0.3, 0.6, 0.9, 0.4, 0.2, 0.5, 0.8, 0.6, 0.3];
 
 function formatTime(s) {
-    const mins = Math.floor(s / 60);
+    const m = Math.floor(s / 60);
     const secs = Math.floor(s % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${m}:${secs.toString().padStart(2, '0')}`;
 }
 
 async function nactiData() {
-    // Načtení Upcoming
-    fetch(URL_UPCOMING).then(r => r.text()).then(t => {
-        const tbody = document.getElementById('upcoming-tbody');
-        let lines = t.split('\n'); lines.shift();
-        tbody.innerHTML = lines.map(l => {
-            const c = l.trim().split('\t');
-            if(!c[0]) return '';
-            return `<tr class="md:border-b md:border-gray-800"><td class="px-4 py-3" data-label="Event">${c[0]}</td><td class="px-4 py-3" data-label="Date">${c[1]}</td><td class="px-4 py-3" data-label="Venue">${c[2]}</td></tr>`;
-        }).join('');
-    });
+    const res = await fetch(URL_RECORDED);
+    const text = await res.text();
+    const radky = text.split('\n');
+    radky.shift();
+    radky.reverse();
 
-    // Načtení Recorded
-    fetch(URL_RECORDED).then(r => r.text()).then(t => vykresliRecorded(t));
-}
-
-function vykresliRecorded(data) {
     const tbody = document.getElementById('recorded-tbody');
-    let radky = data.split('\n'); radky.shift(); radky.reverse();
-    tbody.innerHTML = '';
-
-    radky.forEach((radek, index) => {
+    radky.forEach((radek, i) => {
         const col = radek.trim().split('\t');
         if (!col[0]) return;
-        const audioUrl = col[6]?.trim() || '';
-        const tr = document.createElement('tr');
-        tr.className = "md:border-b md:border-gray-800 md:hover:bg-gray-800/30";
+        const audioUrl = col[6]?.trim();
 
+        const tr = document.createElement('tr');
+        tr.className = "border-b border-gray-800 hover:bg-gray-800/40 transition-colors";
         tr.innerHTML = `
-            <td class="px-4 py-3" data-label="Artist">${col[0]}</td>
-            <td class="px-4 py-3" data-label="Date">${col[1]}</td>
-            <td class="px-4 py-3" data-label="Venue">${col[2]}</td>
-            <td class="px-4 py-3 text-right md:text-center" data-label="YT">
-                ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600"><i class="fab fa-youtube"></i></a>` : '❌'}
-            </td>
-            <td class="px-4 py-3 text-right md:text-center" data-label="IEM">${col[4] === 'Ano' ? '✅' : '❌'}</td>
-            <td class="px-4 py-3 text-right md:text-center" data-label="Format">${col[5] || ''}</td>
-            <td class="px-4 py-3" data-label="Audio">
+            <td class="px-4 py-4 font-semibold">${col[0]}</td>
+            <td class="px-4 py-4">${col[1]}</td>
+            <td class="px-4 py-4 text-center">${col[5] || ''}</td>
+            <td class="px-4 py-4">
                 ${audioUrl ? `
                 <div class="waveform-wrapper ml-auto">
-                    <button class="play-btn" id="btn-${index}"><i class="fas fa-play"></i></button>
-                    <div id="wave-${index}" class="waveform-container"></div>
-                    <div class="time-display" id="time-${index}">0:00 / 0:00</div>
+                    <button class="play-btn" id="play-${i}"><i class="fas fa-play"></i></button>
+                    <div id="wave-${i}" class="waveform-container"></div>
+                    <div class="time-display" id="time-${i}">0:00 / 0:00</div>
+                    <div class="volume-controls">
+                        <button class="mute-btn" id="mute-${i}"><i class="fas fa-volume-up"></i></button>
+                        <input type="range" class="volume-slider" id="vol-${i}" min="0" max="1" step="0.05" value="0.7">
+                    </div>
                 </div>` : ''}
             </td>
         `;
@@ -179,26 +130,43 @@ function vykresliRecorded(data) {
 
         if (audioUrl) {
             const ws = WaveSurfer.create({
-                container: `#wave-${index}`,
+                container: `#wave-${i}`,
                 waveColor: '#4b5563',
                 progressColor: '#ef4444',
                 barWidth: 2,
                 barGap: 3,
                 barRadius: 4,
-                height: 30,
+                height: 35,
                 url: audioUrl,
-                mediaElement: true, // Zajišťuje funkčnost GitHub odkazů
-                peaks: [[0, 0.3, 0.5, 0.8, 0.6, 0.4, 0.7, 0.9, 0.5, 0.2, 0.4, 0.6, 0.8, 0.5, 0.3]] // Statické bary
+                mediaElement: true,
+                peaks: [fakePeaks] 
             });
 
-            const btn = document.getElementById(`btn-${index}`);
-            const time = document.getElementById(`time-${index}`);
+            const playBtn = document.getElementById(`play-${i}`);
+            const muteBtn = document.getElementById(`mute-${i}`);
+            const volSlider = document.getElementById(`vol-${i}`);
+            const timeInfo = document.getElementById(`time-${i}`);
 
-            btn.onclick = () => ws.playPause();
-            ws.on('play', () => btn.innerHTML = '<i class="fas fa-pause"></i>');
-            ws.on('pause', () => btn.innerHTML = '<i class="fas fa-play"></i>');
-            ws.on('decode', (d) => time.innerText = `0:00 / ${formatTime(d)}`);
-            ws.on('timeupdate', (c) => time.innerText = `${formatTime(c)} / ${formatTime(ws.getDuration())}`);
+            playBtn.onclick = () => ws.playPause();
+            ws.on('play', () => playBtn.innerHTML = '<i class="fas fa-pause"></i>');
+            ws.on('pause', () => playBtn.innerHTML = '<i class="fas fa-play"></i>');
+
+            volSlider.oninput = (e) => ws.setVolume(e.target.value);
+            muteBtn.onclick = () => {
+                const current = ws.getVolume();
+                if (current > 0) {
+                    ws.setVolume(0);
+                    volSlider.value = 0;
+                    muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                } else {
+                    ws.setVolume(0.7);
+                    volSlider.value = 0.7;
+                    muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                }
+            };
+
+            ws.on('decode', (d) => timeInfo.innerText = `0:00 / ${formatTime(d)}`);
+            ws.on('timeupdate', (t) => timeInfo.innerText = `${formatTime(t)} / ${formatTime(ws.getDuration())}`);
         }
     });
 }
