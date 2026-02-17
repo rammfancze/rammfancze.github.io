@@ -15,35 +15,76 @@
         body { font-family: 'Inter', sans-serif; background-color: #0b0f1a; color: white; }
         h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
-        .search-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 8px 12px 8px 35px; color: white; outline: none; }
-        .format-btn { color: #ef4444; text-decoration: underline; cursor: pointer; font-weight: 600; }
-        .format-btn:hover { color: #f87171; }
+        /* Styl pro vyhledávání */
+        .search-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 8px 12px 8px 35px; color: white; outline: none; transition: all 0.2s; }
+        .search-input:focus { border-color: #ef4444; }
 
-        .spec-drawer { display: none; background: #000; border-radius: 8px; padding: 15px; margin: 10px 0; border: 1px solid #1e293b; }
-        
-        /* Styl pro mobilní zobrazení */
+        /* Styl pro proklik na formát */
+        .format-clickable { color: #ef4444; cursor: pointer; text-decoration: underline; font-weight: 600; }
+
+        /* --- MODAL (LIGHTBOX) STYL --- */
+        #spec-modal { 
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            z-index: 9999; 
+            background: rgba(0,0,0,0.9); 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px;
+        }
+        .modal-content { 
+            background: #000; 
+            width: 100%; 
+            max-width: 900px; 
+            border: 1px solid #333; 
+            border-radius: 12px; 
+            position: relative; 
+            padding: 30px 20px 20px 20px;
+        }
+        .close-modal { 
+            position: absolute; 
+            top: 10px; 
+            right: 15px; 
+            color: #fff; 
+            font-size: 24px; 
+            cursor: pointer; 
+            z-index: 10001;
+        }
+
+        /* Responzivita tabulky */
         @media (max-width: 768px) {
             thead { display: none; }
             tbody tr { display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.75rem; margin-bottom: 1rem; padding: 1rem; }
-            tbody td { display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+            tbody td { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
             tbody td::before { content: attr(data-label); font-weight: 600; color: #9ca3af; font-size: 0.75rem; text-transform: uppercase; }
         }
     </style>
 </head>
 
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen">
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen">
+
+<div id="spec-modal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <h3 id="modal-title" class="text-red-500 mb-4 text-sm font-bold uppercase tracking-widest">Spectrogram Analysis</h3>
+        <div id="loader-box" class="text-xs text-gray-500 mb-2 font-mono">⏳ ANALYZING AUDIO...</div>
+        <div id="spectrogram-view"></div>
+        <div id="wave-hidden" style="display:none"></div>
+    </div>
+</div>
 
 <header class="p-6 md:p-8 bg-black/70 backdrop-blur border-b border-gray-700 shadow-xl">
     <div class="max-w-6xl mx-auto">
         <h1 class="text-3xl md:text-4xl font-bold text-red-500 tracking-wide">rammfanCZE</h1>
-        <p class="text-gray-400">IEM archive & Spectrograms</p>
+        <p class="text-gray-400">live video recordings // IEM archive</p>
     </div>
 </header>
 
-<main class="max-w-7xl mx-auto p-4 md:p-12">
+<main class="max-w-6xl mx-auto p-4 md:p-12">
     <section class="mb-12">
-        <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2 text-gray-100">📅 Upcoming shows</h2>
-        <div class="overflow-x-auto bg-black/20 rounded-lg">
+        <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2">📅 Upcoming shows</h2>
+        <div class="bg-black/20 rounded-lg overflow-hidden">
             <table class="w-full text-sm text-left text-gray-300">
                 <thead><tr class="bg-gray-800 text-gray-100"><th class="px-4 py-3">Artist</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Venue</th></tr></thead>
                 <tbody id="upcoming-tbody"></tbody>
@@ -53,20 +94,20 @@
     
     <section class="mb-16">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 border-b border-gray-600 pb-2">
-            <h2 class="text-2xl md:text-3xl font-semibold text-white font-bold tracking-tight">📋 Recorded shows</h2>
+            <h2 class="text-2xl font-semibold">📋 Recorded shows</h2>
             <div class="relative w-full max-w-xs">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-500"></i>
-                <input type="text" id="recorded-search" class="search-input" placeholder="Search artist..." onkeyup="filterTable()">
+                <input type="text" id="recorded-search" class="search-input" placeholder="Search..." onkeyup="filterTable()">
             </div>
         </div>
 
-        <div class="overflow-x-auto bg-black/20 rounded-lg">
+        <div class="bg-black/20 rounded-lg overflow-hidden">
             <table class="w-full text-sm text-left text-gray-300">
                 <thead>
-                    <tr class="bg-gray-800 text-gray-100 uppercase text-xs">
-                        <th class="px-4 py-4">Artist</th><th class="px-4 py-4 text-center">Date</th><th class="px-4 py-4">Venue</th>
-                        <th class="px-4 py-4 text-center">YT</th><th class="px-4 py-4 text-center">IEM</th>
-                        <th class="px-4 py-4 text-center">Format</th><th class="px-4 py-4 text-right">Audio Sample</th>
+                    <tr class="bg-gray-800 text-gray-100">
+                        <th class="px-4 py-3">Artist</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Venue</th>
+                        <th class="px-4 py-3 text-center">YT</th><th class="px-4 py-3 text-center">IEM</th>
+                        <th class="px-4 py-3 text-center">Format</th><th class="px-4 py-3 text-right">Audio Sample</th>
                     </tr>
                 </thead>
                 <tbody id="recorded-tbody"></tbody>
@@ -76,10 +117,10 @@
 </main>
 
 <footer class="text-center text-sm text-gray-500 py-10 border-t border-gray-700 bg-black/70">
-    <div class="flex justify-center items-center gap-2 mb-2">
-        <a class="flex items-center gap-2 text-white hover:text-red-500 transition-colors" href="https://www.youtube.com/@rammfanCZE" target="_blank">
+    <div class="flex justify-center items-center gap-2 mb-4">
+        <a class="flex items-center gap-2 text-white hover:text-red-500" href="https://www.youtube.com/@rammfanCZE" target="_blank">
             <i class="fab fa-youtube text-red-600 text-xl"></i>
-            <span id="subscriber-count">YouTube Channel</span>
+            <span id="subscriber-count">Loading subscribers…</span>
         </a>
     </div>
     <p>© 2026 rammfanCZE — Professional IEM Archive</p>
@@ -93,7 +134,7 @@
 const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
 const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=314502273&single=true&output=tsv';
 
-let specInstances = {};
+let currentWs = null;
 
 async function fetchSubscribers() {
     const apiKey = 'AIzaSyDDXVwQNZmlOyHiZqQIUYgMZ-w0QgZIX5g';
@@ -108,12 +149,8 @@ async function fetchSubscribers() {
 
 function filterTable() {
     const filter = document.getElementById('recorded-search').value.toLowerCase();
-    const rows = document.querySelectorAll('#recorded-tbody tr:not(.spec-row)');
-    rows.forEach(row => {
-        row.style.display = row.textContent.toLowerCase().includes(filter) ? "" : "none";
-        const next = row.nextElementSibling;
-        if (next && next.classList.contains('spec-row')) next.classList.add('hidden');
-    });
+    const rows = document.querySelectorAll('#recorded-tbody tr');
+    rows.forEach(row => row.style.display = row.textContent.toLowerCase().includes(filter) ? "" : "none");
 }
 
 async function loadData() {
@@ -134,7 +171,7 @@ async function loadData() {
     });
 
     const recTbody = document.getElementById('recorded-tbody');
-    recorded.forEach((line, i) => {
+    recorded.forEach((line) => {
         const col = line.trim().split('\t');
         if (!col[0]) return;
         const audioUrl = col[6]?.trim() || '';
@@ -142,70 +179,49 @@ async function loadData() {
         const tr = document.createElement('tr');
         tr.className = "border-b border-gray-800 hover:bg-gray-800/30 transition-colors";
         tr.innerHTML = `
-            <td class="px-4 py-5 font-semibold text-white" data-label="Artist">${col[0]}</td>
-            <td class="px-4 py-5 text-gray-400 text-center" data-label="Date">${col[1]}</td>
-            <td class="px-4 py-5" data-label="Venue">${col[2]}</td>
-            <td class="px-4 py-5 text-center" data-label="YT">${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600 hover:text-red-400"><i class="fab fa-youtube text-lg"></i></a>` : '❌'}</td>
-            <td class="px-4 py-5 text-center" data-label="IEM">${col[4] === 'Ano' ? '✅' : '❌'}</td>
-            <td class="px-4 py-5 text-center" data-label="Format"><span class="format-btn" onclick="toggleSpec(${i}, '${audioUrl}')">${col[5] || 'WAV'}</span></td>
-            <td class="px-4 py-5" data-label="Audio"><div style="width: 280px; margin-left: auto;"><audio class="js-player" controls src="${audioUrl}"></audio></div></td>
+            <td class="px-4 py-4 font-semibold text-white" data-label="Artist">${col[0]}</td>
+            <td class="px-4 py-4 text-gray-400" data-label="Date">${col[1]}</td>
+            <td class="px-4 py-4" data-label="Venue">${col[2]}</td>
+            <td class="px-4 py-4 text-center" data-label="YT">${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600"><i class="fab fa-youtube text-lg"></i></a>` : '❌'}</td>
+            <td class="px-4 py-4 text-center" data-label="IEM">${col[4] === 'Ano' ? '✅' : '❌'}</td>
+            <td class="px-4 py-4 text-center" data-label="Format"><span class="format-clickable" onclick="openSpec('${col[0]}', '${audioUrl}')">${col[5] || 'WAV'}</span></td>
+            <td class="px-4 py-4" data-label="Audio"><div style="width: 250px; margin-left: auto;"><audio class="js-player" controls src="${audioUrl}"></audio></div></td>
         `;
         recTbody.appendChild(tr);
-
-        const specRow = document.createElement('tr');
-        specRow.className = "spec-row hidden";
-        specRow.id = `spec-row-${i}`;
-        specRow.innerHTML = `
-            <td colspan="7" class="px-4 py-0">
-                <div id="spec-container-${i}" class="spec-drawer">
-                    <div id="loader-${i}" class="text-xs text-gray-500 mb-2 font-mono">⏳ ANALYZING AUDIO FREQUENCIES...</div>
-                    <div id="spec-view-${i}"></div>
-                    <div id="wave-hidden-${i}" style="display:none"></div>
-                </div>
-            </td>`;
-        recTbody.appendChild(specRow);
     });
 
-    Plyr.setup('.js-player', { controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'settings'] });
+    Plyr.setup('.js-player', { controls: ['play', 'progress', 'current-time', 'mute', 'volume'] });
 }
 
-function toggleSpec(id, url) {
-    const row = document.getElementById(`spec-row-${id}`);
-    const container = document.getElementById(`spec-container-${id}`);
-    if (row.classList.contains('hidden')) {
-        row.classList.remove('hidden');
-        container.style.display = 'block';
-        if (!specInstances[id]) initWavesurfer(id, url);
-    } else {
-        row.classList.add('hidden');
-    }
-}
+function openSpec(artist, url) {
+    const modal = document.getElementById('spec-modal');
+    const loader = document.getElementById('loader-box');
+    const view = document.getElementById('spectrogram-view');
+    
+    modal.style.display = 'flex';
+    document.getElementById('modal-title').innerText = artist + " - Analysis";
+    view.innerHTML = '';
+    loader.style.display = 'block';
 
-function initWavesurfer(id, url) {
-    const ws = WaveSurfer.create({
-        container: `#wave-hidden-${id}`,
+    if (currentWs) currentWs.destroy();
+
+    currentWs = WaveSurfer.create({
+        container: '#wave-hidden',
         url: url,
-        backend: 'WebAudio', // Pro analýzu spektra nutné
         plugins: [WaveSurfer.Spectrogram.create({
-            container: `#spec-view-${id}`,
+            container: '#spectrogram-view',
             labels: true,
-            height: 200,
-            splitChannels: false,
-            // Barvy podle tvého obrázku (černá -> fialová -> modrá -> zelená -> žlutá -> červená)
-            colorMap: [
-                [0, 0, 0, 1],
-                [0.1, 0.2, 0, 0.4],
-                [0.2, 0.4, 0, 0.8],
-                [0.4, 0, 0.7, 1],
-                [0.6, 0, 1, 0],
-                [0.8, 1, 1, 0],
-                [1, 1, 0, 0]
-            ]
+            height: 250,
+            colorMap: [[0,0,0,1], [0.1,0,0,1], [0.3,0,1,1], [0.5,0,1,0], [0.7,1,1,0], [1,1,0,0]]
         })]
     });
-    ws.on('ready', () => document.getElementById(`loader-${id}`).style.display = 'none');
-    ws.on('error', () => { document.getElementById(`loader-${id}`).innerText = "❌ Analysis failed. Check direct link."; });
-    specInstances[id] = ws;
+
+    currentWs.on('ready', () => loader.style.display = 'none');
+}
+
+function closeModal() {
+    document.getElementById('spec-modal').style.display = 'none';
+    if (currentWs) currentWs.destroy();
 }
 
 fetchSubscribers();
