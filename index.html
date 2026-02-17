@@ -64,12 +64,10 @@
 
         /* --- RESPONZIVNÍ TABULKA (Table to Cards) --- */
         @media (max-width: 768px) {
-            /* Skryjeme hlavičku tabulky na mobilu */
             thead {
                 display: none;
             }
 
-            /* Řádek tabulky se změní na blok (kartu) */
             tbody tr {
                 display: flex;
                 flex-direction: column;
@@ -80,12 +78,11 @@
                 padding: 1rem;
             }
 
-            /* Buňky se změní na flex položky */
             tbody td {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: 0.5rem 0;
+                padding: 0.6rem 0;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             }
 
@@ -93,21 +90,22 @@
                 border-bottom: none;
             }
 
-            /* Využití data-label atributu pro název sloupce vlevo */
             tbody td::before {
                 content: attr(data-label);
                 font-weight: 600;
                 color: #9ca3af;
-                font-size: 0.85rem;
+                font-size: 0.75rem;
                 margin-right: 1rem;
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
+                flex-shrink: 0;
             }
 
-            /* Speciální úprava pro audio na mobilu */
+            /* Audio fix na mobilu */
             audio {
                 width: 100% !important;
-                max-width: 200px;
+                max-width: 280px;
+                height: 30px;
             }
         }
     </style>
@@ -136,9 +134,9 @@
                 </thead>
                 <tbody id="upcoming-tbody">
                     <tr class="animate-skeleton">
-                        <td class="px-4 py-3" data-label="Loading"><div class="skeleton-bar"></div></td>
-                        <td class="px-4 py-3" data-label=""><div class="skeleton-bar"></div></td>
-                        <td class="px-4 py-3" data-label=""><div class="skeleton-bar"></div></td>
+                        <td class="px-4 py-3" data-label="Artist"><div class="skeleton-bar"></div></td>
+                        <td class="px-4 py-3" data-label="Date"><div class="skeleton-bar"></div></td>
+                        <td class="px-4 py-3" data-label="Venue"><div class="skeleton-bar"></div></td>
                     </tr>
                 </tbody>
             </table>
@@ -165,11 +163,11 @@
                         <th class="px-4 py-3 text-center">YT</th>
                         <th class="px-4 py-3 text-center">IEM</th>
                         <th class="px-4 py-3 text-center">Format</th>
-                        <th class="px-4 py-3 text-center">Audio Sample</th>
+                        <th class="px-4 py-3 text-center" style="width: 260px;">Audio Sample</th>
                     </tr>
                 </thead>
                 <tbody id="recorded-tbody">
-                    </tbody>
+                </tbody>
             </table>
         </div>
     </section>
@@ -188,24 +186,20 @@
 </footer>
 
 <script>
-// KONFIGURACE ODKAZŮ
 const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
 const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=314502273&single=true&output=tsv';
 
-// FUNKCE PRO FILTROVÁNÍ TABULKY
 function filterTable() {
     const input = document.getElementById('recorded-search');
     const filter = input.value.toLowerCase();
     const tbody = document.getElementById('recorded-tbody');
     const rows = tbody.getElementsByTagName('tr');
-
     for (let i = 0; i < rows.length; i++) {
         const text = rows[i].textContent.toLowerCase();
-        rows[i].style.display = text.includes(filter) ? "" : "none"; // Na mobilu je TR flex/block, na PC table-row (CSS to pořeší samo při display: "")
+        rows[i].style.display = text.includes(filter) ? "" : "none";
     }
 }
 
-// NAČÍTÁNÍ YOUTUBE SUBS
 async function fetchSubscribers() {
     const apiKey = 'AIzaSyDDXVwQNZmlOyHiZqQIUYgMZ-w0QgZIX5g';
     const channelId = 'UCRnSUbTJ-cS-ORYCEF9PEsQ';
@@ -219,7 +213,6 @@ async function fetchSubscribers() {
     }
 }
 
-// NAČÍTÁNÍ TABULEK
 async function nactiTabulky() {
     const stahni = async (url, targetId, isRecorded) => {
         try {
@@ -232,7 +225,6 @@ async function nactiTabulky() {
             document.getElementById(targetId).innerHTML = '<tr><td colspan="7" class="p-4 text-red-400 text-center">Data momentálně nejsou dostupná.</td></tr>';
         }
     };
-
     stahni(URL_RECORDED, 'recorded-tbody', true);
     stahni(URL_UPCOMING, 'upcoming-tbody', false);
 }
@@ -242,7 +234,6 @@ function vykresli(data, targetId, jeToRecorded) {
     let radky = data.split('\n'); 
     radky.shift(); 
     radky.reverse(); 
-
     tbody.innerHTML = ''; 
 
     for (let i = 0; i < radky.length; i++) {
@@ -250,7 +241,6 @@ function vykresli(data, targetId, jeToRecorded) {
         if (!radek) continue;
         const col = radek.split('\t'); 
         const tr = document.createElement('tr');
-        // Přidána třída pro hover efekt jen na desktopu, na mobilu je to karta
         tr.className = "md:border-b md:border-gray-800 md:hover:bg-gray-800/30 transition-colors";
 
         if (jeToRecorded) {
@@ -258,7 +248,6 @@ function vykresli(data, targetId, jeToRecorded) {
             const audioUrl = col[6] ? col[6].trim() : '';
             const imgUrl = col[7] ? col[7].trim() : '';
 
-            // Přidány data-label atributy pro mobilní zobrazení
             tr.innerHTML = `
                 <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist">${col[0] || ''}</td>
                 <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
@@ -267,22 +256,16 @@ function vykresli(data, targetId, jeToRecorded) {
                     ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600 text-lg hover:text-red-400"><i class="fab fa-youtube"></i></a>` : '<span class="text-gray-600 text-xs">❌</span>'}
                 </td>
                 <td class="px-4 py-3 text-right md:text-center" data-label="IEM">${col[4] === 'Ano' ? '✅' : '❌'}</td>
-                
                 <td class="px-4 py-3 text-right md:text-center" data-label="Format">        
-                    ${imgUrl 
-                        ? `<a href="${imgUrl}" target="_blank" class="hover:text-white underline decoration-gray-600">${formatText}</a>` 
-                        : formatText}
+                    ${imgUrl ? `<a href="${imgUrl}" target="_blank" class="hover:text-white underline decoration-gray-600">${formatText}</a>` : formatText}
                 </td>
-                <td class="px-2 py-1 flex justify-end md:table-cell" data-label="Audio">
-                    ${audioUrl.includes('http') 
-                        ? `<audio controls class="h-8 w-48 opacity-80 hover:opacity-100 transition-opacity" src="${audioUrl}"></audio>` 
-                        : ''} 
+                <td class="px-4 py-3 md:table-cell" data-label="Audio">
+                    ${audioUrl.includes('http') ? `<audio controls class="h-8 w-62 opacity-80 hover:opacity-100 transition-opacity" src="${audioUrl}"></audio>` : ''} 
                 </td>
             `;
         } else {
-            // Pro Upcoming (Artist, Date, Venue)
             tr.innerHTML = `
-                <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist / Event">${col[0] || ''}</td>
+                <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist">${col[0] || ''}</td>
                 <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
                 <td class="px-4 py-3" data-label="Venue">${col[2] || ''}</td>
             `;
