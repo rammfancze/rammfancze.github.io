@@ -163,7 +163,7 @@
                         <th class="px-4 py-3 text-center">YT</th>
                         <th class="px-4 py-3 text-center">IEM</th>
                         <th class="px-4 py-3 text-center">Format</th>
-                        <th class="px-4 py-3 text-center">Audio Sample</th>
+                        <th class="px-4 py-3 text-center" style="width: 260px;">Audio Sample</th>
                     </tr>
                 </thead>
                 <tbody id="recorded-tbody">
@@ -260,7 +260,7 @@ function vykresli(data, targetId, jeToRecorded) {
                     ${imgUrl ? `<a href="${imgUrl}" target="_blank" class="hover:text-white underline decoration-gray-600">${formatText}</a>` : formatText}
                 </td>
                 <td class="px-4 py-3 md:table-cell" data-label="Audio">
-                    ${audioUrl.includes('http') ? `<audio controls class="h-8 w-64 opacity-80 hover:opacity-100 transition-opacity" src="${audioUrl}"></audio>` : ''} 
+                    ${audioUrl.includes('http') ? `<audio controls class="h-8 w-48 opacity-80 hover:opacity-100 transition-opacity" src="${audioUrl}"></audio>` : ''} 
                 </td>
             `;
         } else {
