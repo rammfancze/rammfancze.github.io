@@ -23,38 +23,30 @@
             position: fixed; 
             inset: 0; 
             z-index: 9999; 
-            background: rgba(0,0,0,0.95); 
+            background: rgba(0,0,0,0.9); 
             align-items: center; 
             justify-content: center; 
         }
         .modal-inner {
-            width: 90%;
-            max-width: 1200px;
+            width: 95%;
+            max-width: 1000px;
             background: #000;
             border: 1px solid #333;
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 25px;
             position: relative;
-            box-shadow: 0 0 50px rgba(0,0,0,1);
         }
         .close-btn {
             position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 30px;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
             cursor: pointer;
-            color: #666;
-            transition: color 0.2s;
+            color: #888;
         }
         .close-btn:hover { color: #fff; }
 
-        #spectrogram-canvas {
-            width: 100%;
-            background: #000;
-            min-height: 400px;
-        }
-
-        /* Responzivita tabulky */
+        /* Responzivita tabulky (zachování tvého originálu) */
         @media (max-width: 768px) {
             thead { display: none; }
             tbody tr { display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.75rem; margin-bottom: 1rem; padding: 1rem; }
@@ -64,18 +56,19 @@
     </style>
 </head>
 
-<body>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen">
 
 <div id="spec-modal" onclick="closeModal()">
     <div class="modal-inner" onclick="event.stopPropagation()">
         <span class="close-btn" onclick="closeModal()">&times;</span>
-        <h3 id="modal-title" class="text-red-500 mb-6 text-xl font-bold uppercase tracking-tighter"></h3>
+        <h3 id="modal-title" class="text-red-500 mb-4 text-lg font-bold uppercase"></h3>
         
-        <div id="loader-status" class="flex items-center gap-3 text-sm text-gray-400 font-mono mb-4">
-            <span class="animate-pulse">⌛ ANALYZING FREQUENCIES...</span>
+        <div id="loader-status" class="text-sm text-gray-500 font-mono mb-4 animate-pulse">
+            ⌛ ANALYZING FREQUENCIES...
         </div>
 
-        <div id="spectrogram-canvas"></div>
+        <div id="spectrogram-container" style="background: #000; border-radius: 4px; overflow: hidden;"></div>
+        
         <div id="waveform-hidden" style="display:none"></div>
     </div>
 </div>
@@ -83,25 +76,25 @@
 <header class="p-6 md:p-8 bg-black/70 border-b border-gray-700">
     <div class="max-w-6xl mx-auto">
         <h1 class="text-3xl font-bold text-red-500">rammfanCZE</h1>
-        <p class="text-gray-400 italic">IEM archive & Spectrograms</p>
+        <p class="text-gray-400">IEM archive // Audio Analysis</p>
     </div>
 </header>
 
-<main class="max-w-7xl mx-auto p-4 md:p-12">
+<main class="max-w-6xl mx-auto p-4 md:p-12">
     <section class="mb-16">
-        <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-2">
-            <h2 class="text-2xl font-bold uppercase tracking-widest">Recorded shows</h2>
-            <input type="text" id="recorded-search" class="bg-gray-900 border border-gray-700 rounded px-4 py-2 text-sm focus:border-red-500 outline-none" placeholder="Search artist..." onkeyup="filterTable()">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold">📋 Recorded shows</h2>
+            <input type="text" id="recorded-search" class="bg-gray-800 border border-gray-700 rounded px-3 py-1 text-sm" placeholder="Search..." onkeyup="filterTable()">
         </div>
 
-        <div class="overflow-x-auto bg-black/40 rounded-xl">
-            <table class="w-full text-left text-sm">
-                <thead>
-                    <tr class="bg-gray-800/50 text-gray-400 uppercase text-xs">
-                        <th class="px-6 py-4">Artist</th>
-                        <th class="px-6 py-4">Date</th>
-                        <th class="px-6 py-4 text-center">Format</th>
-                        <th class="px-6 py-4 text-right">Player</th>
+        <div class="bg-black/20 rounded-lg overflow-hidden">
+            <table class="w-full text-sm text-left text-gray-300">
+                <thead class="bg-gray-800 text-gray-100">
+                    <tr>
+                        <th class="px-4 py-3">Artist</th>
+                        <th class="px-4 py-3">Date</th>
+                        <th class="px-4 py-3 text-center">Format</th>
+                        <th class="px-4 py-3 text-right">Preview</th>
                     </tr>
                 </thead>
                 <tbody id="recorded-tbody"></tbody>
@@ -120,66 +113,66 @@ const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvH
 let activeWs = null;
 
 async function loadData() {
-    const res = await fetch(URL_RECORDED);
-    const text = await res.text();
-    const rows = text.split('\n').slice(1).reverse();
-    const tbody = document.getElementById('recorded-tbody');
+    try {
+        const res = await fetch(URL_RECORDED);
+        const text = await res.text();
+        const rows = text.split('\n').slice(1).reverse();
+        const tbody = document.getElementById('recorded-tbody');
 
-    rows.forEach((line, i) => {
-        const col = line.split('\t');
-        if (!col[0]) return;
-        const audioUrl = col[6]?.trim();
+        rows.forEach((line, i) => {
+            const col = line.split('\t');
+            if (!col[0]) return;
+            const audioUrl = col[6]?.trim() || '';
 
-        const tr = document.createElement('tr');
-        tr.className = "border-b border-gray-800/50 hover:bg-gray-800/20 transition-all";
-        tr.innerHTML = `
-            <td class="px-6 py-5 font-semibold text-white" data-label="Artist">${col[0]}</td>
-            <td class="px-6 py-5 text-gray-400" data-label="Date">${col[1]}</td>
-            <td class="px-6 py-5 text-center" data-label="Format">
-                <span class="format-clickable" onclick="openSpectrogram('${col[0]}', '${audioUrl}')">${col[5] || 'WAV'}</span>
-            </td>
-            <td class="px-6 py-5" data-label="Audio">
-                <div style="width:250px; margin-left:auto;">
-                    <audio class="js-player" controls src="${audioUrl}"></audio>
-                </div>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
-    Plyr.setup('.js-player');
+            const tr = document.createElement('tr');
+            tr.className = "border-b border-gray-800 hover:bg-gray-800/30 transition-colors";
+            tr.innerHTML = `
+                <td class="px-4 py-4 font-semibold" data-label="Artist">${col[0]}</td>
+                <td class="px-4 py-4 text-gray-400" data-label="Date">${col[1]}</td>
+                <td class="px-4 py-4 text-center" data-label="Format">
+                    <span class="format-clickable" onclick="openSpec('${col[0]}', '${audioUrl}')">${col[5] || 'WAV'}</span>
+                </td>
+                <td class="px-4 py-4" data-label="Audio">
+                    <div style="width:220px; margin-left:auto;">
+                        <audio class="js-player" controls src="${audioUrl}" crossorigin="anonymous"></audio>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+        Plyr.setup('.js-player');
+    } catch (e) { console.error(e); }
 }
 
-function openSpectrogram(artist, url) {
-    if (!url || url === "") {
-        alert("Odkaz na audio chybí.");
-        return;
-    }
-
+function openSpec(artist, url) {
+    if (!url) return;
+    
     const modal = document.getElementById('spec-modal');
     modal.style.display = 'flex';
-    document.getElementById('modal-title').innerText = artist;
-    document.getElementById('loader-status').style.display = 'flex';
-    document.getElementById('spectrogram-canvas').innerHTML = '';
+    document.getElementById('modal-title').innerText = artist + " - Analysis";
+    document.getElementById('loader-status').style.display = 'block';
+    document.getElementById('spectrogram-container').innerHTML = '';
 
     if (activeWs) activeWs.destroy();
 
-    // DŮLEŽITÉ: Přidání crossorigin, aby se předešlo zaseknutí na "Analyzing"
+    // Vytvoření WaveSurferu s opravou pro CORS
     activeWs = WaveSurfer.create({
         container: '#waveform-hidden',
         url: url,
-        fetchParams: { mode: 'cors' }, // Vynutí CORS režim
+        // Tento řádek je klíčový pro to, aby se analýza nezasekla
+        fetchParams: { mode: 'cors' }, 
         plugins: [
             WaveSurfer.Spectrogram.create({
-                container: '#spectrogram-canvas',
+                container: '#spectrogram-container',
                 labels: true,
-                height: 400, // Velké jako na obrázku
-                splitChannels: false,
+                height: 350,
+                // Barevná mapa přesně podle tvého obrázku (libavfilter)
                 colorMap: [
-                    [0, 0, 0, 1],         // Černá (ticho)
-                    [0.1, 0, 0, 0.5],     // Tmavá
-                    [0.4, 0, 1, 0],       // Zelená (středy) - tohle dělá ten libavfilter efekt
-                    [0.8, 1, 1, 0],       // Žlutá
-                    [1, 1, 0, 0]          // Červená (špičky)
+                    [0, 0, 0, 1],       // Ticho (černá)
+                    [0.1, 0, 0.5, 1],   // Nízké (modrá)
+                    [0.4, 0, 1, 0],     // Střední (zelená)
+                    [0.7, 1, 1, 0],     // Vysoké (žlutá)
+                    [1, 1, 0, 0]        // Špičky (červená)
                 ]
             })
         ]
@@ -188,10 +181,10 @@ function openSpectrogram(artist, url) {
     activeWs.on('ready', () => {
         document.getElementById('loader-status').style.display = 'none';
     });
-
-    activeWs.on('error', (err) => {
-        console.error(err);
-        document.getElementById('loader-status').innerHTML = `<span class="text-red-500">❌ ERROR: Access denied. The file host blocks analysis.</span>`;
+    
+    activeWs.on('error', (e) => {
+        document.getElementById('loader-status').innerText = "❌ Nelze analyzovat soubor (CORS blokace).";
+        console.error(e);
     });
 }
 
@@ -202,8 +195,9 @@ function closeModal() {
 
 function filterTable() {
     const val = document.getElementById('recorded-search').value.toLowerCase();
-    const rows = document.querySelectorAll('#recorded-tbody tr');
-    rows.forEach(r => r.style.display = r.textContent.toLowerCase().includes(val) ? "" : "none");
+    document.querySelectorAll('#recorded-tbody tr').forEach(r => {
+        r.style.display = r.textContent.toLowerCase().includes(val) ? "" : "none";
+    });
 }
 
 loadData();
