@@ -5,10 +5,6 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>rammfanCZE IEM archive</title>
     
-    <meta property="og:title" content="rammfanCZE IEM archive" />
-    <meta property="og:description" content="live video recordings // IEM archive" />
-    <meta property="og:image" content="https://raw.githubusercontent.com/rammfancze/rammfancze.github.io/refs/heads/main/logo.png" />
-    
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
@@ -17,101 +13,130 @@
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
-        /* Animace pro Skeleton Loading */
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-        .animate-skeleton {
-            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        .skeleton-bar {
-            height: 12px;
-            background: rgba(156, 163, 175, 0.3);
-            border-radius: 4px;
-            width: 100%;
-        }
-
         /* Styl pro vyhledávání */
-        .search-wrapper {
-            position: relative;
-            max-width: 300px;
-        }
+        .search-wrapper { position: relative; max-width: 300px; }
         .search-input {
-            width: 100%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 6px;
-            padding: 8px 12px 8px 35px;
-            color: white;
-            outline: none;
-            font-size: 0.875rem;
-            transition: all 0.2s;
+            width: 100%; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;
+            padding: 8px 12px 8px 35px; color: white; outline: none; font-size: 0.875rem;
         }
-        .search-input:focus {
-            background: rgba(255,255,255,0.1);
-            border-color: #ef4444;
-        }
-        .search-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #6b7280;
-            font-size: 0.8rem;
-        }
+        .search-input:focus { border-color: #ef4444; }
+        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; font-size: 0.8rem; }
 
-        /* RESPONZIVNÍ ÚPRAVA PRO MOBILY */
+        /* RESPONZIVNÍ KARTY PRO MOBIL */
         @media (max-width: 768px) {
-            table, thead, tbody, th, td, tr { 
-                display: block; 
-            }
-            thead tr { 
-                position: absolute;
-                top: -9999px;
-                left: -9999px;
-            }
-            tr { 
-                margin-bottom: 1rem; 
-                border: 1px solid rgba(255,255,255,0.1) !important;
-                border-radius: 8px;
-                background: rgba(0,0,0,0.2);
-                padding: 0.5rem;
-            }
-            td { 
-                border: none !important;
-                position: relative;
-                padding-left: 50% !important; 
-                text-align: right !important;
-                margin-bottom: 0.25rem;
-            }
-            td:before { 
-                position: absolute;
-                left: 12px;
-                width: 45%; 
-                padding-right: 10px; 
-                white-space: nowrap;
-                text-align: left;
-                font-weight: bold;
-                color: #6b7280;
-                content: attr(data-label);
-            }
-            /* První buňka (Artist) bude vypadat jako nadpis karty */
-            td:first-child {
-                text-align: center !important;
-                padding-left: 12px !important;
-                font-size: 1.1rem;
-                color: #ef4444;
-                border-bottom: 1px solid rgba(255,255,255,0.1) !important;
-                margin-bottom: 0.5rem;
-            }
-            td:first-child:before { content: ""; }
+            /* Zrušíme tabulkové zobrazení na mobilu */
+            table, thead, tbody, th, td, tr { display: block; width: 100%; }
+            thead { display: none; } /* Skryje hlavičku na mobilu */
             
-            audio { width: 100% !important; max-width: none !important; }
+            #recorded-tbody tr, #upcoming-tbody tr {
+                background: rgba(0, 0, 0, 0.3);
+                border: 1px solid rgba(255, 255, 255, 0.1) !important;
+                border-radius: 12px;
+                margin-bottom: 1.5rem;
+                padding: 1rem;
+            }
+
+            /* Styl pro buňky na mobilu */
+            td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 0 !important;
+                border: none !important;
+                text-align: right !important;
+            }
+
+            /* Přidání popisků před data na mobilu */
+            td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                font-size: 0.7rem;
+                text-transform: uppercase;
+                color: #6b7280;
+                text-align: left;
+            }
+
+            /* První buňka (Interpret) jako nadpis karty */
+            td:first-child {
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: #ef4444;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+                margin-bottom: 0.5rem;
+                padding-bottom: 0.75rem !important;
+                justify-content: center;
+            }
+            td:first-child::before { display: none; }
+
+            /* Audio přehrávač na mobilu na celou šířku */
+            audio { width: 100% !important; max-width: none !important; margin-top: 0.5rem; }
         }
     </style>
 </head>
 
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen">
 
-<header class="p-8 bg-black/70 backdrop-blur border
+<header class="p-8 bg-black/70 backdrop-blur border-b border-gray-700 shadow-xl">
+    <div class="max-w-6xl mx-auto flex flex-col gap-2">
+        <h1 class="text-4xl font-bold text-red-500 tracking-wide">rammfanCZE</h1>
+        <p class="text-gray-400 text-lg">live video recordings // IEM archive</p>
+    </div>
+</header>
+
+<main class="max-w-6xl mx-auto p-6 md:p-12">
+    <section class="mb-16">
+        <h2 class="text-3xl font-semibold text-white mb-4 border-b border-gray-600 pb-2">📅 Upcoming shows</h2>
+        <div class="bg-black/20 rounded-lg overflow-hidden">
+            <table class="w-full text-sm text-left text-gray-300">
+                <thead class="bg-gray-800 text-gray-100">
+                    <tr>
+                        <th class="px-4 py-3">Artist / Event</th>
+                        <th class="px-4 py-3">Date</th>
+                        <th class="px-4 py-3">Venue</th>
+                    </tr>
+                </thead>
+                <tbody id="upcoming-tbody"></tbody>
+            </table>
+        </div>
+    </section>
+    
+    <section class="mb-16">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 border-b border-gray-600 pb-2">
+            <h2 class="text-3xl font-semibold text-white">📋 Recorded shows</h2>
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="recorded-search" class="search-input" placeholder="Hledat..." onkeyup="filterTable()">
+            </div>
+        </div>
+
+        <div class="bg-black/20 rounded-lg overflow-hidden">
+            <table class="w-full text-sm text-left text-gray-300">
+                <thead class="bg-gray-800 text-gray-100">
+                    <tr>
+                        <th class="px-4 py-3">Artist</th>
+                        <th class="px-4 py-3">Date</th>
+                        <th class="px-4 py-3">Venue</th>
+                        <th class="px-4 py-3 text-center">YT</th>
+                        <th class="px-4 py-3 text-center">IEM</th>
+                        <th class="px-4 py-3 text-center">Format</th>
+                        <th class="px-4 py-3 text-center">Audio Sample</th>
+                    </tr>
+                </thead>
+                <tbody id="recorded-tbody"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer class="text-center text-sm text-gray-500 py-6 border-t border-gray-700 bg-black/70">
+    <a class="flex justify-center items-center gap-2 text-white hover:text-red-500 transition-colors" href="https://www.youtube.com/@rammfanCZE" target="_blank">
+        <i class="fab fa-youtube text-red-600 text-xl"></i>
+        <span id="subscriber-count">Loading subscribers…</span>
+    </a>
+    <div class="mt-4 text-gray-400">© 2026 <span class="text-red-500 font-bold">rammfanCZE</span></div>
+</footer>
+
+<script>
+const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
+const URL_UPCOMING = '
