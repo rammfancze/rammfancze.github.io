@@ -207,16 +207,16 @@ function vykresli(data, targetId, jeToRecorded) {
             const audioUrl = col[6] ? col[6].trim() : '';
             const imgUrl = col[7] ? col[7].trim() : '';
 
-            tr.innerHTML = `
+                        tr.innerHTML = `
                 <td class="px-4 py-3">${col[0] || ''}</td>
                 <td class="px-4 py-3">${col[1] || ''}</td>
                 <td class="px-4 py-3">${col[2] || ''}</td>
                 <td class="px-4 py-3 text-center">
-                    ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="hover:text-white underline decoration-gray-600">link</a>` : '❌'}
+                    ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600 text-lg hover:text-red-400"><i class="fab fa-youtube"></i></a>` : '<span class="text-gray-800 text-xs">❌</span>'}
                 </td>
                 <td class="px-4 py-3 text-center">${col[4] === 'Ano' ? '✅' : '❌'}</td>
                 
-                <td class="px-4 py-3 text-center">     
+                <td class="px-4 py-3 text-center">        
                     ${imgUrl 
                         ? `<a href="${imgUrl}" target="_blank" class="hover:text-white underline decoration-gray-600">${formatText}</a>` 
                         : formatText}
