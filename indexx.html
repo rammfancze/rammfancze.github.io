@@ -15,19 +15,13 @@
         body { font-family: 'Inter', sans-serif; background-color: #0b0f1a; color: white; }
         h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        .animate-skeleton { animation: pulse 1.5s infinite; }
-        .skeleton-bar { height: 12px; background: rgba(156, 163, 175, 0.3); border-radius: 4px; width: 100%; }
-
-        .search-wrapper { position: relative; width: 100%; max-width: 300px; }
         .search-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 8px 12px 8px 35px; color: white; outline: none; }
-        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; }
-
-        .format-btn { color: #ef4444; text-decoration: underline; cursor: pointer; transition: color 0.2s; }
+        .format-btn { color: #ef4444; text-decoration: underline; cursor: pointer; font-weight: 600; }
         .format-btn:hover { color: #f87171; }
 
-        .spec-drawer { display: none; background: #000; border-radius: 8px; padding: 15px; margin: 10px 0; border: 1px solid #1e293b; width: 100%; }
+        .spec-drawer { display: none; background: #000; border-radius: 8px; padding: 15px; margin: 10px 0; border: 1px solid #1e293b; }
         
+        /* Styl pro mobilní zobrazení */
         @media (max-width: 768px) {
             thead { display: none; }
             tbody tr { display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.75rem; margin-bottom: 1rem; padding: 1rem; }
@@ -40,15 +34,15 @@
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen">
 
 <header class="p-6 md:p-8 bg-black/70 backdrop-blur border-b border-gray-700 shadow-xl">
-    <div class="max-w-6xl mx-auto flex flex-col gap-2">
+    <div class="max-w-6xl mx-auto">
         <h1 class="text-3xl md:text-4xl font-bold text-red-500 tracking-wide">rammfanCZE</h1>
-        <p class="text-gray-400 text-base md:text-lg">live video recordings // IEM archive</p>
+        <p class="text-gray-400">IEM archive & Spectrograms</p>
     </div>
 </header>
 
-<main class="max-w-6xl mx-auto p-4 md:p-12">
+<main class="max-w-7xl mx-auto p-4 md:p-12">
     <section class="mb-12">
-        <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2">📅 Upcoming shows</h2>
+        <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2 text-gray-100">📅 Upcoming shows</h2>
         <div class="overflow-x-auto bg-black/20 rounded-lg">
             <table class="w-full text-sm text-left text-gray-300">
                 <thead><tr class="bg-gray-800 text-gray-100"><th class="px-4 py-3">Artist</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Venue</th></tr></thead>
@@ -59,20 +53,20 @@
     
     <section class="mb-16">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 border-b border-gray-600 pb-2">
-            <h2 class="text-2xl md:text-3xl font-semibold text-white">📋 Recorded shows</h2>
-            <div class="search-wrapper">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <h2 class="text-2xl md:text-3xl font-semibold text-white font-bold tracking-tight">📋 Recorded shows</h2>
+            <div class="relative w-full max-w-xs">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-500"></i>
                 <input type="text" id="recorded-search" class="search-input" placeholder="Search artist..." onkeyup="filterTable()">
             </div>
         </div>
 
         <div class="overflow-x-auto bg-black/20 rounded-lg">
-            <table class="w-full text-sm text-left text-gray-300" id="recorded-table">
+            <table class="w-full text-sm text-left text-gray-300">
                 <thead>
-                    <tr class="bg-gray-800 text-gray-100">
-                        <th class="px-4 py-3">Artist</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Venue</th>
-                        <th class="px-4 py-3 text-center">YT</th><th class="px-4 py-3 text-center">IEM</th>
-                        <th class="px-4 py-3 text-center">Format</th><th class="px-4 py-3 text-right">Audio Sample</th>
+                    <tr class="bg-gray-800 text-gray-100 uppercase text-xs">
+                        <th class="px-4 py-4">Artist</th><th class="px-4 py-4 text-center">Date</th><th class="px-4 py-4">Venue</th>
+                        <th class="px-4 py-4 text-center">YT</th><th class="px-4 py-4 text-center">IEM</th>
+                        <th class="px-4 py-4 text-center">Format</th><th class="px-4 py-4 text-right">Audio Sample</th>
                     </tr>
                 </thead>
                 <tbody id="recorded-tbody"></tbody>
@@ -81,14 +75,14 @@
     </section>
 </main>
 
-<footer class="text-center text-sm text-gray-500 py-6 border-t border-gray-700 bg-black/70">
-    <div class="flex justify-center items-center gap-2 mt-4">
-        <a class="flex items-center gap-2 text-white hover:text-red-500" href="https://www.youtube.com/@rammfanCZE" target="_blank">
+<footer class="text-center text-sm text-gray-500 py-10 border-t border-gray-700 bg-black/70">
+    <div class="flex justify-center items-center gap-2 mb-2">
+        <a class="flex items-center gap-2 text-white hover:text-red-500 transition-colors" href="https://www.youtube.com/@rammfanCZE" target="_blank">
             <i class="fab fa-youtube text-red-600 text-xl"></i>
-            <span id="subscriber-count">Loading subscribers…</span>
+            <span id="subscriber-count">YouTube Channel</span>
         </a>
     </div>
-    <div class="mt-4">© 2026 <span class="text-red-500 font-bold">rammfanCZE</span> — IEM & Spectrogram Archive</div>
+    <p>© 2026 rammfanCZE — Professional IEM Archive</p>
 </footer>
 
 <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
@@ -99,7 +93,6 @@
 const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
 const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=314502273&single=true&output=tsv';
 
-let plyrInstances = [];
 let specInstances = {};
 
 async function fetchSubscribers() {
@@ -110,7 +103,7 @@ async function fetchSubscribers() {
         const data = await res.json();
         const count = data.items[0].statistics.subscriberCount;
         document.getElementById("subscriber-count").innerText = `${parseInt(count).toLocaleString()} subscribers`;
-    } catch { document.getElementById("subscriber-count").innerText = 'YouTube channel'; }
+    } catch { }
 }
 
 function filterTable() {
@@ -119,7 +112,7 @@ function filterTable() {
     rows.forEach(row => {
         row.style.display = row.textContent.toLowerCase().includes(filter) ? "" : "none";
         const next = row.nextElementSibling;
-        if (next && next.classList.contains('spec-row')) next.style.display = "none";
+        if (next && next.classList.contains('spec-row')) next.classList.add('hidden');
     });
 }
 
@@ -135,38 +128,45 @@ async function loadData() {
 
     const upTbody = document.getElementById('upcoming-tbody');
     upcoming.forEach(line => {
-        const col = line.split('\t');
+        const col = line.trim().split('\t');
         if (!col[0]) return;
         upTbody.innerHTML += `<tr><td class="px-4 py-3">${col[0]}</td><td class="px-4 py-3">${col[1]}</td><td class="px-4 py-3">${col[2]}</td></tr>`;
     });
 
     const recTbody = document.getElementById('recorded-tbody');
     recorded.forEach((line, i) => {
-        const col = line.split('\t');
+        const col = line.trim().split('\t');
         if (!col[0]) return;
         const audioUrl = col[6]?.trim() || '';
         
         const tr = document.createElement('tr');
         tr.className = "border-b border-gray-800 hover:bg-gray-800/30 transition-colors";
         tr.innerHTML = `
-            <td class="px-4 py-4 font-semibold" data-label="Artist">${col[0]}</td>
-            <td class="px-4 py-4 text-gray-400" data-label="Date">${col[1]}</td>
-            <td class="px-4 py-4" data-label="Venue">${col[2]}</td>
-            <td class="px-4 py-4 text-center" data-label="YT">${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600"><i class="fab fa-youtube"></i></a>` : '❌'}</td>
-            <td class="px-4 py-4 text-center" data-label="IEM">${col[4] === 'Ano' ? '✅' : '❌'}</td>
-            <td class="px-4 py-4 text-center" data-label="Format"><span class="format-btn" onclick="toggleSpec(${i}, '${audioUrl}')">${col[5] || 'WAV'}</span></td>
-            <td class="px-4 py-4" data-label="Audio"><div style="width: 250px; margin-left: auto;"><audio class="js-player" controls src="${audioUrl}" crossorigin="anonymous"></audio></div></td>
+            <td class="px-4 py-5 font-semibold text-white" data-label="Artist">${col[0]}</td>
+            <td class="px-4 py-5 text-gray-400 text-center" data-label="Date">${col[1]}</td>
+            <td class="px-4 py-5" data-label="Venue">${col[2]}</td>
+            <td class="px-4 py-5 text-center" data-label="YT">${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600 hover:text-red-400"><i class="fab fa-youtube text-lg"></i></a>` : '❌'}</td>
+            <td class="px-4 py-5 text-center" data-label="IEM">${col[4] === 'Ano' ? '✅' : '❌'}</td>
+            <td class="px-4 py-5 text-center" data-label="Format"><span class="format-btn" onclick="toggleSpec(${i}, '${audioUrl}')">${col[5] || 'WAV'}</span></td>
+            <td class="px-4 py-5" data-label="Audio"><div style="width: 280px; margin-left: auto;"><audio class="js-player" controls src="${audioUrl}"></audio></div></td>
         `;
         recTbody.appendChild(tr);
 
         const specRow = document.createElement('tr');
         specRow.className = "spec-row hidden";
         specRow.id = `spec-row-${i}`;
-        specRow.innerHTML = `<td colspan="7" class="px-4"><div id="spec-container-${i}" class="spec-drawer"><div id="loader-${i}" class="text-xs text-gray-500 mb-2">⏳ Generuji spektrogram...</div><div id="spec-view-${i}"></div><div id="wave-hidden-${i}" style="display:none"></div></div></td>`;
+        specRow.innerHTML = `
+            <td colspan="7" class="px-4 py-0">
+                <div id="spec-container-${i}" class="spec-drawer">
+                    <div id="loader-${i}" class="text-xs text-gray-500 mb-2 font-mono">⏳ ANALYZING AUDIO FREQUENCIES...</div>
+                    <div id="spec-view-${i}"></div>
+                    <div id="wave-hidden-${i}" style="display:none"></div>
+                </div>
+            </td>`;
         recTbody.appendChild(specRow);
     });
 
-    plyrInstances = Plyr.setup('.js-player');
+    Plyr.setup('.js-player', { controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'settings'] });
 }
 
 function toggleSpec(id, url) {
@@ -185,14 +185,26 @@ function initWavesurfer(id, url) {
     const ws = WaveSurfer.create({
         container: `#wave-hidden-${id}`,
         url: url,
+        backend: 'WebAudio', // Pro analýzu spektra nutné
         plugins: [WaveSurfer.Spectrogram.create({
             container: `#spec-view-${id}`,
             labels: true,
-            height: 150,
-            colorMap: [[0, 0, 0, 1], [0.1, 0, 0, 1], [1, 0.5, 0, 1], [1, 1, 0, 1]]
+            height: 200,
+            splitChannels: false,
+            // Barvy podle tvého obrázku (černá -> fialová -> modrá -> zelená -> žlutá -> červená)
+            colorMap: [
+                [0, 0, 0, 1],
+                [0.1, 0.2, 0, 0.4],
+                [0.2, 0.4, 0, 0.8],
+                [0.4, 0, 0.7, 1],
+                [0.6, 0, 1, 0],
+                [0.8, 1, 1, 0],
+                [1, 1, 0, 0]
+            ]
         })]
     });
     ws.on('ready', () => document.getElementById(`loader-${id}`).style.display = 'none');
+    ws.on('error', () => { document.getElementById(`loader-${id}`).innerText = "❌ Analysis failed. Check direct link."; });
     specInstances[id] = ws;
 }
 
