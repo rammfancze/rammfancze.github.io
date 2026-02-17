@@ -13,14 +13,14 @@
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
-        /* Styl pro kontejner vlnovky */
+        /* Vlnovka - Waveform */
         .waveform-wrapper {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             background: rgba(255, 255, 255, 0.05);
-            padding: 5px 12px;
-            border-radius: 8px;
+            padding: 6px 14px;
+            border-radius: 10px;
             width: 280px;
         }
         .waveform-container {
@@ -33,11 +33,15 @@
             border: none;
             color: #ef4444;
             cursor: pointer;
-            font-size: 1.2rem;
-            width: 20px;
+            font-size: 1.1rem;
+            width: 24px;
+            height: 24px;
             display: flex;
             justify-content: center;
+            align-items: center;
+            transition: transform 0.1s;
         }
+        .play-btn:active { transform: scale(0.9); }
 
         /* Skeleton Loading */
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
@@ -56,37 +60,56 @@
                 display: flex; justify-content: space-between; align-items: center;
                 padding: 0.6rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             }
+            tbody td:last-child { border-bottom: none; }
             tbody td::before {
                 content: attr(data-label); font-weight: 600; color: #9ca3af;
                 font-size: 0.75rem; text-transform: uppercase;
             }
-            .waveform-wrapper { width: 100%; max-width: 220px; }
+            .waveform-wrapper { width: 100%; max-width: 200px; margin-left: auto; }
         }
     </style>
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen">
 
-<header class="p-6 md:p-8 bg-black/70 backdrop-blur border-b border-gray-700">
-    <div class="max-w-6xl mx-auto">
-        <h1 class="text-3xl md:text-4xl font-bold text-red-500">rammfanCZE</h1>
-        <p class="text-gray-400">live video recordings // IEM archive</p>
+<header class="p-6 md:p-8 bg-black/70 backdrop-blur border-b border-gray-700 shadow-xl">
+    <div class="max-w-6xl mx-auto flex flex-col gap-2">
+        <h1 class="text-3xl md:text-4xl font-bold text-red-500 tracking-wide">rammfanCZE</h1>
+        <p class="text-gray-400 text-base md:text-lg">live video recordings // IEM archive</p>
     </div>
 </header>
 
 <main class="max-w-6xl mx-auto p-4 md:p-12">
-    <section class="mb-16">
-        <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2 text-white">📋 Recorded shows</h2>
+    <section class="mb-12 md:mb-16">
+        <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2">📅 Upcoming shows</h2>
         <div class="overflow-visible md:overflow-auto bg-black/20 md:rounded-lg">
             <table class="w-full text-sm text-left text-gray-300">
                 <thead>
                     <tr class="bg-gray-800">
+                        <th class="px-4 py-3">Artist / Event</th>
+                        <th class="px-4 py-3">Date</th>
+                        <th class="px-4 py-3">Venue</th>
+                    </tr>
+                </thead>
+                <tbody id="upcoming-tbody">
+                    <tr class="animate-skeleton"><td class="px-4 py-3"><div class="skeleton-bar"></div></td><td class="px-4 py-3"><div class="skeleton-bar"></div></td><td class="px-4 py-3"><div class="skeleton-bar"></div></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="mb-16">
+        <h2 class="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2">📋 Recorded shows</h2>
+        <div class="overflow-visible md:overflow-auto bg-black/20 md:rounded-lg">
+            <table class="w-full text-sm text-left text-gray-300">
+                <thead>
+                    <tr class="bg-gray-800 text-gray-100">
                         <th class="px-4 py-3">Artist</th>
                         <th class="px-4 py-3">Date</th>
                         <th class="px-4 py-3">Venue</th>
                         <th class="px-4 py-3 text-center">YT</th>
                         <th class="px-4 py-3 text-center">IEM</th>
                         <th class="px-4 py-3 text-center">Format</th>
-                        <th class="px-4 py-3 text-center" style="width: 320px;">Sample</th>
+                        <th class="px-4 py-3 text-center" style="width: 320px;">Audio Sample</th>
                     </tr>
                 </thead>
                 <tbody id="recorded-tbody"></tbody>
@@ -98,4 +121,98 @@
 <script src="https://unpkg.com/wavesurfer.js@7"></script>
 
 <script>
-const URL_RECORDED = '
+const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
+const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=314502273&single=true&output=tsv';
+
+async function nactiData() {
+    // Načtení Upcoming
+    fetch(URL_UPCOMING).then(res => res.text()).then(text => vykresliSimple(text, 'upcoming-tbody'));
+    // Načtení Recorded
+    fetch(URL_RECORDED).then(res => res.text()).then(text => vykresliRecorded(text, 'recorded-tbody'));
+}
+
+function vykresliSimple(data, targetId) {
+    const tbody = document.getElementById(targetId);
+    let radky = data.split('\n');
+    radky.shift();
+    tbody.innerHTML = '';
+    radky.forEach(radek => {
+        const col = radek.trim().split('\t');
+        if (!col[0]) return;
+        const tr = document.createElement('tr');
+        tr.className = "md:border-b md:border-gray-800";
+        tr.innerHTML = `
+            <td class="px-4 py-3" data-label="Event">${col[0]}</td>
+            <td class="px-4 py-3" data-label="Date">${col[1]}</td>
+            <td class="px-4 py-3" data-label="Venue">${col[2]}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function vykresliRecorded(data, targetId) {
+    const tbody = document.getElementById(targetId);
+    let radky = data.split('\n');
+    radky.shift();
+    radky.reverse();
+    tbody.innerHTML = '';
+
+    radky.forEach((radek, index) => {
+        const col = radek.trim().split('\t');
+        if (!col[0]) return;
+
+        const audioUrl = col[6]?.trim() || '';
+        const tr = document.createElement('tr');
+        tr.className = "md:border-b md:border-gray-800 md:hover:bg-gray-800/30 transition-colors";
+
+        tr.innerHTML = `
+            <td class="px-4 py-3" data-label="Artist">${col[0]}</td>
+            <td class="px-4 py-3" data-label="Date">${col[1]}</td>
+            <td class="px-4 py-3" data-label="Venue">${col[2]}</td>
+            <td class="px-4 py-3 text-right md:text-center" data-label="YT">
+                ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-red-600"><i class="fab fa-youtube"></i></a>` : '❌'}
+            </td>
+            <td class="px-4 py-3 text-right md:text-center" data-label="IEM">${col[4] === 'Ano' ? '✅' : '❌'}</td>
+            <td class="px-4 py-3 text-right md:text-center" data-label="Format">${col[5] || ''}</td>
+            <td class="px-4 py-3" data-label="Audio">
+                ${audioUrl && audioUrl.startsWith('http') ? `
+                <div class="waveform-wrapper ml-auto">
+                    <button class="play-btn" id="btn-${index}"><i class="fas fa-play"></i></button>
+                    <div id="wave-${index}" class="waveform-container"></div>
+                </div>` : ''}
+            </td>
+        `;
+        tbody.appendChild(tr);
+
+        // Inicializace Wavesurferu až po přidání do DOM
+        if (audioUrl && audioUrl.startsWith('http')) {
+            try {
+                const ws = WaveSurfer.create({
+                    container: `#wave-${index}`,
+                    waveColor: '#4b5563',
+                    progressColor: '#ef4444',
+                    barWidth: 2,
+                    barGap: 3,
+                    barRadius: 4,
+                    height: 30,
+                    url: audioUrl,
+                    interact: true,
+                    cursorWidth: 0
+                });
+
+                const btn = document.getElementById(`btn-${index}`);
+                btn.onclick = () => ws.playPause();
+                ws.on('play', () => btn.innerHTML = '<i class="fas fa-pause"></i>');
+                ws.on('pause', () => btn.innerHTML = '<i class="fas fa-play"></i>');
+                ws.on('finish', () => btn.innerHTML = '<i class="fas fa-play"></i>');
+            } catch (err) {
+                console.error("Wavesurfer error na řádku " + index, err);
+            }
+        }
+    });
+}
+
+nactiData();
+</script>
+</body>
+</html>
