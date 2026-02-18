@@ -157,33 +157,42 @@
     </section>
     
     <section class="mb-16">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 border-b border-gray-600 pb-2">
-            <h2 class="text-2xl md:text-3xl font-semibold text-white">📋 Recorded shows</h2>
-            
-            <div class="search-wrapper">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="recorded-search" class="search-input" placeholder="Search artist, venue..." onkeyup="filterTable()">
-            </div>
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 border-b border-gray-600 pb-2">
+        <h2 class="text-2xl md:text-3xl font-semibold text-white">📋 Recorded shows</h2>
+        
+        <div class="search-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="recorded-search" class="search-input" placeholder="Search artist, venue..." onkeyup="filterTable()">
         </div>
+    </div>
 
-        <div class="overflow-visible md:overflow-auto bg-transparent md:bg-black/20 md:rounded-lg">
-            <table class="w-full table-auto text-sm text-left text-gray-300" id="recorded-table">
-                <thead>
-                    <tr class="bg-gray-800 text-gray-100">
-                        <th class="px-4 py-3">Artist</th>
-                        <th class="px-4 py-3">Date</th>
-                        <th class="px-4 py-3">Venue</th>
-                        <th class="px-4 py-3 text-center">YT</th>
-                        <th class="px-4 py-3 text-center">IEM</th>
-                        <th class="px-4 py-3 text-center">Format</th>
-                        <th class="px-4 py-3 text-center" style="width: 280px;">Audio Sample</th>
-                    </tr>
-                </thead>
-                <tbody id="recorded-tbody">
-                </tbody>
-            </table>
-        </div>
-    </section>
+    <div class="overflow-visible md:overflow-auto bg-transparent md:bg-black/20 md:rounded-lg">
+        <table class="w-full table-auto text-sm text-left text-gray-300" id="recorded-table">
+            <thead>
+                <tr class="bg-gray-800 text-gray-100">
+                    <th class="px-4 py-3">Artist</th>
+                    <th class="px-4 py-3">Date</th>
+                    <th class="px-4 py-3">Venue</th>
+                    <th class="px-4 py-3 text-center">YT</th>
+                    <th class="px-4 py-3 text-center">IEM</th>
+                    <th class="px-4 py-3 text-center">Format</th>
+                    <th class="px-4 py-3 text-center" style="width: 280px;">Audio Sample</th>
+                </tr>
+            </thead>
+            <tbody id="recorded-tbody">
+                <tr class="animate-skeleton">
+                    <td class="px-4 py-3" data-label="Artist"><div class="skeleton-bar"></div></td>
+                    <td class="px-4 py-3" data-label="Date"><div class="skeleton-bar"></div></td>
+                    <td class="px-4 py-3" data-label="Venue"><div class="skeleton-bar"></div></td>
+                    <td class="px-4 py-3 text-center" data-label="YT"><div class="skeleton-bar w-6 mx-auto"></div></td>
+                    <td class="px-4 py-3 text-center" data-label="IEM"><div class="skeleton-bar w-6 mx-auto"></div></td>
+                    <td class="px-4 py-3 text-center" data-label="Format"><div class="skeleton-bar w-10 mx-auto"></div></td>
+                    <td class="px-4 py-3" data-label="Audio"><div class="skeleton-bar w-32 ml-auto"></div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
 </main>
 
 <footer class="text-center text-sm text-gray-500 py-6 border-t border-gray-700 bg-black/70">
