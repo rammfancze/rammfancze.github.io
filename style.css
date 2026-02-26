@@ -60,13 +60,13 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     background: #ef4444 !important;
 }
 
-/* --- FIX PŘETÉKÁNÍ (Bílá a červená čára) --- */
+/* --- FIX PLAYERU (Zkrácení bílé a červené čáry) --- */
 .plyr__progress { flex: 0 1 80px !important; min-width: 40px !important; }
 .plyr__volume { flex: 0 1 60px !important; min-width: 30px !important; }
 .plyr__volume input[type="range"] { max-width: 40px !important; }
 .plyr__time { font-size: 11px !important; padding: 0 2px !important; }
 
-/* RESPONZIVNÍ TABULKA (Table to Cards) */
+/* RESPONZIVNÍ TABULKA (přesně podle tvého originálu) */
 @media (max-width: 768px) {
     thead { display: none; }
     tbody tr {
