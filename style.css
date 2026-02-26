@@ -1,36 +1,117 @@
-/* --- Plyr Úpravy --- */
+/* --- Základní nastavení a Fonty --- */
+body {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, .font-orbitron {
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* --- Responzivní Tabulka (Změna na panely/karty) --- */
+@media (max-width: 768px) {
+    /* Skryjeme standardní hlavičku tabulky */
+    thead {
+        display: none;
+    }
+
+    /* Každý řádek tabulky bude vypadat jako samostatná karta */
+    tr {
+        display: block;
+        margin-bottom: 1.5rem;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(75, 85, 99, 0.4);
+        border-radius: 0.75rem;
+        padding: 0.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Každá buňka v kartě */
+    td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: right;
+        padding: 0.75rem 0.5rem !important;
+        border-bottom: 1px solid rgba(75, 85, 99, 0.2);
+    }
+
+    td:last-child {
+        border-bottom: none;
+    }
+
+    /* Vložení popisku z atributu data-label */
+    td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        color: #9ca3af; /* gray-400 */
+        margin-right: 1rem;
+        text-align: left;
+    }
+
+    /* Úprava audio přehrávače na mobilu */
+    .audio-wrapper {
+        width: 100% !important;
+        max-width: 200px;
+        margin-left: 0;
+    }
+}
+
+/* --- Plyr Úpravy (aby seděly do tabulky) --- */
 .plyr--audio .plyr__controls {
     background: transparent !important;
     padding: 0 !important;
     color: #d1d5db !important;
-    display: flex;
-    align-items: center;
-    width: 100%;
 }
 
-/* Kontejner pro audio v tabulce */
 .audio-wrapper {
-    width: 240px; /* Fixní šířka pro konzistentní vzhled */
+    width: 240px;
     margin-left: auto;
-    padding-right: 10px; /* Klíčové: rezerva pro kolečko posuvníku */
 }
 
 .plyr__volume {
-    display: flex !important;
-    align-items: center;
     min-width: 70px !important;
-    max-width: 90px !important;
 }
 
-/* Oprava samotného posuvníku, aby nevyčuhoval */
-.plyr--audio input[type=range] {
-    margin: 0 !important;
+/* --- Animace pro Skeleton (načítání) --- */
+.skeleton-bar {
+    height: 1rem;
+    background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 0.25rem;
 }
 
-/* Úprava pro mobilní zobrazení v kartách */
-@media (max-width: 768px) {
-    .audio-wrapper {
-        width: 180px; /* Na mobilu o něco užší, aby se vešel vedle labelu */
-        padding-right: 5px;
-    }
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* --- Search input barva --- */
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    border-radius: 9999px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.search-input:focus {
+    border-color: #ef4444;
+    background: rgba(255,255,255,0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    color: #6b7280;
 }
