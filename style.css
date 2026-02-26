@@ -1,12 +1,10 @@
 :root {
-    /* Nastavení barvy přehrávače na tvou červenou */
     --plyr-color-main: #ef4444;
 }
 
 body { font-family: 'Inter', sans-serif; }
 h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
-/* Animace pro Skeleton Loading */
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
@@ -21,7 +19,6 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     width: 100%;
 }
 
-/* Styl pro vyhledávání */
 .search-wrapper {
     position: relative;
     width: 100%;
@@ -39,7 +36,7 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     transition: all 0.2s;
 }
 .search-input:focus {
-    background: rgba(255,255,255,10.1);
+    background: rgba(255,255,255,0.1);
     border-color: #ef4444;
 }
 .search-icon {
@@ -51,39 +48,45 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     font-size: 0.8rem;
 }
 
-/* Stylování Plyr přehrávače pro tabulku */
+/* Oprava Plyr a Volume */
 .plyr--audio .plyr__controls {
     background: transparent !important;
     padding: 0;
     color: #d1d5db !important;
 }
+.plyr__volume {
+    display: flex !important; /* Vynutit zobrazení volume */
+    max-width: 100px;
+}
 .plyr__control--overlaid {
     background: #ef4444 !important;
 }
 
-/* --- RESPONZIVNÍ TABULKA (Table to Cards) --- */
+/* --- RESPONZIVNÍ TABULKA (Table to Cards) - OPRAVENO --- */
 @media (max-width: 768px) {
-    thead { display: none; }
+    thead { display: none !important; }
 
     tbody tr {
-        display: flex;
-        flex-direction: column;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 0.75rem;
-        margin-bottom: 1rem;
-        padding: 1rem;
+        display: flex !important;
+        flex-direction: column !important;
+        background: rgba(255, 255, 255, 0.03) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 0.75rem !important;
+        margin-bottom: 1.5rem !important;
+        padding: 1rem !important;
     }
 
     tbody td {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.6rem 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 0.75rem 0 !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        width: 100% !important;
+        text-align: right !important;
     }
 
-    tbody td:last-child { border-bottom: none; }
+    tbody td:last-child { border-bottom: none !important; }
 
     tbody td::before {
         content: attr(data-label);
@@ -94,11 +97,4 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         text-transform: uppercase;
         letter-spacing: 0.05em;
         flex-shrink: 0;
-    }
-
-    /* Plyr fix na mobilu */
-    .plyr {
-        width: 100%;
-        min-width: 180px;
-    }
-}
+        text-align:
