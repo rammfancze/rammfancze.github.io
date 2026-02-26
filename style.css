@@ -2,111 +2,46 @@
 body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
 h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
-/* Logo trikolóra */
-.logo-c { color: #11457e; }
-.logo-ze { color: #d71920; }
+/* Trikolóra v logu */
+.logo-c { color: #11457e !important; }
+.logo-ze { color: #d71920 !important; }
 
-/* Animace */
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-.animate-skeleton { animation: pulse 1.5s infinite; }
-.skeleton-bar { height: 12px; background: rgba(156, 163, 175, 0.3); border-radius: 4px; width: 100%; }
-
-/* Vyhledávání */
-.search-wrapper { position: relative; width: 100%; max-width: 100%; }
+/* Search bar */
+.search-wrapper { position: relative; width: 100%; }
 @media (min-width: 769px) { .search-wrapper { max-width: 300px; } }
-
 .search-input {
     width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 6px; padding: 8px 12px 8px 35px; color: white; outline: none; font-size: 0.875rem; transition: all 0.2s;
+    border-radius: 8px; padding: 8px 12px 8px 35px; color: white; outline: none;
 }
-.search-input:focus { background: rgba(255,255,255,0.1); border-color: #ef4444; }
-.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; font-size: 0.8rem; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; }
 
-/* Plyr Custom */
-.plyr--audio .plyr__controls { background: transparent !important; color: #d1d5db !important; padding: 0; }
-
-/* Mobilní karty (iPhone Fix) */
+/* Mobilní karty */
 @media (max-width: 768px) {
-    /* Zarovnání hlavního obsahu k okrajům s pevnou mezerou */
-    main { 
-        padding-left: 1rem !important; 
-        padding-right: 1rem !important; 
-        width: 100%;
-    }
-
-    /* Skrytí hlavičky tabulky */
-    thead { display: none; }
-
-    /* Karta (jeden řádek tabulky) */
+    main { padding: 1rem !important; }
     tbody tr {
-        display: block; 
-        background: rgba(255, 255, 255, 0.03); 
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px; 
-        margin-bottom: 1rem; 
-        padding: 1rem;
-        width: 100%; /* Karta zabere celou šířku kontejneru */
-        box-sizing: border-box;
+        display: block; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px; margin-bottom: 1rem; padding: 1rem;
     }
-
-    /* Jednotlivé buňky v kartě */
-    tbody td {
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center;
-        padding: 0.75rem 0; 
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        width: 100%;
-    }
-
+    tbody td { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
     tbody td:last-child { border-bottom: none; }
-
-    /* Popisky polí (ARTIST, DATE atd.) */
-    tbody td::before {
-        content: attr(data-label); 
-        font-weight: 600; 
-        color: #9ca3af;
-        font-size: 0.7rem; 
-        text-transform: uppercase; 
-        letter-spacing: 0.05em;
-    }
-
-    /* Fix pro audio přehrávač, aby nerozbijel šířku karty */
-    tbody td[data-label="Audio"] { 
-        flex-direction: column; 
-        align-items: flex-end; /* Audio ovládání zarovnané doprava */
-        gap: 0.5rem; 
-    }
-
-    .plyr { 
-        width: 100% !important; 
-        max-width: 250px; /* Aby nebyl přehrávač zbytečně obří */
-    }
+    tbody td::before { content: attr(data-label); font-weight: 600; color: #9ca3af; font-size: 0.7rem; text-transform: uppercase; }
+    tbody td[data-label="Audio"] { flex-direction: column; align-items: flex-end; gap: 0.5rem; }
+    .plyr { width: 100% !important; max-width: 250px; }
 }
-/* Zkrácení volume slideru, aby neuhýbal z karty */
+
+/* TOTÁLNÍ FIX VOLUME SLIDERU */
+.plyr__volume input[type="range"] {
+    max-width: 40px !important; /* Toto zkrátí tu vnitřní čárku */
+    flex: 0 0 40px !important;
+}
 .plyr__volume {
-    min-width: 40px !important;
-    max-width: 60px !important;
+    min-width: unset !important;
+    max-width: 80px !important;
+    flex: 0 0 auto !important;
 }
+.plyr__controls { gap: 4px !important; }
 
-/* Fix pro mobilní zobrazení ovládání */
 @media (max-width: 768px) {
-    .plyr__controls {
-        gap: 2px !important; /* Zmenší mezery mezi Play, Časem a Volume */
-    }
-    
-    .plyr__volume {
-    flex: 0 1 50px !important; /* Zakáže automatické roztahování, základ je 40px */
-    min-width: 40px !important;
-    max-width: 50px !important;
-    margin-left: 5px !important;
+    .plyr__volume input[type="range"] { max-width: 30px !important; }
+    .plyr__volume { max-width: 60px !important; }
 }
-
-    /* Pokud by se to pořád nevešlo, tohle trochu zmenší text času */
-    .plyr__time {
-        font-size: 12px !important;
-        padding: 0 5px !important;
-    }
-}
-
-
