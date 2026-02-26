@@ -1,48 +1,41 @@
-/* TVOJE PŮVODNÍ ZÁKLADNÍ NASTAVENÍ */
 :root { --plyr-color-main: #ef4444; }
-body { font-family: 'Inter', sans-serif; overflow-x: hidden; background-color: #111827; color: white; }
+body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
 h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
 /* Logo trikolóra */
-.logo-c { color: #11457e !important; }
-.logo-ze { color: #d71920 !important; }
+.logo-c { color: #11457e; }
+.logo-ze { color: #d71920; }
 
-/* Vyhledávání */
-.search-wrapper { position: relative; width: 100%; max-width: 300px; }
-.search-input {
-    width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px; padding: 10px 12px 10px 40px; color: white; outline: none;
-}
-.search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #6b7280; }
-
-/* Skeleton Loading (přesně jak jsi ho měl) */
+/* Animace */
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 .animate-skeleton { animation: pulse 1.5s infinite; }
 .skeleton-bar { height: 12px; background: rgba(156, 163, 175, 0.3); border-radius: 4px; width: 100%; }
 
-/* TVOJE PŮVODNÍ TABULKA (beze změn) */
-table { width: 100%; border-collapse: collapse; }
-th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+/* Vyhledávání */
+.search-wrapper { position: relative; width: 100%; max-width: 100%; }
+@media (min-width: 769px) { .search-wrapper { max-width: 300px; } }
 
-/* --- TOHLE JE TEN JEDINÝ FIX, KTERÝ JSI CHTĚL --- */
-
-/* Zkrácení bílé časové osy */
-.plyr__progress {
-    flex: 0 1 60px !important; /* Maximálně 60px místo nekonečna */
-    min-width: 30px !important;
+.search-input {
+    width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px; padding: 8px 12px 8px 35px; color: white; outline: none; font-size: 0.875rem; transition: all 0.2s;
 }
+.search-input:focus { background: rgba(255,255,255,0.1); border-color: #ef4444; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; font-size: 0.8rem; }
 
-/* Zkrácení červené hlasitosti */
-.plyr__volume {
-    flex: 0 0 50px !important; /* Celý blok volume bude mít jen 50px */
-}
+/* Plyr Custom */
+.plyr--audio .plyr__controls { background: transparent !important; color: #d1d5db !important; padding: 0; }
 
-.plyr__volume input[type="range"] {
-    max-width: 30px !important; /* Samotná červená čárka bude mít 30px */
-}
-
-/* Zmenšení písma času, aby nezabíralo místo */
-.plyr__time {
-    font-size: 11px !important;
-    padding: 0 2px !important;
+/* Mobilní fixy */
+@media (max-width: 768px) {
+    main { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+    thead { display: none; }
+    tbody tr {
+        display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.75rem;
+        margin-bottom: 1rem; padding: 1rem; width: 100%; box-sizing: border-box; overflow: hidden;
+    }
+    tbody td { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    tbody td:last-child { border-bottom: none; }
+    tbody td::before { content: attr(data-label); font-weight: 600; color: #9ca3af; font-size: 0.75rem; text-transform: uppercase; }
+    .plyr { width: 100% !important; }
 }
