@@ -24,61 +24,42 @@
     </div>
 </header>
 
-<main class="max-w-6xl mx-auto p-4 md:p-12">
-    <section class="mb-12 md:mb-16">
-        <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4 border-b border-gray-600 pb-2">📅 Upcoming shows</h2>
-        <div class="overflow-visible md:overflow-auto">
-            <table class="w-full table-auto text-sm text-left text-gray-300">
+<main class="max-w-6xl mx-auto p-4 md:p-8">
+    <div class="gradient-line"></div>
+    
+    <section class="mb-12">
+        <h2 class="text-xl md:text-2xl font-semibold mb-6 flex items-center gap-2">
+            <i class="fa-regular fa-calendar-days text-red-500"></i> Upcoming shows
+        </h2>
+        <div class="overflow-x-auto md:overflow-visible">
+            <table>
                 <thead>
-                    <tr class="bg-gray-800 text-gray-100">
-                        <th class="px-4 py-3">Artist / Event</th>
-                        <th class="px-4 py-3">Date</th>
-                        <th class="px-4 py-3">Venue</th>
+                    <tr>
+                        <th class="text-left">Artist / Event</th>
+                        <th class="text-left">Date</th>
+                        <th class="text-left">Venue</th>
                     </tr>
                 </thead>
-                <tbody id="upcoming-tbody">
-                    <tr class="animate-skeleton">
-                        <td class="px-4 py-3" data-label="Artist"><div class="skeleton-bar"></div></td>
-                        <td class="px-4 py-3" data-label="Date"><div class="skeleton-bar"></div></td>
-                        <td class="px-4 py-3" data-label="Venue"><div class="skeleton-bar"></div></td>
-                    </tr>
-                </tbody>
+                <tbody id="upcoming-tbody"></tbody>
             </table>
         </div>
     </section>
     
     <section class="mb-16">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 border-b border-gray-600 pb-2">
-            <h2 class="text-2xl md:text-3xl font-semibold text-white">📋 Recorded shows</h2>
-            <div class="search-wrapper">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="recorded-search" class="search-input" placeholder="Search artist, venue..." onkeyup="filterTable()">
-            </div>
-        </div>
-        <div class="overflow-visible md:overflow-auto">
-            <table class="w-full table-auto text-sm text-left text-gray-300" id="recorded-table">
+        <div class="overflow-x-auto md:overflow-visible">
+            <table id="recorded-table">
                 <thead>
-                    <tr class="bg-gray-800 text-gray-100">
-                        <th class="px-4 py-3">Artist</th>
-                        <th class="px-4 py-3">Date</th>
-                        <th class="px-4 py-3">Venue</th>
-                        <th class="px-4 py-3 text-center">YT</th>
-                        <th class="px-4 py-3 text-center">IEM</th>
-                        <th class="px-4 py-3 text-center">Format</th>
-                        <th class="px-4 py-3 text-center" style="width: 280px;">Audio Sample</th>
+                    <tr>
+                        <th class="text-left">Artist</th>
+                        <th class="text-left">Date</th>
+                        <th class="text-left">Venue</th>
+                        <th class="text-center">YT</th>
+                        <th class="text-center">IEM</th>
+                        <th class="text-center">Format</th>
+                        <th class="text-center">Audio Sample</th>
                     </tr>
                 </thead>
-                <tbody id="recorded-tbody">
-                    <tr class="animate-skeleton">
-                        <td class="px-4 py-3" data-label="Artist"><div class="skeleton-bar"></div></td>
-                        <td class="px-4 py-3" data-label="Date"><div class="skeleton-bar"></div></td>
-                        <td class="px-4 py-3" data-label="Venue"><div class="skeleton-bar"></div></td>
-                        <td class="px-4 py-3" data-label="YT"><div class="skeleton-bar w-6 mx-auto"></div></td>
-                        <td class="px-4 py-3" data-label="IEM"><div class="skeleton-bar w-6 mx-auto"></div></td>
-                        <td class="px-4 py-3" data-label="Format"><div class="skeleton-bar w-10 mx-auto"></div></td>
-                        <td class="px-4 py-3" data-label="Audio"><div class="skeleton-bar w-32 ml-auto"></div></td>
-                    </tr>
-                </tbody>
+                <tbody id="recorded-tbody"></tbody>
             </table>
         </div>
     </section>
@@ -101,3 +82,4 @@
 <script src="script.js"></script>
 </body>
 </html>
+
