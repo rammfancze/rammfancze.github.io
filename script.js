@@ -3,6 +3,25 @@ const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvH
 
 let plyrInstances = [];
 
+// Opravený YouTube fetch s tvým klíčem
+async function fetchSubscribers() {
+    const apiKey = 'AIzaSyDDXVwQNZmlOyHiZqQIUYgMZ-w0QgZIX5g'; // Ujisti se, že je tento klíč v konzoli povolený
+    const channelId = 'UCRnSUbTJ-cS-ORYCEF9PEsQ';
+    try {
+        const response = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`);
+        const data = await response.json();
+        if(data.items && data.items.length > 0) {
+            const count = data.items[0].statistics.subscriberCount;
+            document.getElementById("subscriber-count").innerText = `${parseInt(count).toLocaleString()} subscribers`;
+        } else {
+            throw new Error("No data");
+        }
+    } catch (err) {
+        console.error("YouTube API error:", err);
+        document.getElementById("subscriber-count").innerText = 'YouTube channel';
+    }
+}
+
 function filterTable() {
     const input = document.getElementById('recorded-search');
     const filter = input.value.toLowerCase();
@@ -11,19 +30,6 @@ function filterTable() {
     for (let i = 0; i < rows.length; i++) {
         const text = rows[i].textContent.toLowerCase();
         rows[i].style.display = text.includes(filter) ? "" : "none";
-    }
-}
-
-async function fetchSubscribers() {
-    const apiKey = 'AIzaSyDDXVwQNZmlOyHiZqQIUYgMZ-w0QgZIX5g';
-    const channelId = 'UCRnSUbTJ-cS-ORYCEF9PEsQ';
-    try {
-        const response = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`);
-        const data = await response.json();
-        const count = data.items[0].statistics.subscriberCount;
-        document.getElementById("subscriber-count").innerText = `${parseInt(count).toLocaleString()} subscribers`;
-    } catch (err) {
-        document.getElementById("subscriber-count").innerText = 'YouTube channel';
     }
 }
 
