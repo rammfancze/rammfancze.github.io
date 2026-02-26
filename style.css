@@ -1,51 +1,132 @@
-:root { --plyr-color-main: #ef4444; }
-body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #111827; }
-h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
+:root { 
+    --plyr-color-main: #ef4444; 
+}
+
+body { 
+    font-family: 'Inter', sans-serif; 
+    overflow-x: hidden; 
+    background-color: #111827; 
+}
+
+h1, h2, h3 { 
+    font-family: 'Orbitron', sans-serif; 
+}
 
 /* Logo Trikolóra */
 .logo-c { color: #11457e !important; }
 .logo-ze { color: #d71920 !important; }
 
-/* Search bar */
-.search-wrapper { position: relative; width: 100%; margin-bottom: 1rem; }
-@media (min-width: 769px) { .search-wrapper { max-width: 300px; } }
-.search-input {
-    width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px; padding: 10px 12px 10px 40px; color: white; outline: none;
+/* Vyhledávání */
+.search-wrapper { 
+    position: relative; 
+    width: 100%; 
+    margin-bottom: 1rem; 
 }
-.search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #6b7280; }
+@media (min-width: 769px) { 
+    .search-wrapper { max-width: 300px; margin-bottom: 0; } 
+}
+.search-input {
+    width: 100%; 
+    background: rgba(255,255,255,0.05); 
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; 
+    padding: 10px 12px 10px 40px; 
+    color: white; 
+    outline: none;
+}
+.search-icon { 
+    position: absolute; 
+    left: 15px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    color: #6b7280; 
+}
 
-/* Mobilní karty */
+/* Mobilní karty (iPhone Fix) */
 @media (max-width: 768px) {
     main { padding: 1rem !important; }
     thead { display: none; }
     tbody tr {
-        display: block; background: #1f2937; border: 1px solid #374151;
-        border-radius: 12px; margin-bottom: 1.5rem; padding: 1rem; width: 100%; box-sizing: border-box;
+        display: block; 
+        background: rgba(255, 255, 255, 0.03); 
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px; 
+        margin-bottom: 1rem; 
+        padding: 1rem; 
+        width: 100%; 
+        box-sizing: border-box;
     }
-    tbody td { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 0; border-bottom: 1px solid #374151; }
+    tbody td { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        padding: 0.75rem 0; 
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+    }
     tbody td:last-child { border-bottom: none; }
-    tbody td::before { content: attr(data-label); font-weight: 600; color: #9ca3af; font-size: 0.7rem; text-transform: uppercase; }
-    
-    /* Sekce pro Audio na mobilu */
-    tbody td[data-label="Audio"] { flex-direction: column; align-items: stretch; gap: 10px; }
-    .plyr-container { width: 100% !important; }
+    tbody td::before { 
+        content: attr(data-label); 
+        font-weight: 600; 
+        color: #9ca3af; 
+        font-size: 0.7rem; 
+        text-transform: uppercase; 
+    }
+
+    /* Audio sekce na mobilu - srovnání do řádku k pravému okraji */
+    tbody td[data-label="Audio"] {
+        justify-content: flex-end;
+    }
+    .plyr-container { 
+        width: 100%; 
+        max-width: 260px; 
+    }
 }
 
-/* --- FIX PŘEHRÁVAČE (PLYR) --- */
-.plyr--audio .plyr__controls { background: transparent !important; padding: 0 !important; }
+/* --- DRSTICKÉ ZKRÁCENÍ ČAR PŘEHRÁVAČE (PLYR) --- */
 
-/* Zkrácení lišty hlasitosti */
-.plyr__volume { min-width: 40px !important; max-width: 80px !important; }
-.plyr__volume input[type="range"] { max-width: 40px !important; }
+.plyr--audio .plyr__controls { 
+    background: transparent !important; 
+    padding: 0 !important; 
+    gap: 4px !important;
+}
 
-/* Fix pro postupovou lištu, aby se nesrazila s hlasitostí */
-.plyr__progress { min-width: 50px !important; }
+/* 1. Zkrácení časové osy (bílá čára) */
+.plyr__progress {
+    flex: 0 1 80px !important; /* Základ 80px, víc ani ťuk */
+    min-width: 40px !important;
+}
 
+/* 2. Zkrácení hlasitosti (červená čára) */
+.plyr__volume {
+    flex: 0 0 65px !important; /* Celý blok hlasitosti */
+    min-width: unset !important;
+}
+
+.plyr__volume input[type="range"] {
+    max-width: 35px !important; /* Samotná červená linka */
+}
+
+/* 3. Specifické doladění pro velmi úzké displeje */
 @media (max-width: 480px) {
-    /* Na úplně malých mobilech zkrátíme hlasitost na minimum */
-    .plyr__volume { max-width: 60px !important; }
-    .plyr__volume input[type="range"] { max-width: 30px !important; }
-    .plyr__controls { gap: 4px !important; }
-    .plyr__time { font-size: 11px !important; }
+    .plyr__progress {
+        flex: 0 1 50px !important; /* Ještě kratší časová osa na mobilu */
+    }
+    .plyr__volume {
+        flex: 0 0 50px !important;
+    }
+    .plyr__volume input[type="range"] {
+        max-width: 25px !important; /* Hlasitost jen jako nezbytný kousek */
+    }
+    .plyr__time {
+        font-size: 11px !important;
+        padding: 0 2px !important;
+    }
+    .plyr__control {
+        padding: 4px !important; /* Menší tlačítko Play */
+    }
 }
+
+/* Animace načítání */
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.animate-skeleton { animation: pulse 1.5s infinite; }
+.skeleton-bar { height: 12px; background: rgba(156, 163, 175, 0.3); border-radius: 4px; width: 100%; }
