@@ -94,7 +94,11 @@ h1, h2, .font-orbitron {
     position: relative;
     width: 100%; /* Na mobilu se může roztáhnout */
     max-width: 300px; /* Ale maximálně na 300px */
+    .search-wrapper {
+    position: relative;
+    /* Žádné 'width' tady nebude, o to se stará Tailwind v HTML přes w-full a md:w-72 */
 }
+
 
 .search-input {
     background: rgba(255, 255, 255, 0.05);
@@ -122,4 +126,5 @@ h1, h2, .font-orbitron {
     transform: translateY(-50%);
     color: #6b7280;
 }
+
 
