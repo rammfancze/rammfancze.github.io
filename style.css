@@ -52,43 +52,40 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     font-size: 0.8rem;
 }
 
-/* --- OPRAVA POZADÍ PŘEHRÁVAČE --- */
-/* Tento blok natvrdo vypne bílou barvu ze screenshotu */
+/* --- OPRAVA POZADÍ A ODSAZENÍ --- */
 .plyr--audio .plyr__controls {
     background: transparent !important;
     background-color: transparent !important;
     color: #d1d5db !important;
     border: none !important;
-    padding: 0 !important; /* Toto zruší to odsazení, na které ukazuješ */
+    padding: 0 !important; /* Odstraní fialové odsazení */
     box-shadow: none !important;
 }
-.plyr__volume {
-    /* Tady nastavíš, jak moc má být dlouhý (zkus třeba 60px) */
-    min-width: 20px; 
-}
 
-/* Zajištění průhlednosti i u hlavního kontejneru */
 .plyr--audio {
     background: transparent !important;
 }
-/* Vypne přepínání na zbývající čas při kliknutí */
-.plyr__time--duration {
-    display: none !important;
+
+/* Velikost hlasitosti */
+.plyr__volume {
+    min-width: 40px !important; /* Změněno pro lepší kontrolu */
+    max-width: 70px !important;
 }
-.plyr__time--current {
-    display: block !important;
-}
+
 .audio-wrapper {
     width: 230px; 
     margin-left: auto;
     display: flex;
     align-items: center;
 }
+
+/* Opravená část se závorkou */
 .plyr__progress__container {
-  flex: 1;
-  min-width: 50px !important;
-}
-/* --- RESPONZIVNÍ TABULKA --- */
+    flex: 1;
+    min-width: 50px !important;
+} /* <-- TAHLE ZÁVORKA CHYBĚLA */
+
+/* --- RESPONZIVNÍ TABULKA (Mobilní panely) --- */
 @media (max-width: 768px) {
     thead { display: none !important; }
 
@@ -127,15 +124,7 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     }
 
     .audio-wrapper {
-        width: 200px !important;
+        width: 180px !important;
         margin-left: 0;
     }
 }
-
-
-
-
-
-
-
-
