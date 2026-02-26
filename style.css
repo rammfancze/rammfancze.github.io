@@ -21,8 +21,13 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
 .search-wrapper {
     position: relative;
-    width: 100%;
-    max-width: 300px;
+    width: 100%; /* Na mobilu zabere 100% šířky */
+}
+
+@media (min-width: 768px) {
+    .search-wrapper {
+        max-width: 300px; /* Na desktopu se vrátí k původní šířce */
+    }
 }
 .search-input {
     width: 100%;
@@ -119,3 +124,4 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         gap: 4px;
     }
 }
+
