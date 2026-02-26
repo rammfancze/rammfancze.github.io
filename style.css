@@ -1,4 +1,4 @@
-/* --- ZÁKLADNÍ NASTAVENÍ A BARVY --- */
+/* --- ZÁKLADNÍ NASTAVENÍ --- */
 :root {
     --plyr-color-main: #ef4444; /* Rammstein červená */
 }
@@ -13,7 +13,7 @@ body {
 h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
 /* --- VYHLEDÁVÁNÍ --- */
-.search-wrapper { position: relative; width: 100%; }
+.search-wrapper { position: relative; width: 100%; margin-bottom: 1.5rem; }
 @media (min-width: 768px) { .search-wrapper { max-width: 300px; } }
 
 .search-input {
@@ -26,11 +26,10 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     outline: none;
     font-size: 0.875rem;
 }
-
 .search-input:focus { border-color: #ef4444; background: rgba(255,255,255,0.1); }
 
 /* --- PLYR AUDIO FIX (STOP BÍLÉMU POZADÍ) --- */
-/* Cílíme na všechny možné kontejnery, které by mohly být bílé */
+/* Agresivní odstranění pozadí a stínů */
 .plyr--audio .plyr__controls,
 .plyr--full-ui.plyr--audio .plyr__controls,
 div.plyr__controls {
@@ -43,12 +42,43 @@ div.plyr__controls {
     border: none !important;
 }
 
-/* Odstranění pozadí ze samotného audio elementu */
-.plyr--audio {
-    background: transparent !important;
-    box-shadow: none !important;
-}
+.plyr--audio { background: transparent !important; }
 
 /* SCHOVÁNÍ MÍNUSU (ZBÝVAJÍCÍ ČAS) */
-.plyr__time--duration {
-    display: none !important
+.plyr__time--duration { display: none !important; }
+
+/* ÚPRAVA PRVKŮ PŘEHRÁVAČE */
+.plyr__time--current { padding: 0 5px !important; font-variant-numeric: tabular-nums; }
+.plyr__volume { width: 45px !important; min-width: 40px !important; }
+.plyr__progress__container { padding: 0 10px !important; }
+
+/* ZAROVNÁNÍ V TABULCE (DESKTOP) */
+.audio-wrapper {
+    width: 230px; 
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* --- RESPONZIVNÍ TABULKA (MOBILNÍ PANELY / KARTY) --- */
+/* Toto se aktivuje na mobilu nebo při zmenšení okna */
+@media screen and (max-width: 768px) {
+    /* Skryjeme záhlaví tabulky */
+    thead { display: none !important; }
+
+    /* Každý řádek (TR) se změní na kartu */
+    tbody tr {
+        display: block !important;
+        background: rgba(255, 255, 255, 0.03) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 12px !important;
+        margin-bottom: 1.5rem !important;
+        padding: 1rem !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Každá buňka (TD) se zarovná pod sebe */
+    tbody td {
+        display: flex !important;
