@@ -59,8 +59,10 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     background-color: transparent !important;
     color: #d1d5db !important;
     border: none !important;
+    padding: 0 !important; /* Toto zruší to odsazení, na které ukazuješ */
     box-shadow: none !important;
 }
+
 
 /* Zajištění průhlednosti i u hlavního kontejneru */
 .plyr--audio {
@@ -117,3 +119,4 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         margin-left: 0;
     }
 }
+
