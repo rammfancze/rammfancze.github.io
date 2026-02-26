@@ -74,7 +74,19 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 .plyr--audio {
     background: transparent !important;
 }
+/* Změna šířky samotného posuvníku hlasitosti */
+.plyr__volume {
+    /* Tady nastavíš, jak moc má být dlouhý (zkus třeba 60px) */
+    width: 60px !important; 
+    min-width: 60px !important;
+    max-width: 100px !important;
+}
 
+/* Pokud chceš zmenšit i ten prostor pro 'progress bar' (časovou osu), použiješ tohle: */
+.plyr__progress__container {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
 .audio-wrapper {
     width: 230px; 
     margin-left: auto;
@@ -125,5 +137,6 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         margin-left: 0;
     }
 }
+
 
 
