@@ -13,13 +13,17 @@ h1, h2, .font-orbitron {
     thead {
         display: none;
     }
-#recorded-table td {
-    height: 57px !important;      /* Toto je ta hlavní změna */
+/* VYNUCENÁ VÝŠKA PRO VŠECHNY BUŇKY */
+#recorded-table td, 
+#recorded-table tr,
+.mobile-card td { /* přidal jsem i třídu, pokud ji používáš */
+    height: 57px !important;
     min-height: 57px !important;
     max-height: 57px !important;
-    padding-top: 0 !important;    /* Vynulování vnitřního okraje nahoře */
-    padding-bottom: 0 !important; /* Vynulování vnitřního okraje dole */
-    vertical-align: middle;       /* Vycentrování textu na střed */
+    line-height: 57px !important; /* Toto srovná text na střed */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    box-sizing: border-box !important;
 }
     tr {
         display: block;
@@ -145,4 +149,5 @@ td[data-label="YT"] a:hover {
     pointer-events: none;
     z-index: 10;
 }
+
 
