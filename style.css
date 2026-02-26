@@ -52,32 +52,26 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     font-size: 0.8rem;
 }
 
-/* --- FIX PŘETÉKÁNÍ A POZADÍ (Plyr Audio) --- */
-.audio-wrapper {
-    width: 230px; 
-    margin-left: auto;
-    margin-right: 12px; /* Tohle bezpečně odsadí celý přehrávač od kraje */
-    display: flex;
-    align-items: center;
-}
-
-/* Klíčová oprava: Force transparent a reset paddingu */
-.audio-wrapper .plyr--audio .plyr__controls {
+/* --- OPRAVA POZADÍ PŘEHRÁVAČE --- */
+/* Tento blok natvrdo vypne bílou barvu ze screenshotu */
+.plyr--audio .plyr__controls {
     background: transparent !important;
     background-color: transparent !important;
     color: #d1d5db !important;
-    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
-/* Zkrácení lišty hlasitosti, aby puntík nepřečníval */
-.audio-wrapper .plyr__volume {
-    min-width: 45px !important;
-    max-width: 65px !important;
-    margin-right: 10px !important;
+/* Zajištění průhlednosti i u hlavního kontejneru */
+.plyr--audio {
+    background: transparent !important;
 }
 
-.plyr__control--overlaid {
-    background: #ef4444 !important;
+.audio-wrapper {
+    width: 230px; 
+    margin-left: auto;
+    display: flex;
+    align-items: center;
 }
 
 /* --- RESPONZIVNÍ TABULKA --- */
@@ -119,8 +113,7 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     }
 
     .audio-wrapper {
-        width: 180px !important;
-        margin-right: 0;
+        width: 200px !important;
         margin-left: 0;
     }
 }
