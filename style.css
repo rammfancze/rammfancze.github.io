@@ -62,7 +62,12 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     padding: 0 !important; /* Toto zruší to odsazení, na které ukazuješ */
     box-shadow: none !important;
 }
-
+.plyr__volume {
+    /* Tady nastavíš, jak moc má být dlouhý (zkus třeba 60px) */
+    width: 55px !important; 
+    min-width: 50px !important;
+    max-width: 65px !important;
+}
 
 /* Zajištění průhlednosti i u hlavního kontejneru */
 .plyr--audio {
@@ -119,4 +124,5 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         margin-left: 0;
     }
 }
+
 
