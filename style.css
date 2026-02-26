@@ -96,8 +96,11 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     }
     
     .plyr__volume {
-        max-width: 50px !important; /* Na mobilu ještě o chlup kratší */
-    }
+    flex: 0 1 50px !important; /* Zakáže automatické roztahování, základ je 50px */
+    min-width: 40px !important;
+    max-width: 50px !important;
+    margin-left: 5px !important;
+}
 
     /* Pokud by se to pořád nevešlo, tohle trochu zmenší text času */
     .plyr__time {
@@ -105,3 +108,4 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         padding: 0 5px !important;
     }
 }
+
