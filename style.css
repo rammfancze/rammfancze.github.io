@@ -56,8 +56,7 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 .plyr--audio .plyr__controls {
     background: transparent !important;
     color: #d1d5db !important;
-    /* Přidáme padding po stranách, aby puntíky nelezly ven */
-    padding: 0 12px !important; 
+    padding: 0 5px !important; 
 }
 
 .audio-wrapper {
@@ -123,3 +122,4 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         margin-left: 0;
     }
 }
+
