@@ -86,7 +86,7 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 /* Zkrácení volume slideru, aby neuhýbal z karty */
 .plyr__volume {
     min-width: 40px !important;
-    max-width: 70px !important;
+    max-width: 60px !important;
 }
 
 /* Fix pro mobilní zobrazení ovládání */
@@ -96,7 +96,7 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     }
     
     .plyr__volume {
-    flex: 0 1 50px !important; /* Zakáže automatické roztahování, základ je 50px */
+    flex: 0 1 50px !important; /* Zakáže automatické roztahování, základ je 40px */
     min-width: 40px !important;
     max-width: 50px !important;
     margin-left: 5px !important;
@@ -108,4 +108,5 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         padding: 0 5px !important;
     }
 }
+
 
