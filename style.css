@@ -48,24 +48,29 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     font-size: 0.8rem;
 }
 
-/* Oprava Plyr a Volume */
+/* --- Plyr Úpravy --- */
 .plyr--audio .plyr__controls {
     background: transparent !important;
     padding: 0;
     color: #d1d5db !important;
 }
+
+/* ZMENŠENÍ VOLUME POSUVNÍKU */
 .plyr__volume {
-    display: flex !important; /* Vynutit zobrazení volume */
-    max-width: 100px;
+    display: flex !important;
+    min-width: 50px !important; /* Základní šířka */
+    max-width: 80px !important;  /* Maximální délka posuvníku */
 }
+
 .plyr__control--overlaid {
     background: #ef4444 !important;
 }
 
-/* --- RESPONZIVNÍ TABULKA (Table to Cards) - OPRAVENO --- */
+/* --- RESPONZIVNÍ TABULKA (Table to Cards) --- */
 @media (max-width: 768px) {
     thead { display: none !important; }
 
+    /* Zarovnání panelů, aby byly stejně široké jako sekce nad nimi */
     tbody tr {
         display: flex !important;
         flex-direction: column !important;
@@ -74,6 +79,8 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         border-radius: 0.75rem !important;
         margin-bottom: 1.5rem !important;
         padding: 1rem !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     tbody td {
@@ -83,7 +90,6 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         padding: 0.75rem 0 !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
         width: 100% !important;
-        text-align: right !important;
     }
 
     tbody td:last-child { border-bottom: none !important; }
@@ -97,4 +103,15 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         text-transform: uppercase;
         letter-spacing: 0.05em;
         flex-shrink: 0;
-        text-align:
+    }
+
+    /* Úprava kontejneru pro audio na mobilu */
+    .audio-container {
+        width: 100% !important; /* Na mobilu zabere dostupný prostor */
+        max-width: 210px !important; /* Ale nebude zbytečně dlouhý */
+    }
+
+    .plyr {
+        width: 100% !important;
+    }
+}
