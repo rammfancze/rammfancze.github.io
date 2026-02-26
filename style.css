@@ -48,16 +48,16 @@ h1, h2, .font-orbitron {
         text-align: left;
     }
 
-    /* Úprava audio přehrávače na mobilu - zarovnání doprava */
+    /* FIX ZAROVNÁNÍ PŘEHRÁVAČE NA MOBILU */
     .audio-wrapper {
         width: 100% !important;
-        max-width: 200px;
-        margin-left: auto; /* Přitlačí přehrávač doprava k textu */
+        max-width: 220px; /* Upraveno, aby byl delší jako na tvém screenu */
+        margin-left: auto;
         margin-right: 0;
     }
 }
 
-/* --- Plyr Úpravy (aby seděly do tabulky) --- */
+/* --- Plyr Úpravy --- */
 .plyr--audio .plyr__controls {
     background: transparent !important;
     padding: 0 !important;
@@ -69,8 +69,72 @@ h1, h2, .font-orbitron {
     margin-left: auto;
 }
 
-.plyr__volume {
-    min-width: 70px !important;
+/* --- Stabilizace YouTube ikony --- */
+td[data-label="YT"] a {
+    display: inline-flex;
+    transition: transform 0.2s ease;
 }
 
-/* --- Stabilizace
+td[data-label="YT"] a:hover {
+    transform: scale(1.1);
+}
+
+/* --- Animace pro Skeleton --- */
+.skeleton-bar {
+    height: 1rem;
+    background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 0.25rem;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* --- VYHLEDÁVACÍ POLE (Fix bílého pozadí) --- */
+.search-wrapper {
+    position: relative;
+}
+
+.search-input {
+    /* Vynucení tmavého pozadí */
+    background-color: rgba(255, 255, 255, 0.05) !important; 
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.2s;
+    width: 100%;
+    color: white !important; /* Vynucení bílého textu */
+    
+    /* Vypnutí defaultních stylů prohlížeče */
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+/* Fix pro automatické doplňování (aby to nezbělelo po kliknutí) */
+.search-input:-webkit-autofill,
+.search-input:-webkit-autofill:hover, 
+.search-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: white;
+    -webkit-box-shadow: 0 0 0px 1000px #1f2937 inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.search-input:focus {
+    border-color: #ef4444 !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    pointer-events: none;
+    z-index: 10;
+}
