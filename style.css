@@ -71,7 +71,13 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 .plyr--audio {
     background: transparent !important;
 }
-
+/* Vypne přepínání na zbývající čas při kliknutí */
+.plyr__time--duration {
+    display: none !important;
+}
+.plyr__time--current {
+    display: block !important;
+}
 .audio-wrapper {
     width: 230px; 
     margin-left: auto;
@@ -125,6 +131,7 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         margin-left: 0;
     }
 }
+
 
 
 
