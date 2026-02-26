@@ -1,42 +1,27 @@
-/* --- 1. ZÁKLADNÍ NASTAVENÍ A FONTY --- */
+/* --- Základní nastavení a Fonty --- */
 body {
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
-    background-color: #0f172a;
 }
 
 h1, h2, .font-orbitron {
     font-family: 'Orbitron', sans-serif;
 }
 
-/* --- 2. DESKTOP TABULKA (Výška 57px) --- */
-#recorded-table td {
-    height: 57px !important;
-    min-height: 57px !important;
-    max-height: 57px !important;
-    vertical-align: middle;
-    padding: 0 1rem !important;
-    border-bottom: 1px solid rgba(75, 85, 99, 0.2);
-    background: transparent !important;
-}
-
-/* Audio v desktopu - roztažení */
-#recorded-table td[data-label="Audio"] {
-    display: table-cell; /* Změna z flex na table-cell pro lepší stabilitu v desktopu */
-    text-align: right;
-}
-
-/* --- 3. MOBILNÍ ZOBRAZENÍ (Karty) --- */
+/* --- Responzivní Tabulka (Změna na panely/karty) --- */
 @media (max-width: 768px) {
-    thead { display: none; }
+    thead {
+        display: none;
+    }
 
     tr {
         display: block;
         margin-bottom: 1.5rem;
-        background: rgba(0, 0, 0, 0.4) !important;
+        background: rgba(0, 0, 0, 0.4);
         border: 1px solid rgba(75, 85, 99, 0.4);
         border-radius: 0.75rem;
         padding: 0.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
 
     td {
@@ -44,13 +29,14 @@ h1, h2, .font-orbitron {
         justify-content: space-between;
         align-items: center;
         text-align: right;
-        padding: 0 0.75rem !important;
-        height: 57px !important;
-        min-height: 57px !important;
+        padding: 0.75rem 0.5rem !important;
         border-bottom: 1px solid rgba(75, 85, 99, 0.2);
+        min-height: 45px;
     }
 
-    td:last-child { border-bottom: none; }
+    td:last-child {
+        border-bottom: none;
+    }
 
     td::before {
         content: attr(data-label);
@@ -58,76 +44,42 @@ h1, h2, .font-orbitron {
         text-transform: uppercase;
         font-size: 0.75rem;
         color: #9ca3af;
+        margin-right: 1rem;
+        text-align: left;
     }
 
-    /* Přehrávač na mobilu - ROZTAŽENÍ NA MAX */
+    /* FIX ZAROVNÁNÍ PŘEHRÁVAČE NA MOBILU */
     .audio-wrapper {
-        flex-grow: 1; /* Zabere veškeré volné místo v řádku */
-        max-width: 250px; /* Aby nebyl úplně přes celý mobil, ale dost dlouhý */
-        margin-left: 1rem;
-        display: flex;
-        align-items: center;
+        width: 100% !important;
+        max-width: 220px; /* Upraveno, aby byl delší jako na tvém screenu */
+        margin-left: auto;
+        margin-right: 0;
     }
 }
 
-/* --- 4. STOP BÍLÉMU POZADÍ & FIX ŠÍŘKY PŘEHRÁVAČE --- */
-
-/* Vyhledávání */
-.search-input {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
-    border-radius: 4px;
-    padding: 0.5rem 1rem 0.5rem 2.5rem;
-    width: 100%;
-    outline: none;
-}
-
-/* PLYR FIX: Odstranění bílé a vynucení šířky */
-.audio-wrapper .plyr--audio {
-    width: 100% !important; /* Toto roztáhne ten přehrávač zpět! */
+/* --- Plyr Úpravy --- */
+.plyr--audio .plyr__controls {
     background: transparent !important;
-}
-
-.audio-wrapper .plyr__controls {
-    background: transparent !important;
-    background-color: transparent !important;
-    color: #d1d5db !important;
-    width: 100% !important;
     padding: 0 !important;
+    color: #d1d5db !important;
 }
 
-/* Fix pro volume bar v Plyru, aby nebyl bílý */
-.plyr--audio .plyr__control:hover,
-.plyr--audio .plyr__control.plyr__tab-focus,
-.plyr--audio .plyr__control[aria-expanded=true] {
-    background: rgba(255, 255, 255, 0.1) !important;
+.audio-wrapper {
+    width: 240px;
+    margin-left: auto;
 }
 
-/* Fix pro Autofill */
-input:-webkit-autofill {
-    -webkit-text-fill-color: white !important;
-    -webkit-box-shadow: 0 0 0px 1000px #1e293b inset !important;
-}
-
-/* --- 5. OSTATNÍ --- */
-.search-wrapper { position: relative; }
-
-.search-icon {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6b7280;
-    z-index: 10;
-}
-
+/* --- Stabilizace YouTube ikony --- */
 td[data-label="YT"] a {
     display: inline-flex;
     transition: transform 0.2s ease;
 }
-td[data-label="YT"] a:hover { transform: scale(1.1); }
 
+td[data-label="YT"] a:hover {
+    transform: scale(1.1);
+}
+
+/* --- Animace pro Skeleton --- */
 .skeleton-bar {
     height: 1rem;
     background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
@@ -139,4 +91,50 @@ td[data-label="YT"] a:hover { transform: scale(1.1); }
 @keyframes loading {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
+}
+
+/* --- VYHLEDÁVACÍ POLE (Fix bílého pozadí) --- */
+.search-wrapper {
+    position: relative;
+}
+
+.search-input {
+    /* Vynucení tmavého pozadí */
+    background-color: rgba(255, 255, 255, 0.05) !important; 
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.2s;
+    width: 100%;
+    color: white !important; /* Vynucení bílého textu */
+    
+    /* Vypnutí defaultních stylů prohlížeče */
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+/* Fix pro automatické doplňování (aby to nezbělelo po kliknutí) */
+.search-input:-webkit-autofill,
+.search-input:-webkit-autofill:hover, 
+.search-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: white;
+    -webkit-box-shadow: 0 0 0px 1000px #1f2937 inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.search-input:focus {
+    border-color: #ef4444 !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    pointer-events: none;
+    z-index: 10;
 }
