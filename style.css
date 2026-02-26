@@ -64,7 +64,7 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 }
 .plyr__volume {
     /* Tady nastavíš, jak moc má být dlouhý (zkus třeba 60px) */
-    width: 55px !important; 
+    min-width: 20px; 
 }
 
 /* Zajištění průhlednosti i u hlavního kontejneru */
@@ -122,6 +122,7 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         margin-left: 0;
     }
 }
+
 
 
 
