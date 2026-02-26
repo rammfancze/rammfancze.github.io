@@ -89,29 +89,37 @@ h1, h2, .font-orbitron {
     100% { background-position: -200% 0; }
 }
 
-/* --- Search input barva --- */
+/* Vyhledávací pole - hranatější a vpravo */
 .search-wrapper {
     position: relative;
-    display: flex;
-    align-items: center;
+    width: 100%; /* Na mobilu se může roztáhnout */
+    max-width: 300px; /* Ale maximálně na 300px */
 }
 
 .search-input {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 0.5rem 1rem 0.5rem 2.5rem;
-    border-radius: 9999px;
+    
+    /* HRANATÉ ROHY */
+    border-radius: 4px; /* Pro úplně ostré rohy dej 0px */
+    
     outline: none;
     transition: all 0.2s;
+    width: 100%;
+    color: white;
 }
 
 .search-input:focus {
-    border-color: #ef4444;
-    background: rgba(255,255,255,0.1);
+    border-color: #ef4444; /* Červená barva při kliknutí */
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .search-icon {
     position: absolute;
     left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
     color: #6b7280;
 }
+
