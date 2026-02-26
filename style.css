@@ -8,25 +8,30 @@ h1, h2, .font-orbitron {
     font-family: 'Orbitron', sans-serif;
 }
 
-/* --- Responzivní Tabulka (Změna na panely/karty) --- */
-@media (max-width: 768px) {
-    thead {
-        display: none;
-    }
-/* Jednotná výška buněk v klasické tabulce */
+/* --- JEDNOTNÁ VÝŠKA PRO DESKTOP --- */
 #recorded-table td {
-    height: 60px; /* Ideální výška, aby se vešel přehrávač i ikony */
+    height: 57px; 
+    min-height: 57px;
+    max-height: 57px;
     vertical-align: middle;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+    overflow: hidden; /* Zabrání roztažení řádku obsahem */
 }
 
 /* Specifické zarovnání pro audio v desktopu */
 #recorded-table td[data-label="Audio"] {
     display: flex;
     align-items: center;
-    justify-content: flex-end; /* Přitlačí přehrávač doprava v buňce */
+    justify-content: flex-end;
 }
+
+/* --- Responzivní Tabulka (Mobilní zobrazení) --- */
+@media (max-width: 768px) {
+    thead {
+        display: none;
+    }
+
     tr {
         display: block;
         margin-bottom: 1.5rem;
@@ -36,120 +41,9 @@ h1, h2, .font-orbitron {
         padding: 0.5rem;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
- 
+
     td {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        text-align: right;
-        padding: 0.75rem 0.5rem !important;
-        border-bottom: 1px solid rgba(75, 85, 99, 0.2);
-        min-height: 45px;
-    }
-
-    td:last-child {
-        border-bottom: none;
-    }
-
-    td::before {
-        content: attr(data-label);
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        color: #9ca3af;
-        margin-right: 1rem;
-        text-align: left;
-    }
-
-    /* FIX ZAROVNÁNÍ PŘEHRÁVAČE NA MOBILU */
-    .audio-wrapper {
-        width: 100% !important;
-        max-width: 220px; /* Upraveno, aby byl delší jako na tvém screenu */
-        margin-left: auto;
-        margin-right: 0;
-    }
-}
-
-/* --- Plyr Úpravy --- */
-.plyr--audio .plyr__controls {
-    background: transparent !important;
-    padding: 0 !important;
-    color: #d1d5db !important;
-}
-
-.audio-wrapper {
-    width: 240px;
-    margin-left: auto;
-}
-
-/* --- Stabilizace YouTube ikony --- */
-td[data-label="YT"] a {
-    display: inline-flex;
-    transition: transform 0.2s ease;
-}
-
-td[data-label="YT"] a:hover {
-    transform: scale(1.1);
-}
-
-/* --- Animace pro Skeleton --- */
-.skeleton-bar {
-    height: 1rem;
-    background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
-    background-size: 200% 100%;
-    animation: loading 1.5s infinite;
-    border-radius: 0.25rem;
-}
-
-@keyframes loading {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-}
-
-/* --- VYHLEDÁVACÍ POLE (Fix bílého pozadí) --- */
-.search-wrapper {
-    position: relative;
-}
-
-.search-input {
-    /* Vynucení tmavého pozadí */
-    background-color: rgba(255, 255, 255, 0.05) !important; 
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    
-    padding: 0.5rem 1rem 0.5rem 2.5rem;
-    border-radius: 4px;
-    outline: none;
-    transition: all 0.2s;
-    width: 100%;
-    color: white !important; /* Vynucení bílého textu */
-    
-    /* Vypnutí defaultních stylů prohlížeče */
-    appearance: none;
-    -webkit-appearance: none;
-}
-
-/* Fix pro automatické doplňování (aby to nezbělelo po kliknutí) */
-.search-input:-webkit-autofill,
-.search-input:-webkit-autofill:hover, 
-.search-input:-webkit-autofill:focus {
-    -webkit-text-fill-color: white;
-    -webkit-box-shadow: 0 0 0px 1000px #1f2937 inset;
-    transition: background-color 5000s ease-in-out 0s;
-}
-
-.search-input:focus {
-    border-color: #ef4444 !important;
-    background-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-.search-icon {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6b7280;
-    pointer-events: none;
-    z-index: 10;
-}
-
-
+        text-
