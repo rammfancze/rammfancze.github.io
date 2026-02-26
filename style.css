@@ -52,32 +52,32 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     font-size: 0.8rem;
 }
 
-/* --- FIX PŘETÉKÁNÍ (Zesílený selektor) --- */
-.audio-wrapper .plyr--audio .plyr__controls {
-    background: transparent !important;
-    color: #d1d5db !important;
-    /* Pokud chceš 'zastrčit' vnitřek víc, zvyš druhou hodnotu (např. na 15px nebo 20px) */
-    padding: 0 15px !important; 
-}
-
+/* --- FIX PŘETÉKÁNÍ A POZADÍ (Plyr Audio) --- */
 .audio-wrapper {
-    width: 260px; /* Mírně zvětšíme kontejner */
+    width: 230px; 
     margin-left: auto;
+    margin-right: 12px; /* Tohle bezpečně odsadí celý přehrávač od kraje */
     display: flex;
     align-items: center;
-    box-sizing: border-box;
 }
 
-/* Fix pro volume bar - aby nebyl moc široký a měl místo */
-.plyr__volume {
-    min-width: 60px !important;
-    max-width: 80px !important;
-    margin-left: 8px !important;
+/* Klíčová oprava: Force transparent a reset paddingu */
+.audio-wrapper .plyr--audio .plyr__controls {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #d1d5db !important;
+    padding: 0 !important;
 }
 
-/* Zarovnání času a play tlačítka */
-.plyr__time {
-    font-variant-numeric: tabular-nums;
+/* Zkrácení lišty hlasitosti, aby puntík nepřečníval */
+.audio-wrapper .plyr__volume {
+    min-width: 45px !important;
+    max-width: 65px !important;
+    margin-right: 10px !important;
+}
+
+.plyr__control--overlaid {
+    background: #ef4444 !important;
 }
 
 /* --- RESPONZIVNÍ TABULKA --- */
@@ -119,9 +119,8 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     }
 
     .audio-wrapper {
-        width: 200px !important;
+        width: 180px !important;
+        margin-right: 0;
         margin-left: 0;
     }
 }
-
-
