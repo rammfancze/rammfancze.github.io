@@ -1,47 +1,51 @@
 :root { --plyr-color-main: #ef4444; }
-body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
+body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #111827; }
 h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
-/* Trikolóra v logu */
+/* Logo Trikolóra */
 .logo-c { color: #11457e !important; }
 .logo-ze { color: #d71920 !important; }
 
 /* Search bar */
-.search-wrapper { position: relative; width: 100%; }
+.search-wrapper { position: relative; width: 100%; margin-bottom: 1rem; }
 @media (min-width: 769px) { .search-wrapper { max-width: 300px; } }
 .search-input {
     width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px; padding: 8px 12px 8px 35px; color: white; outline: none;
+    border-radius: 8px; padding: 10px 12px 10px 40px; color: white; outline: none;
 }
-.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; }
+.search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #6b7280; }
 
 /* Mobilní karty */
 @media (max-width: 768px) {
     main { padding: 1rem !important; }
+    thead { display: none; }
     tbody tr {
-        display: block; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px; margin-bottom: 1rem; padding: 1rem;
+        display: block; background: #1f2937; border: 1px solid #374151;
+        border-radius: 12px; margin-bottom: 1.5rem; padding: 1rem; width: 100%; box-sizing: border-box;
     }
-    tbody td { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    tbody td { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 0; border-bottom: 1px solid #374151; }
     tbody td:last-child { border-bottom: none; }
     tbody td::before { content: attr(data-label); font-weight: 600; color: #9ca3af; font-size: 0.7rem; text-transform: uppercase; }
-    tbody td[data-label="Audio"] { flex-direction: column; align-items: flex-end; gap: 0.5rem; }
-    .plyr { width: 100% !important; max-width: 250px; }
+    
+    /* Sekce pro Audio na mobilu */
+    tbody td[data-label="Audio"] { flex-direction: column; align-items: stretch; gap: 10px; }
+    .plyr-container { width: 100% !important; }
 }
 
-/* TOTÁLNÍ FIX VOLUME SLIDERU */
-.plyr__volume input[type="range"] {
-    max-width: 40px !important; /* Toto zkrátí tu vnitřní čárku */
-    flex: 0 0 40px !important;
-}
-.plyr__volume {
-    min-width: unset !important;
-    max-width: 80px !important;
-    flex: 0 0 auto !important;
-}
-.plyr__controls { gap: 4px !important; }
+/* --- FIX PŘEHRÁVAČE (PLYR) --- */
+.plyr--audio .plyr__controls { background: transparent !important; padding: 0 !important; }
 
-@media (max-width: 768px) {
-    .plyr__volume input[type="range"] { max-width: 30px !important; }
+/* Zkrácení lišty hlasitosti */
+.plyr__volume { min-width: 40px !important; max-width: 80px !important; }
+.plyr__volume input[type="range"] { max-width: 40px !important; }
+
+/* Fix pro postupovou lištu, aby se nesrazila s hlasitostí */
+.plyr__progress { min-width: 50px !important; }
+
+@media (max-width: 480px) {
+    /* Na úplně malých mobilech zkrátíme hlasitost na minimum */
     .plyr__volume { max-width: 60px !important; }
+    .plyr__volume input[type="range"] { max-width: 30px !important; }
+    .plyr__controls { gap: 4px !important; }
+    .plyr__time { font-size: 11px !important; }
 }
