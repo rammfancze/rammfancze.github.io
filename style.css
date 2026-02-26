@@ -1,96 +1,54 @@
-/* --- ZÁKLAD A BARVY --- */
+/* --- ZÁKLADNÍ NASTAVENÍ A BARVY --- */
 :root {
-    --plyr-color-main: #ef4444;
+    --plyr-color-main: #ef4444; /* Rammstein červená */
 }
 
-body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: white; }
+body { 
+    font-family: 'Inter', sans-serif; 
+    background-color: #0f172a; 
+    color: white; 
+    margin: 0;
+}
+
 h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
-/* Vyhledávání */
+/* --- VYHLEDÁVÁNÍ --- */
 .search-wrapper { position: relative; width: 100%; }
 @media (min-width: 768px) { .search-wrapper { max-width: 300px; } }
+
 .search-input {
-    width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 6px; padding: 8px 12px 8px 35px; color: white; outline: none;
+    width: 100%; 
+    background: rgba(255,255,255,0.05); 
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px; 
+    padding: 8px 12px 8px 35px; 
+    color: white; 
+    outline: none;
+    font-size: 0.875rem;
 }
 
-/* --- FIX PŘEHRÁVAČE (To bílé pozadí a padding) --- */
-/* Zrušíme bílé pozadí, stíny a vnitřní okraje */
-.plyr--audio .plyr__controls {
+.search-input:focus { border-color: #ef4444; background: rgba(255,255,255,0.1); }
+
+/* --- PLYR AUDIO FIX (STOP BÍLÉMU POZADÍ) --- */
+/* Cílíme na všechny možné kontejnery, které by mohly být bílé */
+.plyr--audio .plyr__controls,
+.plyr--full-ui.plyr--audio .plyr__controls,
+div.plyr__controls {
     background: transparent !important;
     background-color: transparent !important;
+    background-image: none !important;
     padding: 0 !important;
-    margin: 0 !important;
     color: #d1d5db !important;
     box-shadow: none !important;
     border: none !important;
 }
 
+/* Odstranění pozadí ze samotného audio elementu */
 .plyr--audio {
     background: transparent !important;
+    box-shadow: none !important;
 }
 
-/* Schování zbývajícího času (mínusu) */
+/* SCHOVÁNÍ MÍNUSU (ZBÝVAJÍCÍ ČAS) */
 .plyr__time--duration {
-    display: none !important;
-}
-
-/* Zarovnání uplynulého času */
-.plyr__time--current {
-    padding: 0 5px !important;
-}
-
-/* Velikost ovládacích prvků */
-.plyr__volume {
-    width: 45px !important; 
-    min-width: 40px !important;
-}
-
-.plyr__progress__container {
-    padding: 0 10px !important;
-}
-
-/* Obal v tabulce - zarovnání vpravo */
-.audio-wrapper {
-    width: 230px; 
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-}
-
-/* Mezery mezi ikonami */
-.plyr__controls__item {
-    margin-left: 2px !important;
-}
-
-/* --- RESPONZIVNÍ TABULKA (Karty na mobilu) --- */
-@media (max-width: 768px) {
-    thead { display: none !important; }
-
-    tbody tr {
-        display: flex !important; flex-direction: column !important;
-        background: rgba(255, 255, 255, 0.03) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        border-radius: 0.75rem !important; margin-bottom: 1rem !important;
-        padding: 1rem !important;
-    }
-
-    tbody td {
-        display: flex !important; justify-content: space-between !important;
-        align-items: center !important; padding: 0.5rem 0 !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-    }
-
-    tbody td:last-child { border-bottom: none !important; }
-
-    tbody td::before {
-        content: attr(data-label); font-weight: 600; color: #9ca3af;
-        font-size: 0.7rem; text-transform: uppercase;
-    }
-
-    .audio-wrapper {
-        width: 180px !important;
-        margin-left: 0;
-    }
-}
+    display: none !important
