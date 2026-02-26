@@ -40,46 +40,51 @@ td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
 .plyr__progress { flex: 0 1 120px !important; min-width: 50px !important; }
 .plyr__volume { flex: 0 1 80px !important; min-width: 40px !important; }
 
-/* --- MOBILNÍ ZOBRAZENÍ (Karty bez chyb) --- */
-@media (max-width: 768px) {
-    /* Skryje hlavičku tabulky na mobilu */
-    thead { display: none; }
-    
+
     /* Z řádku uděláme kartu */
-    tbody tr {
-        display: block;
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 12px;
-        margin-bottom: 20px;
-        padding: 16px;
+    @media (max-width: 768px) {
+    /* Zarovnání buněk - zajistí, že text bude vlevo a hodnota vpravo */
+    tbody td {
+        display: flex !important;
+        flex-direction: row !important; /* Vynutí řádek i na mobilu */
+        justify-content: space-between !important;
+        align-items: center !important;
+        text-align: right !important;
+        padding: 10px 0 !important;
     }
 
-    /* Buňky pod sebou, ne přes sebe */
-    tbody td {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 0 !important;
-        border-bottom: 1px solid rgba(255,255,255,0.05) !important;
-        width: 100% !important;
-        text-align: right;
+    /* Specifická úprava pro poslední buňku s audiem */
+    tbody td[data-label="Audio"] {
+        flex-direction: row !important; /* AUDIO vlevo, player vpravo */
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 10px;
+    }
+
+    /* Zmenšení samotného Plyr playeru na mobilu */
+    .plyr--audio {
+        width: 160px !important; /* Fixní šířka, aby se vešel vedle textu Audio */
+        min-width: 160px !important;
+        background: transparent !important;
+    }
+
+    /* Extrémní zkrácení vnitřních čar playeru pro mobil */
+    .plyr__progress {
+        flex: 0 1 50px !important; /* Čára průběhu bude úplně krátká */
+        min-width: 30px !important;
     }
     
-    tbody td:last-child { border-bottom: none !important; flex-direction: column; align-items: flex-end; }
-
-    /* Název sloupce vlevo */
-    tbody td::before {
-        content: attr(data-label);
-        font-weight: 600;
-        color: #9ca3af;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        margin-right: 15px;
-        flex-shrink: 0;
-        text-align: left;
+    .plyr__volume {
+        display: none !important; /* Na mobilu hlasitost schováme, uživatel má tlačítka na boku telefonu */
     }
+
+    .plyr__time {
+        font-size: 10px !important;
+        padding: 0 4px !important;
+    }
+}
 
     /* Oprava přehrávače na mobilu */
     .plyr { width: 100% !important; max-width: 250px; margin-top: 5px; }
 }
+
