@@ -55,22 +55,27 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     color: #d1d5db !important;
 }
 
-/* ZMENŠENÍ VOLUME POSUVNÍKU */
+/* Kompaktní volume */
 .plyr__volume {
     display: flex !important;
-    min-width: 50px !important; /* Základní šířka */
-    max-width: 80px !important;  /* Maximální délka posuvníku */
+    min-width: 50px !important;
+    max-width: 80px !important;
 }
 
 .plyr__control--overlaid {
     background: #ef4444 !important;
 }
 
+/* Odsazení v tabulce pro desktop */
+#recorded-tbody tr td {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
 /* --- RESPONZIVNÍ TABULKA (Table to Cards) --- */
 @media (max-width: 768px) {
     thead { display: none !important; }
 
-    /* Zarovnání panelů, aby byly stejně široké jako sekce nad nimi */
     tbody tr {
         display: flex !important;
         flex-direction: column !important;
@@ -78,7 +83,8 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
         border-radius: 0.75rem !important;
         margin-bottom: 1.5rem !important;
-        padding: 1rem !important;
+        /* PŘIDÁNO: Odsazení obsahu od okrajů karty */
+        padding: 1rem 1.25rem !important; 
         width: 100% !important;
         box-sizing: border-box !important;
     }
@@ -92,7 +98,10 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         width: 100% !important;
     }
 
-    tbody td:last-child { border-bottom: none !important; }
+    /* Odebrání čáry u posledního řádku karty (Audio) */
+    tbody td:last-child { 
+        border-bottom: none !important; 
+    }
 
     tbody td::before {
         content: attr(data-label);
@@ -105,13 +114,8 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         flex-shrink: 0;
     }
 
-    /* Úprava kontejneru pro audio na mobilu */
+    /* Úprava audia pro mobil */
     .audio-container {
-        width: 100% !important; /* Na mobilu zabere dostupný prostor */
-        max-width: 210px !important; /* Ale nebude zbytečně dlouhý */
-    }
-
-    .plyr {
-        width: 100% !important;
-    }
-}
+        width: auto !important;
+        max-width: 200px !important;
+        margin-left: 0 !important; /* Na mobilu to necháme přirozeně v
