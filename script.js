@@ -38,7 +38,7 @@ async function nactiTabulky() {
             if (isRecorded) {
                 plyrInstances.forEach(p => p.destroy());
                 plyrInstances = Plyr.setup('.js-player', {
-                    controls: ['play', 'progress', 'current-time', 'mute', 'volume'],
+                    controls: ['play', 'progress', 'mute', 'volume'],
                     settings: []
                 });
                 
@@ -106,3 +106,4 @@ function vykresli(data, targetId, jeToRecorded) {
 
 fetchSubscribers();
 nactiTabulky();
+
