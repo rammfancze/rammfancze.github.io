@@ -1,41 +1,100 @@
-:root { --plyr-color-main: #ef4444; }
-body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
+:root {
+    --plyr-color-main: #ef4444;
+}
+
+body { font-family: 'Inter', sans-serif; }
 h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
-/* Logo trikolóra */
-.logo-c { color: #11457e; }
-.logo-ze { color: #d71920; }
-
-/* Animace */
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-.animate-skeleton { animation: pulse 1.5s infinite; }
-.skeleton-bar { height: 12px; background: rgba(156, 163, 175, 0.3); border-radius: 4px; width: 100%; }
-
-/* Vyhledávání */
-.search-wrapper { position: relative; width: 100%; max-width: 100%; }
-@media (min-width: 769px) { .search-wrapper { max-width: 300px; } }
-
-.search-input {
-    width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 6px; padding: 8px 12px 8px 35px; color: white; outline: none; font-size: 0.875rem; transition: all 0.2s;
+/* Animace pro Skeleton Loading */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
 }
-.search-input:focus { background: rgba(255,255,255,0.1); border-color: #ef4444; }
-.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; font-size: 0.8rem; }
+.animate-skeleton {
+    animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.skeleton-bar {
+    height: 12px;
+    background: rgba(156, 163, 175, 0.3);
+    border-radius: 4px;
+    width: 100%;
+}
 
-/* Plyr Custom */
-.plyr--audio .plyr__controls { background: transparent !important; color: #d1d5db !important; padding: 0; }
+/* Styl pro vyhledávání */
+.search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+}
+.search-input {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 8px 12px 8px 35px;
+    color: white;
+    outline: none;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+.search-input:focus {
+    background: rgba(255,255,255,0.1);
+    border-color: #ef4444;
+}
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    font-size: 0.8rem;
+}
 
-/* Mobilní fixy */
+/* Stylování Plyr přehrávače */
+.plyr--audio .plyr__controls {
+    background: transparent !important;
+    padding: 0;
+    color: #d1d5db !important;
+}
+.plyr__control--overlaid {
+    background: #ef4444 !important;
+}
+
+/* --- FIX PŘETÉKÁNÍ (Bílá a červená čára) --- */
+.plyr__progress { flex: 0 1 80px !important; min-width: 40px !important; }
+.plyr__volume { flex: 0 1 60px !important; min-width: 30px !important; }
+.plyr__volume input[type="range"] { max-width: 40px !important; }
+.plyr__time { font-size: 11px !important; padding: 0 2px !important; }
+
+/* RESPONZIVNÍ TABULKA (Table to Cards) */
 @media (max-width: 768px) {
-    main { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
     thead { display: none; }
     tbody tr {
-        display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.75rem;
-        margin-bottom: 1rem; padding: 1rem; width: 100%; box-sizing: border-box; overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0.75rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
     }
-    tbody td { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.6rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
     tbody td:last-child { border-bottom: none; }
-    tbody td::before { content: attr(data-label); font-weight: 600; color: #9ca3af; font-size: 0.75rem; text-transform: uppercase; }
-    .plyr { width: 100% !important; }
+    tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #9ca3af;
+        font-size: 0.75rem;
+        margin-right: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        flex-shrink: 0;
+    }
+    .plyr { width: 100%; min-width: 150px; }
 }
