@@ -116,12 +116,13 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
     .audio-container {
         width: 100% !important;
-        max-width: 200px !important;
-        margin-left: 0 !important;
+        max-width: 200px !important; /* Na mobilu o něco užší */
+        margin-right: -8px !important; /* Menší kompenzace pro mobilní zobrazení */
     }
 
     .plyr__controls {
         gap: 4px;
     }
 }
+
 
