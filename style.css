@@ -1,84 +1,98 @@
-/* --- ZÁKLADNÍ NASTAVENÍ --- */
-:root {
-    --plyr-color-main: #ef4444; /* Rammstein červená */
-}
-
+/* --- ZÁKLAD --- */
+:root { --plyr-color-main: #ef4444; }
 body { 
     font-family: 'Inter', sans-serif; 
     background-color: #0f172a; 
     color: white; 
     margin: 0;
+    overflow-x: hidden; /* Zabrání vodorovnému posouvání celé stránky */
 }
-
 h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
 /* --- VYHLEDÁVÁNÍ --- */
 .search-wrapper { position: relative; width: 100%; margin-bottom: 1.5rem; }
 @media (min-width: 768px) { .search-wrapper { max-width: 300px; } }
-
 .search-input {
-    width: 100%; 
-    background: rgba(255,255,255,0.05); 
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 6px; 
-    padding: 8px 12px 8px 35px; 
-    color: white; 
-    outline: none;
-    font-size: 0.875rem;
+    width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px; padding: 8px 12px 8px 35px; color: white; outline: none;
 }
-.search-input:focus { border-color: #ef4444; background: rgba(255,255,255,0.1); }
 
-/* --- PLYR AUDIO FIX (STOP BÍLÉMU POZADÍ) --- */
-/* Agresivní odstranění pozadí a stínů */
-.plyr--audio .plyr__controls,
-.plyr--full-ui.plyr--audio .plyr__controls,
-div.plyr__controls {
+/* --- PLYR AUDIO FIX (Stop bílé barvě a mínusu) --- */
+.plyr--audio .plyr__controls, div.plyr__controls {
     background: transparent !important;
-    background-color: transparent !important;
-    background-image: none !important;
     padding: 0 !important;
     color: #d1d5db !important;
     box-shadow: none !important;
     border: none !important;
 }
-
 .plyr--audio { background: transparent !important; }
-
-/* SCHOVÁNÍ MÍNUSU (ZBÝVAJÍCÍ ČAS) */
-.plyr__time--duration { display: none !important; }
-
-/* ÚPRAVA PRVKŮ PŘEHRÁVAČE */
-.plyr__time--current { padding: 0 5px !important; font-variant-numeric: tabular-nums; }
+.plyr__time--duration { display: none !important; } /* Schová mínus */
 .plyr__volume { width: 45px !important; min-width: 40px !important; }
 .plyr__progress__container { padding: 0 10px !important; }
 
-/* ZAROVNÁNÍ V TABULCE (DESKTOP) */
+/* Obal přehrávače v tabulce */
 .audio-wrapper {
-    width: 230px; 
+    width: 200px; 
     margin-left: auto;
     display: flex;
     align-items: center;
     justify-content: flex-end;
 }
 
-/* --- RESPONZIVNÍ TABULKA (MOBILNÍ PANELY / KARTY) --- */
-/* Toto se aktivuje na mobilu nebo při zmenšení okna */
-@media screen and (max-width: 768px) {
-    /* Skryjeme záhlaví tabulky */
-    thead { display: none !important; }
+/* --- TABULKA RESET (Proti scrollbaru) --- */
+table {
+    width: 100% !important;
+    border-collapse: collapse;
+    table-layout: auto;
+}
 
-    /* Každý řádek (TR) se změní na kartu */
-    tbody tr {
+/* --- MOBILNÍ PANELY (KARTY) --- */
+@media screen and (max-width: 850px) { /* Zvětšil jsem limit, aby to naskočilo dřív */
+    
+    /* Skryjeme původní tabulku */
+    thead { display: none !important; }
+    
+    /* Zamezíme tabulce, aby přetékala */
+    table, tbody, tr, td {
         display: block !important;
+        width: 100% !important;
+    }
+
+    tbody tr {
         background: rgba(255, 255, 255, 0.03) !important;
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
         border-radius: 12px !important;
         margin-bottom: 1.5rem !important;
         padding: 1rem !important;
-        width: 100% !important;
         box-sizing: border-box !important;
     }
 
-    /* Každá buňka (TD) se zarovná pod sebe */
     tbody td {
         display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 0.6rem 0 !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        text-align: right !important;
+        min-height: 40px;
+    }
+
+    tbody td:last-child { border-bottom: none !important; }
+
+    /* Popisky Artist, Date atd. */
+    tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #9ca3af;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        margin-right: 15px;
+        text-align: left;
+    }
+
+    .audio-wrapper {
+        width: 100% !important;
+        max-width: 200px;
+        margin-left: 0;
+    }
+}
