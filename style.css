@@ -83,3 +83,25 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         max-width: 250px; /* Aby nebyl přehrávač zbytečně obří */
     }
 }
+/* Zkrácení volume slideru, aby neuhýbal z karty */
+.plyr__volume {
+    min-width: 40px !important;
+    max-width: 70px !important;
+}
+
+/* Fix pro mobilní zobrazení ovládání */
+@media (max-width: 768px) {
+    .plyr__controls {
+        gap: 2px !important; /* Zmenší mezery mezi Play, Časem a Volume */
+    }
+    
+    .plyr__volume {
+        max-width: 50px !important; /* Na mobilu ještě o chlup kratší */
+    }
+
+    /* Pokud by se to pořád nevešlo, tohle trochu zmenší text času */
+    .plyr__time {
+        font-size: 12px !important;
+        padding: 0 5px !important;
+    }
+}
