@@ -42,31 +42,45 @@ td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
 
     /* Z řádku uděláme kartu */
-    @media (max-width: 768px) {
-    /* Zarovnání buněk - zajistí, že text bude vlevo a hodnota vpravo */
+   @media (max-width: 768px) {
+    /* Obecné nastavení pro všechny řádky v kartě */
     tbody td {
         display: flex !important;
-        flex-direction: row !important; /* Vynutí řádek i na mobilu */
         justify-content: space-between !important;
         align-items: center !important;
-        text-align: right !important;
         padding: 10px 0 !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
     }
 
-    /* Specifická úprava pro poslední buňku s audiem */
-    tbody td[data-label="Audio"] {
-        flex-direction: row !important; /* AUDIO vlevo, player vpravo */
-        justify-content: space-between !important;
+    /* Zrušíme ty věci, co jsi vypínal v inspektoru, pro jistotu i v kódu */
+    tbody td:last-child {
+        flex-direction: row !important; /* Vynutí řazení vedle sebe, ne pod sebou */
         align-items: center !important;
-        gap: 10px;
+        border-bottom: none !important;
     }
 
-    /* Zmenšení samotného Plyr playeru na mobilu */
-    .plyr--audio {
-        width: 160px !important; /* Fixní šířka, aby se vešel vedle textu Audio */
-        min-width: 160px !important;
-        background: transparent !important;
+    /* Kontejner pro player - zabere zbytek místa, ale nepodtlačí text */
+    .plyr-container {
+        flex-grow: 1;
+        max-width: 180px; /* Tady ovládáš, jak moc dlouhá bude ta čára přehrávače */
+        margin-left: 10px;
     }
+
+    /* Zkrácení čáry (progress bar) uvnitř playeru */
+    .plyr__progress {
+        min-width: 40px !important;
+    }
+
+    /* Skrytí hlasitosti na mobilu - ušetří hromadu místa */
+    .plyr__volume {
+        display: none !important;
+    }
+    
+    /* Zmenšení písma času, aby to neuskakovalo */
+    .plyr__time {
+        font-size: 10px !important;
+    }
+}
 
     /* Extrémní zkrácení vnitřních čar playeru pro mobil */
     .plyr__progress {
@@ -87,4 +101,5 @@ td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
     /* Oprava přehrávače na mobilu */
     .plyr { width: 100% !important; max-width: 250px; margin-top: 5px; }
 }
+
 
