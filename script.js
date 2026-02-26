@@ -1,7 +1,8 @@
 const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
 const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=314502273&single=true&output=tsv';
 
-let  = [];
+// Opraveno: Proměnná pro instance přehrávačů
+let plyrInstances = [];
 
 // Filtrování nahraných show
 function filterTable() {
@@ -41,18 +42,19 @@ async function nactiTabulky() {
             vykresli(text, targetId, isRecorded);
             
             if (isRecorded) {
-                // Vyčištění starých přehrávačů
-                .forEach(p => { if(p) p.destroy(); });
-                // Inicializace Plyr s ovládáním hlasitosti
-                 = PPlyr.setup('.js-player', {
-    controls: ['play', 'progress', 'current-time', 'mute', 'volume'],
-    i18n: {
-        currentTime: 'Uplynulý čas',
-        duration: 'Celkový čas',
-    },
-    invert: false, // Tohle natvrdo vypne ten mínusový odpočet
-    toggleInvert: false // A tohle zakáže přepnutí po kliknutí
-});
+                // Opraveno: Správné čištění a inicializace
+                plyrInstances.forEach(p => { if(p) p.destroy(); });
+                
+                plyrInstances = Plyr.setup('.js-player', {
+                    controls: ['play', 'progress', 'current-time', 'mute', 'volume'],
+                    i18n: {
+                        currentTime: 'Uplynulý čas',
+                        duration: 'Celkový čas',
+                    },
+                    invert: false,      // Vypne mínusový odpočet
+                    toggleInvert: false // Zakáže přepnutí na mínus po kliknutí
+                });
+
                 if (typeof refreshFsLightbox === "function") {
                     refreshFsLightbox();
                 }
@@ -69,6 +71,8 @@ async function nactiTabulky() {
 // Vykreslení řádků
 function vykresli(data, targetId, jeToRecorded) {
     const tbody = document.getElementById(targetId);
+    if (!tbody) return;
+    
     let radky = data.split('\n'); 
     radky.shift(); 
     radky.reverse(); 
@@ -101,21 +105,4 @@ function vykresli(data, targetId, jeToRecorded) {
                 </td>
                 <td class="px-4 py-3 md:table-cell" data-label="Audio">
                     <div class="audio-container">
-                        ${audioUrl && audioUrl.includes('http') ? `<audio class="js-player" controls src="${audioUrl}"></audio>` : ''}
-                    </div>
-                </td>
-            `;
-        } else {
-            tr.innerHTML = `
-                <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist">${col[0] || ''}</td>
-                <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
-                <td class="px-4 py-3" data-label="Venue">${col[2] || ''}</td>
-            `;
-        }
-        tbody.appendChild(tr);
-    }
-}
-
-fetchSubscribers();
-nactiTabulky();
-
+                        ${audioUrl && audioUrl.includes('http') ? `<audio class="js-player" controls src="${audioUrl
