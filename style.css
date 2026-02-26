@@ -52,40 +52,44 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     font-size: 0.8rem;
 }
 
-/* --- OPRAVA POZADÍ A ODSAZENÍ --- */
+/* --- PLYR FIX: PRŮHLEDNOST A POZICE --- */
+
+/* 1. Odstranění bílého pozadí a barvy textu ze screenshotu */
 .plyr--audio .plyr__controls {
     background: transparent !important;
     background-color: transparent !important;
     color: #d1d5db !important;
     border: none !important;
-    padding: 0 !important; /* Odstraní fialové odsazení */
     box-shadow: none !important;
+    padding: 0 !important;
 }
 
-.plyr--audio {
-    background: transparent !important;
-}
-
-/* Velikost hlasitosti */
-.plyr__volume {
-    min-width: 40px !important; /* Změněno pro lepší kontrolu */
-    max-width: 70px !important;
-}
-
+/* 2. Obal pro přehrávač - zastrčení od kraje */
 .audio-wrapper {
     width: 230px; 
     margin-left: auto;
+    margin-right: 15px; /* Bezpečný odstup od pravé hrany */
     display: flex;
     align-items: center;
 }
 
-/* Opravená část se závorkou */
-.plyr__progress__container {
-    flex: 1;
+/* 3. Fix hlasitosti - aby puntík nelezl ven */
+.plyr__volume {
     min-width: 50px !important;
-} /* <-- TAHLE ZÁVORKA CHYBĚLA */
+    max-width: 75px !important;
+}
 
-/* --- RESPONZIVNÍ TABULKA (Mobilní panely) --- */
+/* 4. Fix pro track a puntík (thumb) */
+.plyr--audio input[type=range]::-webkit-slider-runnable-track {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Barva Play tlačítka */
+.plyr__control--overlaid {
+    background: #ef4444 !important;
+}
+
+/* --- RESPONZIVNÍ TABULKA --- */
 @media (max-width: 768px) {
     thead { display: none !important; }
 
@@ -124,7 +128,8 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     }
 
     .audio-wrapper {
-        width: 180px !important;
+        width: 190px !important;
+        margin-right: 5px;
         margin-left: 0;
     }
 }
