@@ -13,7 +13,20 @@ h1, h2, .font-orbitron {
     thead {
         display: none;
     }
+/* Jednotná výška buněk v klasické tabulce */
+#recorded-table td {
+    height: 60px; /* Ideální výška, aby se vešel přehrávač i ikony */
+    vertical-align: middle;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
 
+/* Specifické zarovnání pro audio v desktopu */
+#recorded-table td[data-label="Audio"] {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Přitlačí přehrávač doprava v buňce */
+}
     tr {
         display: block;
         margin-bottom: 1.5rem;
@@ -138,3 +151,4 @@ td[data-label="YT"] a:hover {
     pointer-events: none;
     z-index: 10;
 }
+
