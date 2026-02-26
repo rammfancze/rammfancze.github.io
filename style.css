@@ -52,41 +52,34 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     font-size: 0.8rem;
 }
 
-/* --- PLYR FIX: PRŮHLEDNOST A POZICE --- */
-
-/* 1. Odstranění bílého pozadí a barvy textu ze screenshotu */
+/* --- OPRAVA POZADÍ PŘEHRÁVAČE --- */
+/* Tento blok natvrdo vypne bílou barvu ze screenshotu */
+/* Toto odstraní fialové odsazení (padding) a bílé pozadí */
 .plyr--audio .plyr__controls {
     background: transparent !important;
     background-color: transparent !important;
+    padding: 0 !important; /* Toto zruší to odsazení, na které ukazuješ */
     color: #d1d5db !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
 }
 
-/* 2. Obal pro přehrávač - zastrčení od kraje */
+/* Zajištění, že se i vnitřní položky nebudou zbytečně roztahovat */
+.plyr__controls__item {
+    margin-left: 5px !important; /* Menší mezery mezi ikonami */
+}
+.plyr__controls__item:first-child {
+    margin-left: 0 !important;
+}
+
+/* Zajištění průhlednosti i u hlavního kontejneru */
+.plyr--audio {
+    background: transparent !important;
+}
+
 .audio-wrapper {
     width: 230px; 
     margin-left: auto;
-    margin-right: 15px; /* Bezpečný odstup od pravé hrany */
     display: flex;
     align-items: center;
-}
-
-/* 3. Fix hlasitosti - aby puntík nelezl ven */
-.plyr__volume {
-    min-width: 50px !important;
-    max-width: 75px !important;
-}
-
-/* 4. Fix pro track a puntík (thumb) */
-.plyr--audio input[type=range]::-webkit-slider-runnable-track {
-    background: rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Barva Play tlačítka */
-.plyr__control--overlaid {
-    background: #ef4444 !important;
 }
 
 /* --- RESPONZIVNÍ TABULKA --- */
@@ -128,8 +121,9 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     }
 
     .audio-wrapper {
-        width: 190px !important;
-        margin-right: 5px;
+        width: 200px !important;
         margin-left: 0;
     }
 }
+
+
