@@ -1,105 +1,104 @@
 :root {
+    /* Nastavení barvy přehrávače na tvou červenou */
     --plyr-color-main: #ef4444;
 }
 
-body { 
-    font-family: 'Inter', sans-serif; 
-    overflow-x: hidden; /* Zamezí horizontálnímu posuvníku celého webu */
-}
+body { font-family: 'Inter', sans-serif; }
 h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
-/* Gradientní čára nad tabulkou */
-.gradient-line {
-    height: 1px;
+/* Animace pro Skeleton Loading */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+.animate-skeleton {
+    animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.skeleton-bar {
+    height: 12px;
+    background: rgba(156, 163, 175, 0.3);
+    border-radius: 4px;
     width: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
-    margin: 2rem 0;
 }
 
-/* Vyhledávání */
-.search-wrapper { position: relative; width: 100%; max-width: 320px; }
+/* Styl pro vyhledávání */
+.search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+}
 .search-input {
     width: 100%;
-    background: rgba(255,255,255,0.03);
+    background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px;
-    padding: 10px 12px 10px 40px;
+    border-radius: 6px;
+    padding: 8px 12px 8px 35px;
     color: white;
-    font-size: 0.85rem;
+    outline: none;
+    font-size: 0.875rem;
+    transition: all 0.2s;
 }
-.search-input:focus { border-color: #ef4444; outline: none; }
-.search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #4b5563; }
+.search-input:focus {
+    background: rgba(255,255,255,10.1);
+    border-color: #ef4444;
+}
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    font-size: 0.8rem;
+}
 
-/* Desktop Tabulka - Odsazení a fix šířky */
-table { width: 100%; border-collapse: collapse; }
-th { padding: 12px 16px; color: #6b7280; font-weight: 500; text-transform: uppercase; font-size: 0.75rem; }
-td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+/* Stylování Plyr přehrávače pro tabulku */
+.plyr--audio .plyr__controls {
+    background: transparent !important;
+    padding: 0;
+    color: #d1d5db !important;
+}
+.plyr__control--overlaid {
+    background: #ef4444 !important;
+}
 
-/* Plyr Player Fixes - Aby nepřetékal */
-.plyr--audio .plyr__controls { background: transparent !important; padding: 0; }
-.plyr__progress { flex: 0 1 120px !important; min-width: 50px !important; }
-.plyr__volume { flex: 0 1 80px !important; min-width: 40px !important; }
+/* --- RESPONZIVNÍ TABULKA (Table to Cards) --- */
+@media (max-width: 768px) {
+    thead { display: none; }
 
+    tbody tr {
+        display: flex;
+        flex-direction: column;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0.75rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
+    }
 
-    /* Z řádku uděláme kartu */
-   @media (max-width: 768px) {
-    /* Obecné nastavení pro všechny řádky v kartě */
     tbody td {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        padding: 10px 0 !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.6rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    /* Zrušíme ty věci, co jsi vypínal v inspektoru, pro jistotu i v kódu */
-    tbody td:last-child {
-        flex-direction: row !important; /* Vynutí řazení vedle sebe, ne pod sebou */
-        align-items: center !important;
-        border-bottom: none !important;
+    tbody td:last-child { border-bottom: none; }
+
+    tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #9ca3af;
+        font-size: 0.75rem;
+        margin-right: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        flex-shrink: 0;
     }
 
-    /* Kontejner pro player - zabere zbytek místa, ale nepodtlačí text */
-    .plyr-container {
-        flex-grow: 1;
-        max-width: 180px; /* Tady ovládáš, jak moc dlouhá bude ta čára přehrávače */
-        margin-left: 10px;
-    }
-
-    /* Zkrácení čáry (progress bar) uvnitř playeru */
-    .plyr__progress {
-        min-width: 40px !important;
-    }
-
-    /* Skrytí hlasitosti na mobilu - ušetří hromadu místa */
-    .plyr__volume {
-        display: none !important;
-    }
-    
-    /* Zmenšení písma času, aby to neuskakovalo */
-    .plyr__time {
-        font-size: 10px !important;
+    /* Plyr fix na mobilu */
+    .plyr {
+        width: 100%;
+        min-width: 180px;
     }
 }
-
-    /* Extrémní zkrácení vnitřních čar playeru pro mobil */
-    .plyr__progress {
-        flex: 0 1 50px !important; /* Čára průběhu bude úplně krátká */
-        min-width: 30px !important;
-    }
-    
-    .plyr__volume {
-        display: none !important; /* Na mobilu hlasitost schováme, uživatel má tlačítka na boku telefonu */
-    }
-
-    .plyr__time {
-        font-size: 10px !important;
-        padding: 0 4px !important;
-    }
-}
-
-    /* Oprava přehrávače na mobilu */
-    .plyr { width: 100% !important; max-width: 250px; margin-top: 5px; }
-}
-
-
