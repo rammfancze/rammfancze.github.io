@@ -42,6 +42,12 @@ h1, h2, h3 {
     color: #6b7280; 
 }
 
+/* IKONY - Návrat k tvým barvám */
+.fa-check { color: #10b981 !important; } /* Zelená fajfka */
+.fa-youtube { color: #ffffff !important; transition: color 0.2s; } /* Bílé YT logo */
+.fa-youtube:hover { color: #ff0000 !important; } /* Zčervená jen při hoveru */
+.fa-xmark { color: #4b5563 !important; } /* Šedý křížek */
+
 /* Mobilní karty (iPhone Fix) */
 @media (max-width: 768px) {
     main { padding: 1rem !important; }
@@ -72,58 +78,46 @@ h1, h2, h3 {
         text-transform: uppercase; 
     }
 
-    /* Audio sekce na mobilu - srovnání do řádku k pravému okraji */
+    /* ZAROVNÁNÍ AUDIO TEXTU DOLEVA */
     tbody td[data-label="Audio"] {
-        justify-content: flex-end;
+        justify-content: space-between; /* Text vlevo, player vpravo */
+        align-items: center;
     }
+    
     .plyr-container { 
-        width: 100%; 
-        max-width: 260px; 
+        width: auto; 
+        flex-grow: 0;
     }
 }
 
-/* --- DRSTICKÉ ZKRÁCENÍ ČAR PŘEHRÁVAČE (PLYR) --- */
-
+/* --- DRSTICKÉ ZKRÁCENÍ ČAR PŘEHRÁVAČE --- */
 .plyr--audio .plyr__controls { 
     background: transparent !important; 
     padding: 0 !important; 
     gap: 4px !important;
 }
 
-/* 1. Zkrácení časové osy (bílá čára) */
+/* Bílá časová osa */
 .plyr__progress {
-    flex: 0 1 80px !important; /* Základ 80px, víc ani ťuk */
+    flex: 0 1 80px !important; 
     min-width: 40px !important;
 }
 
-/* 2. Zkrácení hlasitosti (červená čára) */
+/* Červená hlasitost */
 .plyr__volume {
-    flex: 0 0 65px !important; /* Celý blok hlasitosti */
-    min-width: unset !important;
+    flex: 0 0 65px !important; 
 }
 
 .plyr__volume input[type="range"] {
-    max-width: 35px !important; /* Samotná červená linka */
+    max-width: 35px !important; 
 }
 
-/* 3. Specifické doladění pro velmi úzké displeje */
 @media (max-width: 480px) {
-    .plyr__progress {
-        flex: 0 1 50px !important; /* Ještě kratší časová osa na mobilu */
-    }
-    .plyr__volume {
-        flex: 0 0 50px !important;
-    }
-    .plyr__volume input[type="range"] {
-        max-width: 25px !important; /* Hlasitost jen jako nezbytný kousek */
-    }
-    .plyr__time {
-        font-size: 11px !important;
-        padding: 0 2px !important;
-    }
-    .plyr__control {
-        padding: 4px !important; /* Menší tlačítko Play */
-    }
+    .plyr__progress { flex: 0 1 50px !important; }
+    .plyr__volume { flex: 0 0 50px !important; }
+    .plyr__volume input[type="range"] { max-width: 25px !important; }
+    .plyr__time { font-size: 11px !important; padding: 0 2px !important; }
+    .plyr__control { padding: 4px !important; }
 }
 
 /* Animace načítání */
