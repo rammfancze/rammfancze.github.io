@@ -1,11 +1,12 @@
+/* --- ZÁKLADNÍ NASTAVENÍ --- */
 :root {
-    --plyr-color-main: #ef4444;
+    --plyr-color-main: #ef4444; /* Rammstein červená */
 }
 
 body { font-family: 'Inter', sans-serif; }
 h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
-/* Animace pro Skeleton Loading */
+/* --- ANIMACE A VYHLEDÁVÁNÍ --- */
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
@@ -20,7 +21,6 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     width: 100%;
 }
 
-/* Vyhledávání */
 .search-wrapper {
     position: relative;
     width: 100%;
@@ -50,92 +50,4 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     transform: translateY(-50%);
     color: #6b7280;
     font-size: 0.8rem;
-}
-
-/* --- OPRAVA POZADÍ A PADDINGU PŘEHRÁVAČE --- */
-.plyr--audio .plyr__controls {
-    background: transparent !important;
-    background-color: transparent !important;
-    padding: 0 !important; /* Odstraní fialové odsazení */
-    color: #d1d5db !important;
-    box-shadow: none !important;
-    border: none !important;
-}
-
-.plyr__controls__item {
-    margin-left: 5px !important;
-}
-.plyr__controls__item:first-child {
-    margin-left: 0 !important;
-}
-
-.plyr--audio {
-    background: transparent !important;
-}
-
-/* Velikost hlasitosti */
-.plyr__volume {
-    width: 53px !important; 
-    min-width: 50px !important;
-    max-width: 60px !important;
-}
-
-/* Fix času bez mínusu přes CSS pro jistotu */
-.plyr__time--duration { display: none !important; }
-.plyr__time--current { display: inline-block !important; }
-
-.plyr__progress__container {
-    padding-left: 10px !important;
-    padding-right: 10px !important;
-} /* <-- TADY CHYBĚLA TA ZÁVORKA */
-
-.audio-wrapper {
-    width: 230px; 
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-}
-
-/* --- RESPONZIVNÍ TABULKA --- */
-@media (max-width: 768px) {
-    thead { display: none !important; }
-
-    tbody tr {
-        display: flex !important;
-        flex-direction: column !important;
-        background: rgba(255, 255, 255, 0.03) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        border-radius: 0.75rem !important;
-        margin-bottom: 1.5rem !important;
-        padding: 1.25rem !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-    }
-
-    tbody td {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        padding: 0.75rem 0 !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-        width: 100% !important;
-    }
-
-    tbody td:last-child { border-bottom: none !important; }
-
-    tbody td::before {
-        content: attr(data-label);
-        font-weight: 600;
-        color: #9ca3af;
-        font-size: 0.75rem;
-        margin-right: 1rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        flex-shrink: 0;
-    }
-
-    .audio-wrapper {
-        width: 200px !important;
-        margin-left: 0;
-    }
 }
