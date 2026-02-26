@@ -52,33 +52,35 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     font-size: 0.8rem;
 }
 
-/* --- PLYR ÚPRAVY (Fix posuvníku) --- */
+/* --- FIX PŘETÉKÁNÍ (Plyr Audio) --- */
 .plyr--audio .plyr__controls {
     background: transparent !important;
-    padding: 0 !important;
     color: #d1d5db !important;
+    /* Přidáme padding po stranách, aby puntíky nelezly ven */
+    padding: 0 12px !important; 
 }
 
-/* Kontejner pro audio, který drží vše v řadě a dává prostor kolečku */
 .audio-wrapper {
-    width: 240px;
+    width: 260px; /* Mírně zvětšíme kontejner */
     margin-left: auto;
-    padding-right: 12px; /* Rezerva pro 'thumb' posuvníku hlasitosti */
     display: flex;
     align-items: center;
+    box-sizing: border-box;
 }
 
+/* Fix pro volume bar - aby nebyl moc široký a měl místo */
 .plyr__volume {
     min-width: 60px !important;
-    max-width: 53px !important;
+    max-width: 80px !important;
+    margin-left: 8px !important;
 }
 
-/* Aby ovládací prvky Plyru nevyčnívaly z řádku */
-.plyr__control--overlaid {
-    background: #ef4444 !important;
+/* Zarovnání času a play tlačítka */
+.plyr__time {
+    font-variant-numeric: tabular-nums;
 }
 
-/* --- RESPONZIVNÍ TABULKA (Table to Cards) --- */
+/* --- RESPONZIVNÍ TABULKA --- */
 @media (max-width: 768px) {
     thead { display: none !important; }
 
@@ -117,9 +119,7 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     }
 
     .audio-wrapper {
-        width: 190px !important;
+        width: 200px !important;
         margin-left: 0;
-        padding-right: 8px;
     }
 }
-
