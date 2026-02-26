@@ -40,7 +40,7 @@ h1, h2, .font-orbitron {
         justify-content: space-between;
         align-items: center;
         text-align: right;
-        padding: 0.75rem 0.5rem !important;
+        
         border-bottom: 1px solid rgba(75, 85, 99, 0.2);
         min-height: 57px;
     }
@@ -149,6 +149,7 @@ td[data-label="YT"] a:hover {
     pointer-events: none;
     z-index: 10;
 }
+
 
 
 
