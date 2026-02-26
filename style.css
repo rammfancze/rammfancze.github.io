@@ -55,11 +55,10 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     color: #d1d5db !important;
 }
 
-/* Kompaktní volume */
 .plyr__volume {
     display: flex !important;
     min-width: 50px !important;
-    max-width: 80px !important;
+    max-width: 80px !important; /* Zmenšený posuvník */
 }
 
 .plyr__control--overlaid {
@@ -83,8 +82,7 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
         border-radius: 0.75rem !important;
         margin-bottom: 1.5rem !important;
-        /* PŘIDÁNO: Odsazení obsahu od okrajů karty */
-        padding: 1rem 1.25rem !important; 
+        padding: 1.25rem !important; /* Oprava odsazení od okrajů karty */
         width: 100% !important;
         box-sizing: border-box !important;
     }
@@ -98,10 +96,7 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         width: 100% !important;
     }
 
-    /* Odebrání čáry u posledního řádku karty (Audio) */
-    tbody td:last-child { 
-        border-bottom: none !important; 
-    }
+    tbody td:last-child { border-bottom: none !important; }
 
     tbody td::before {
         content: attr(data-label);
@@ -114,8 +109,13 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         flex-shrink: 0;
     }
 
-    /* Úprava audia pro mobil */
     .audio-container {
-        width: auto !important;
+        width: 100% !important;
         max-width: 200px !important;
-        margin-left: 0 !important; /* Na mobilu to necháme přirozeně v
+        margin-left: 0 !important;
+    }
+
+    .plyr__controls {
+        gap: 4px;
+    }
+}
