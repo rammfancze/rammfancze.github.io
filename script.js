@@ -1,7 +1,7 @@
 const URL_RECORDED = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=0&single=true&output=tsv';
 const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvHpsloemXUHYkD-0S0jAyP9RoQLMaOXF-LLUCnW5XlnXE5AAZ2SX3H8SsV7i-RTxx7ZacvI/pub?gid=314502273&single=true&output=tsv';
 
-let plyrInstances = [];
+let  = [];
 
 // Filtrování nahraných show
 function filterTable() {
@@ -42,12 +42,17 @@ async function nactiTabulky() {
             
             if (isRecorded) {
                 // Vyčištění starých přehrávačů
-                plyrInstances.forEach(p => { if(p) p.destroy(); });
+                .forEach(p => { if(p) p.destroy(); });
                 // Inicializace Plyr s ovládáním hlasitosti
-                plyrInstances = Plyr.setup('.js-player', {
-                    controls: ['play', 'progress', 'current-time', 'mute', 'volume'],
-                    settings: []
-                });
+                 = PPlyr.setup('.js-player', {
+    controls: ['play', 'progress', 'current-time', 'mute', 'volume'],
+    i18n: {
+        currentTime: 'Uplynulý čas',
+        duration: 'Celkový čas',
+    },
+    invert: false, // Tohle natvrdo vypne ten mínusový odpočet
+    toggleInvert: false // A tohle zakáže přepnutí po kliknutí
+});
                 if (typeof refreshFsLightbox === "function") {
                     refreshFsLightbox();
                 }
@@ -113,3 +118,4 @@ function vykresli(data, targetId, jeToRecorded) {
 
 fetchSubscribers();
 nactiTabulky();
+
