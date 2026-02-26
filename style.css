@@ -52,41 +52,43 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     font-size: 0.8rem;
 }
 
-/* --- OPRAVA POZADÍ PŘEHRÁVAČE --- */
-/* Tento blok natvrdo vypne bílou barvu ze screenshotu */
-/* Toto odstraní fialové odsazení (padding) a bílé pozadí */
+/* --- OPRAVA POZADÍ A PADDINGU PŘEHRÁVAČE --- */
 .plyr--audio .plyr__controls {
     background: transparent !important;
     background-color: transparent !important;
-    padding: 0 !important; /* Toto zruší to odsazení, na které ukazuješ */
+    padding: 0 !important; /* Odstraní fialové odsazení */
     color: #d1d5db !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
-/* Zajištění, že se i vnitřní položky nebudou zbytečně roztahovat */
 .plyr__controls__item {
-    margin-left: 5px !important; /* Menší mezery mezi ikonami */
+    margin-left: 5px !important;
 }
 .plyr__controls__item:first-child {
     margin-left: 0 !important;
 }
 
-/* Zajištění průhlednosti i u hlavního kontejneru */
 .plyr--audio {
     background: transparent !important;
 }
-/* Změna šířky samotného posuvníku hlasitosti */
+
+/* Velikost hlasitosti */
 .plyr__volume {
-    /* Tady nastavíš, jak moc má být dlouhý (zkus třeba 60px) */
     width: 53px !important; 
     min-width: 50px !important;
     max-width: 60px !important;
 }
 
-/* Pokud chceš zmenšit i ten prostor pro 'progress bar' (časovou osu), použiješ tohle: */
+/* Fix času bez mínusu přes CSS pro jistotu */
+.plyr__time--duration { display: none !important; }
+.plyr__time--current { display: inline-block !important; }
+
 .plyr__progress__container {
     padding-left: 10px !important;
     padding-right: 10px !important;
-}
+} /* <-- TADY CHYBĚLA TA ZÁVORKA */
+
 .audio-wrapper {
     width: 230px; 
     margin-left: auto;
@@ -137,7 +139,3 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         margin-left: 0;
     }
 }
-
-
-
-
