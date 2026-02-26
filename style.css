@@ -52,11 +52,12 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     font-size: 0.8rem;
 }
 
-/* --- FIX PŘETÉKÁNÍ (Plyr Audio) --- */
-.plyr--audio .plyr__controls {
+/* --- FIX PŘETÉKÁNÍ (Zesílený selektor) --- */
+.audio-wrapper .plyr--audio .plyr__controls {
     background: transparent !important;
     color: #d1d5db !important;
-    padding: 0 5px !important; 
+    /* Pokud chceš 'zastrčit' vnitřek víc, zvyš druhou hodnotu (např. na 15px nebo 20px) */
+    padding: 0 15px !important; 
 }
 
 .audio-wrapper {
@@ -122,4 +123,5 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         margin-left: 0;
     }
 }
+
 
