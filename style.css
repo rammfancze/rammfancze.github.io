@@ -13,7 +13,14 @@ h1, h2, .font-orbitron {
     thead {
         display: none;
     }
-
+#recorded-table td {
+    height: 57px !important;      /* Toto je ta hlavní změna */
+    min-height: 57px !important;
+    max-height: 57px !important;
+    padding-top: 0 !important;    /* Vynulování vnitřního okraje nahoře */
+    padding-bottom: 0 !important; /* Vynulování vnitřního okraje dole */
+    vertical-align: middle;       /* Vycentrování textu na střed */
+}
     tr {
         display: block;
         margin-bottom: 1.5rem;
@@ -138,3 +145,4 @@ td[data-label="YT"] a:hover {
     pointer-events: none;
     z-index: 10;
 }
+
