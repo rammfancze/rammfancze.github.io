@@ -2,7 +2,7 @@
 body {
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
-    background-color: #0f172a; /* Pro jistotu barva pozadí webu */
+    background-color: #0f172a;
 }
 
 h1, h2, .font-orbitron {
@@ -15,16 +15,15 @@ h1, h2, .font-orbitron {
     min-height: 57px !important;
     max-height: 57px !important;
     vertical-align: middle;
-    padding: 0 1rem !important; /* Reset paddingu, který dělal zubatost */
+    padding: 0 1rem !important;
     border-bottom: 1px solid rgba(75, 85, 99, 0.2);
     background: transparent !important;
 }
 
-/* Centrování audia v tabulce */
+/* Audio v desktopu - roztažení */
 #recorded-table td[data-label="Audio"] {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    display: table-cell; /* Změna z flex na table-cell pro lepší stabilitu v desktopu */
+    text-align: right;
 }
 
 /* --- 3. MOBILNÍ ZOBRAZENÍ (Karty) --- */
@@ -59,20 +58,19 @@ h1, h2, .font-orbitron {
         text-transform: uppercase;
         font-size: 0.75rem;
         color: #9ca3af;
-        text-align: left;
     }
 
+    /* Přehrávač na mobilu - ROZTAŽENÍ NA MAX */
     .audio-wrapper {
-        width: 100% !important;
-        max-width: 220px;
-        margin-left: auto;
-        height: 100%;
+        flex-grow: 1; /* Zabere veškeré volné místo v řádku */
+        max-width: 250px; /* Aby nebyl úplně přes celý mobil, ale dost dlouhý */
+        margin-left: 1rem;
         display: flex;
         align-items: center;
     }
 }
 
-/* --- 4. STOP BÍLÉMU POZADÍ (Definitivní fix) --- */
+/* --- 4. STOP BÍLÉMU POZADÍ & FIX ŠÍŘKY PŘEHRÁVAČE --- */
 
 /* Vyhledávání */
 .search-input {
@@ -83,26 +81,36 @@ h1, h2, .font-orbitron {
     padding: 0.5rem 1rem 0.5rem 2.5rem;
     width: 100%;
     outline: none;
-    appearance: none;
-    -webkit-appearance: none;
 }
 
-/* Audio přehrávač Plyr - vypnutí bílé */
-.plyr--audio .plyr__controls, 
-.plyr--audio,
-.audio-wrapper .plyr {
+/* PLYR FIX: Odstranění bílé a vynucení šířky */
+.audio-wrapper .plyr--audio {
+    width: 100% !important; /* Toto roztáhne ten přehrávač zpět! */
+    background: transparent !important;
+}
+
+.audio-wrapper .plyr__controls {
     background: transparent !important;
     background-color: transparent !important;
     color: #d1d5db !important;
+    width: 100% !important;
+    padding: 0 !important;
 }
 
-/* Fix pro automatické doplňování v prohlížeči */
+/* Fix pro volume bar v Plyru, aby nebyl bílý */
+.plyr--audio .plyr__control:hover,
+.plyr--audio .plyr__control.plyr__tab-focus,
+.plyr--audio .plyr__control[aria-expanded=true] {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Fix pro Autofill */
 input:-webkit-autofill {
     -webkit-text-fill-color: white !important;
     -webkit-box-shadow: 0 0 0px 1000px #1e293b inset !important;
 }
 
-/* --- 5. OSTATNÍ DOPLŇKY --- */
+/* --- 5. OSTATNÍ --- */
 .search-wrapper { position: relative; }
 
 .search-icon {
@@ -118,7 +126,6 @@ td[data-label="YT"] a {
     display: inline-flex;
     transition: transform 0.2s ease;
 }
-
 td[data-label="YT"] a:hover { transform: scale(1.1); }
 
 .skeleton-bar {
