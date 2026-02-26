@@ -36,13 +36,14 @@ async function nactiTabulky() {
             vykresli(text, targetId, isRecorded);
             
             if (isRecorded) {
+                // Vyčistit staré instance
                 plyrInstances.forEach(p => p.destroy());
+                // Inicializace Plyr s důrazem na volume
                 plyrInstances = Plyr.setup('.js-player', {
                     controls: ['play', 'progress', 'current-time', 'mute', 'volume'],
                     settings: []
                 });
                 
-                // Refresh lightboxu po načtení dynamických dat
                 if (typeof refreshFsLightbox === "function") {
                     refreshFsLightbox();
                 }
@@ -80,16 +81,16 @@ function vykresli(data, targetId, jeToRecorded) {
                 <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
                 <td class="px-4 py-3" data-label="Venue">${col[2] || ''}</td>
                 <td class="px-4 py-3 text-right md:text-center" data-label="YT">
-    ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-white-600 text-lg hover:text-red-500"><i class="fab fa-youtube"></i></a>` : '<i class="fa-solid fa-xmark text-red-600 text-base"></i>'}
-</td>
+                    ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-white-600 text-lg hover:text-red-500"><i class="fab fa-youtube"></i></a>` : '<i class="fa-solid fa-xmark text-red-600 text-base"></i>'}
+                </td>
                 <td class="px-4 py-3 text-right md:text-center" data-label="IEM">
-    ${col[4] === 'Ano' ? '<i class="fa-solid fa-check text-green-400 text-base"></i>' : '<i class="fa-solid fa-xmark text-red-600 text-base"></i>'}
-</td>
+                    ${col[4] === 'Ano' ? '<i class="fa-solid fa-check text-green-400 text-base"></i>' : '<i class="fa-solid fa-xmark text-red-600 text-base"></i>'}
+                </td>
                 <td class="px-4 py-3 text-right md:text-center" data-label="Format">        
                     ${imgUrl ? `<a data-fslightbox="gallery" href="${imgUrl}" class="hover:text-white underline decoration-gray-600">${formatText}</a>` : formatText}
                 </td>
                 <td class="px-4 py-3 md:table-cell" data-label="Audio">
-                    <div style="width: 250px; margin-left: auto;">
+                    <div class="audio-container" style="width: 250px; margin-left: auto;">
                         ${audioUrl.includes('http') ? `<audio class="js-player" controls src="${audioUrl}"></audio>` : ''}
                     </div>
                 </td>
