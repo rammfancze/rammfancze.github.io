@@ -78,7 +78,10 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     display: flex;
     align-items: center;
 }
-
+.plyr__progress__container {
+  flex: 1;
+  min-width: 50px;
+    
 /* --- RESPONZIVNÍ TABULKA --- */
 @media (max-width: 768px) {
     thead { display: none !important; }
@@ -122,6 +125,7 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         margin-left: 0;
     }
 }
+
 
 
 
