@@ -5,6 +5,7 @@
 body { font-family: 'Inter', sans-serif; }
 h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 
+/* Animace pro Skeleton Loading */
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
@@ -19,15 +20,13 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     width: 100%;
 }
 
+/* Vyhledávání */
 .search-wrapper {
     position: relative;
-    width: 100%; /* Na mobilu zabere 100% šířky */
+    width: 100%;
 }
-
 @media (min-width: 768px) {
-    .search-wrapper {
-        max-width: 300px; /* Na desktopu se vrátí k původní šířce */
-    }
+    .search-wrapper { max-width: 300px; }
 }
 .search-input {
     width: 100%;
@@ -53,27 +52,30 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
     font-size: 0.8rem;
 }
 
-/* --- Plyr Úpravy --- */
+/* --- PLYR ÚPRAVY (Fix posuvníku) --- */
 .plyr--audio .plyr__controls {
     background: transparent !important;
-    padding: 0;
+    padding: 0 !important;
     color: #d1d5db !important;
 }
 
-.plyr__volume {
-    display: flex !important;
-    min-width: 50px !important;
-    max-width: 80px !important; /* Zmenšený posuvník */
+/* Kontejner pro audio, který drží vše v řadě a dává prostor kolečku */
+.audio-wrapper {
+    width: 240px;
+    margin-left: auto;
+    padding-right: 12px; /* Rezerva pro 'thumb' posuvníku hlasitosti */
+    display: flex;
+    align-items: center;
 }
 
+.plyr__volume {
+    min-width: 70px !important;
+    max-width: 90px !important;
+}
+
+/* Aby ovládací prvky Plyru nevyčnívaly z řádku */
 .plyr__control--overlaid {
     background: #ef4444 !important;
-}
-
-/* Odsazení v tabulce pro desktop */
-#recorded-tbody tr td {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
 }
 
 /* --- RESPONZIVNÍ TABULKA (Table to Cards) --- */
@@ -87,7 +89,7 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
         border-radius: 0.75rem !important;
         margin-bottom: 1.5rem !important;
-        padding: 1.25rem !important; /* Oprava odsazení od okrajů karty */
+        padding: 1.25rem !important;
         width: 100% !important;
         box-sizing: border-box !important;
     }
@@ -114,15 +116,9 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         flex-shrink: 0;
     }
 
-    .audio-container {
-        width: 100% !important;
-        max-width: 200px !important; /* Na mobilu o něco užší */
-        margin-right: -8px !important; /* Menší kompenzace pro mobilní zobrazení */
-    }
-
-    .plyr__controls {
-        gap: 4px;
+    .audio-wrapper {
+        width: 190px !important;
+        margin-left: 0;
+        padding-right: 8px;
     }
 }
-
-
