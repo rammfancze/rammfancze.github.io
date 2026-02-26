@@ -69,8 +69,8 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 }
 
 .plyr__volume {
-    min-width: 70px !important;
-    max-width: 90px !important;
+    min-width: 60px !important;
+    max-width: 53px !important;
 }
 
 /* Aby ovládací prvky Plyru nevyčnívaly z řádku */
@@ -122,3 +122,4 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
         padding-right: 8px;
     }
 }
+
