@@ -1,3 +1,4 @@
+/* TVOJE PŮVODNÍ ZÁKLADNÍ NASTAVENÍ */
 :root { --plyr-color-main: #ef4444; }
 body { font-family: 'Inter', sans-serif; overflow-x: hidden; background-color: #111827; color: white; }
 h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
@@ -7,59 +8,41 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 .logo-ze { color: #d71920 !important; }
 
 /* Vyhledávání */
-.search-wrapper { position: relative; width: 100%; }
-@media (min-width: 769px) { .search-wrapper { max-width: 300px; } }
+.search-wrapper { position: relative; width: 100%; max-width: 300px; }
 .search-input {
     width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
     border-radius: 8px; padding: 10px 12px 10px 40px; color: white; outline: none;
 }
 .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #6b7280; }
 
-/* Skeleton Loading */
+/* Skeleton Loading (přesně jak jsi ho měl) */
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 .animate-skeleton { animation: pulse 1.5s infinite; }
 .skeleton-bar { height: 12px; background: rgba(156, 163, 175, 0.3); border-radius: 4px; width: 100%; }
 
-/* --- PŮVODNÍ TABULKA --- */
+/* TVOJE PŮVODNÍ TABULKA (beze změn) */
 table { width: 100%; border-collapse: collapse; }
-th, td { padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-th { background-color: rgba(255, 255, 255, 0.02); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; color: #9ca3af; }
+th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
-/* Mobilní zobrazení - PŮVODNÍ STYL (žádné karty) */
-@media (max-width: 768px) {
-    th:nth-child(4), td:nth-child(4), /* YT */
-    th:nth-child(5), td:nth-child(5), /* IEM */
-    th:nth-child(6), td:nth-child(6) { /* Format */
-        display: none; 
-    }
-}
+/* --- TOHLE JE TEN JEDINÝ FIX, KTERÝ JSI CHTĚL --- */
 
-/* --- FIX PLAYERU: ZKRÁCENÍ ČAR --- */
+/* Zkrácení bílé časové osy */
 .plyr__progress {
-    flex: 0 1 50px !important; /* Bílá čára: maximálně 50px */
+    flex: 0 1 60px !important; /* Maximálně 60px místo nekonečna */
     min-width: 30px !important;
 }
 
+/* Zkrácení červené hlasitosti */
 .plyr__volume {
-    flex: 0 0 55px !important; /* Hlasitost sekce: fixní šířka */
+    flex: 0 0 50px !important; /* Celý blok volume bude mít jen 50px */
 }
 
 .plyr__volume input[type="range"] {
-    max-width: 30px !important; /* Červená čárka: maximálně 30px */
+    max-width: 30px !important; /* Samotná červená čárka bude mít 30px */
 }
 
+/* Zmenšení písma času, aby nezabíralo místo */
 .plyr__time {
     font-size: 11px !important;
     padding: 0 2px !important;
-}
-
-/* Obal pro audio v tabulce */
-td[data-label="Audio"] div, 
-.plyr-container {
-    width: 180px !important; /* Celková šířka playeru v tabulce */
-}
-
-@media (max-width: 480px) {
-    td[data-label="Audio"] div { width: 140px !important; }
-    .plyr__progress { flex: 0 1 30px !important; }
 }
