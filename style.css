@@ -20,10 +20,9 @@ h1, h2, h3 {
 .search-wrapper { 
     position: relative; 
     width: 100%; 
-    margin-bottom: 1rem; 
 }
 @media (min-width: 769px) { 
-    .search-wrapper { max-width: 300px; margin-bottom: 0; } 
+    .search-wrapper { max-width: 300px; } 
 }
 .search-input {
     width: 100%; 
@@ -42,11 +41,24 @@ h1, h2, h3 {
     color: #6b7280; 
 }
 
-/* IKONY - Návrat k tvým barvám */
+/* IKONY */
 .fa-check { color: #10b981 !important; } /* Zelená fajfka */
-.fa-youtube { color: #ffffff !important; transition: color 0.2s; } /* Bílé YT logo */
-.fa-youtube:hover { color: #ff0000 !important; } /* Zčervená jen při hoveru */
-.fa-xmark { color: #4b5563 !important; } /* Šedý křížek */
+.fa-youtube { color: #ffffff !important; transition: color 0.2s; }
+.fa-youtube:hover { color: #ff0000 !important; }
+.fa-xmark { color: #4b5563 !important; }
+
+/* Skeleton Loading Animace */
+@keyframes pulse { 
+    0%, 100% { opacity: 1; } 
+    50% { opacity: 0.3; } 
+}
+.animate-skeleton { animation: pulse 1.5s infinite; }
+.skeleton-bar { 
+    height: 12px; 
+    background: rgba(156, 163, 175, 0.3); 
+    border-radius: 4px; 
+    width: 100%; 
+}
 
 /* Mobilní karty (iPhone Fix) */
 @media (max-width: 768px) {
@@ -77,50 +89,33 @@ h1, h2, h3 {
         font-size: 0.7rem; 
         text-transform: uppercase; 
     }
-
-    /* ZAROVNÁNÍ AUDIO TEXTU DOLEVA */
-    tbody td[data-label="Audio"] {
-        justify-content: space-between; /* Text vlevo, player vpravo */
-        align-items: center;
-    }
-    
-    .plyr-container { 
-        width: auto; 
-        flex-grow: 0;
-    }
 }
 
-/* --- DRSTICKÉ ZKRÁCENÍ ČAR PŘEHRÁVAČE --- */
+/* --- FIX PŘEHRÁVAČE (PLYR) --- */
 .plyr--audio .plyr__controls { 
     background: transparent !important; 
     padding: 0 !important; 
     gap: 4px !important;
 }
 
-/* Bílá časová osa */
+/* Zkrácení časové osy (bílá čára) */
 .plyr__progress {
     flex: 0 1 80px !important; 
     min-width: 40px !important;
 }
 
-/* Červená hlasitost */
+/* Zkrácení hlasitosti (červená čára) */
 .plyr__volume {
     flex: 0 0 65px !important; 
 }
-
 .plyr__volume input[type="range"] {
     max-width: 35px !important; 
 }
 
+/* Úprava pro nejmenší mobily */
 @media (max-width: 480px) {
     .plyr__progress { flex: 0 1 50px !important; }
     .plyr__volume { flex: 0 0 50px !important; }
     .plyr__volume input[type="range"] { max-width: 25px !important; }
     .plyr__time { font-size: 11px !important; padding: 0 2px !important; }
-    .plyr__control { padding: 4px !important; }
 }
-
-/* Animace načítání */
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-.animate-skeleton { animation: pulse 1.5s infinite; }
-.skeleton-bar { height: 12px; background: rgba(156, 163, 175, 0.3); border-radius: 4px; width: 100%; }
