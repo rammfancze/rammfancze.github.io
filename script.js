@@ -3,6 +3,7 @@ const URL_UPCOMING = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmAtJ5MvH
 
 let plyrInstances = [];
 
+// Filtrování nahraných show
 function filterTable() {
     const input = document.getElementById('recorded-search');
     const filter = input.value.toLowerCase();
@@ -14,6 +15,7 @@ function filterTable() {
     }
 }
 
+// Počítadlo odběratelů
 async function fetchSubscribers() {
     const apiKey = 'AIzaSyDDXVwQNZmlOyHiZqQIUYgMZ-w0QgZIX5g';
     const channelId = 'UCRnSUbTJ-cS-ORYCEF9PEsQ';
@@ -23,25 +25,25 @@ async function fetchSubscribers() {
         if (data.items && data.items.length > 0) {
             const count = data.items[0].statistics.subscriberCount;
             document.getElementById("subscriber-count").innerText = `${parseInt(count).toLocaleString()} subscribers`;
-        } else {
-            document.getElementById("subscriber-count").innerText = 'YouTube channel';
         }
     } catch (err) {
-        console.error("YouTube API Error:", err);
         document.getElementById("subscriber-count").innerText = 'YouTube channel';
     }
 }
 
+// Načítání dat z Google Sheets
 async function nactiTabulky() {
     const stahni = async (url, targetId, isRecorded) => {
         try {
             const res = await fetch(url);
-            if (!res.ok) throw new Error("Network response was not ok");
+            if (!res.ok) throw new Error("Chyba sítě");
             const text = await res.text();
             vykresli(text, targetId, isRecorded);
             
             if (isRecorded) {
+                // Vyčištění starých přehrávačů
                 plyrInstances.forEach(p => { if(p) p.destroy(); });
+                // Inicializace Plyr s ovládáním hlasitosti
                 plyrInstances = Plyr.setup('.js-player', {
                     controls: ['play', 'progress', 'current-time', 'mute', 'volume'],
                     settings: []
@@ -51,14 +53,15 @@ async function nactiTabulky() {
                 }
             }
         } catch (e) {
-            console.error("Fetch error:", e);
-            document.getElementById(targetId).innerHTML = '<tr><td colspan="7" class="p-4 text-red-400 text-center">Data momentálně nejsou dostupná.</td></tr>';
+            console.error(e);
+            document.getElementById(targetId).innerHTML = '<tr><td colspan="7" class="p-4 text-red-400 text-center">Data nejsou dostupná.</td></tr>';
         }
     };
     stahni(URL_RECORDED, 'recorded-tbody', true);
     stahni(URL_UPCOMING, 'upcoming-tbody', false);
 }
 
+// Vykreslení řádků
 function vykresli(data, targetId, jeToRecorded) {
     const tbody = document.getElementById(targetId);
     let radky = data.split('\n'); 
@@ -92,7 +95,7 @@ function vykresli(data, targetId, jeToRecorded) {
                     ${imgUrl ? `<a data-fslightbox="gallery" href="${imgUrl}" class="hover:text-white underline decoration-gray-600">${formatText}</a>` : formatText}
                 </td>
                 <td class="px-4 py-3 md:table-cell" data-label="Audio">
-                    <div class="audio-container" style="width: 250px; margin-left: auto;">
+                    <div class="audio-container">
                         ${audioUrl && audioUrl.includes('http') ? `<audio class="js-player" controls src="${audioUrl}"></audio>` : ''}
                     </div>
                 </td>
@@ -108,6 +111,5 @@ function vykresli(data, targetId, jeToRecorded) {
     }
 }
 
-// Inicializace
 fetchSubscribers();
 nactiTabulky();
