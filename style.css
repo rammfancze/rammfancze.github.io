@@ -25,17 +25,61 @@ h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
 /* Plyr Custom */
 .plyr--audio .plyr__controls { background: transparent !important; color: #d1d5db !important; padding: 0; }
 
-/* Mobilní fixy */
+/* Mobilní karty (iPhone Fix) */
 @media (max-width: 768px) {
-    main { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
-    thead { display: none; }
-    tbody tr {
-        display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.75rem;
-        margin-bottom: 1rem; padding: 1rem; width: 100%; box-sizing: border-box; overflow: hidden;
+    /* Zarovnání hlavního obsahu k okrajům s pevnou mezerou */
+    main { 
+        padding-left: 1rem !important; 
+        padding-right: 1rem !important; 
+        width: 100%;
     }
-    tbody td { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+
+    /* Skrytí hlavičky tabulky */
+    thead { display: none; }
+
+    /* Karta (jeden řádek tabulky) */
+    tbody tr {
+        display: block; 
+        background: rgba(255, 255, 255, 0.03); 
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px; 
+        margin-bottom: 1rem; 
+        padding: 1rem;
+        width: 100%; /* Karta zabere celou šířku kontejneru */
+        box-sizing: border-box;
+    }
+
+    /* Jednotlivé buňky v kartě */
+    tbody td {
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center;
+        padding: 0.75rem 0; 
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        width: 100%;
+    }
+
     tbody td:last-child { border-bottom: none; }
-    tbody td::before { content: attr(data-label); font-weight: 600; color: #9ca3af; font-size: 0.75rem; text-transform: uppercase; }
-    .plyr { width: 100% !important; }
+
+    /* Popisky polí (ARTIST, DATE atd.) */
+    tbody td::before {
+        content: attr(data-label); 
+        font-weight: 600; 
+        color: #9ca3af;
+        font-size: 0.7rem; 
+        text-transform: uppercase; 
+        letter-spacing: 0.05em;
+    }
+
+    /* Fix pro audio přehrávač, aby nerozbijel šířku karty */
+    tbody td[data-label="Audio"] { 
+        flex-direction: column; 
+        align-items: flex-end; /* Audio ovládání zarovnané doprava */
+        gap: 0.5rem; 
+    }
+
+    .plyr { 
+        width: 100% !important; 
+        max-width: 250px; /* Aby nebyl přehrávač zbytečně obří */
+    }
 }
