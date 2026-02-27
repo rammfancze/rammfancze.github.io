@@ -28,11 +28,35 @@ async function fetchSubscribers() {
 }
 
 async function nactiTabulky() {
+    // --- POMOCNÁ FUNKCE PRO GENEROVÁNÍ SKELETONŮ ---
+    const vytvorSkeletony = (pocetRadku, pocetSloupcu, labels) => {
+        let html = '';
+        for (let i = 0; i < pocetRadku; i++) {
+            html += '<tr class="animate-skeleton">';
+            labels.forEach(label => {
+                // Na mobilu se použije data-label, uvnitř je animovaný div
+                html += `<td class="px-4 py-3" data-label="${label}"><div class="skeleton-bar"></div></td>`;
+            });
+            html += '</tr>';
+        }
+        return html;
+    };
+
+    // Vložíme skeletony do obou tabulek IHNED
+    const labelsUpcoming = ["Artist", "Date", "Venue"];
+    const labelsRecorded = ["Artist", "Date", "Venue", "YT", "IEM", "Format", "Audio"];
+    
+    document.getElementById('upcoming-tbody').innerHTML = vytvorSkeletony(5, 3, labelsUpcoming);
+    document.getElementById('recorded-tbody').innerHTML = vytvorSkeletony(8, 7, labelsRecorded);
+
+    // --- SAMOTNÉ STAHOVÁNÍ DAT ---
     const stahni = async (url, targetId, isRecorded) => {
         try {
             const res = await fetch(url);
-            if (!res.ok) throw new Error("Chyba stahování");
+            if (!res.ok) throw new Error("Chyba");
             const text = await res.text();
+            
+            // Jakmile jsou data, skeletony zmizí a nahradí se daty
             vykresli(text, targetId, isRecorded);
             
             if (isRecorded) {
@@ -41,16 +65,14 @@ async function nactiTabulky() {
                     controls: ['play', 'progress', 'mute', 'volume'],
                     settings: []
                 });
-                
-                if (typeof refreshFsLightbox === "function") {
-                    refreshFsLightbox();
-                }
+                if (typeof refreshFsLightbox === "function") refreshFsLightbox();
             }
         } catch (e) {
             console.error(e);
-            document.getElementById(targetId).innerHTML = '<tr><td colspan="7" class="p-4 text-red-400 text-center">Data momentálně nejsou dostupná.</td></tr>';
+            document.getElementById(targetId).innerHTML = '<tr><td colspan="7" class="p-4 text-red-400 text-center">Data nedostupná.</td></tr>';
         }
     };
+
     stahni(URL_RECORDED, 'recorded-tbody', true);
     stahni(URL_UPCOMING, 'upcoming-tbody', false);
 }
@@ -106,3 +128,4 @@ function vykresli(data, targetId, jeToRecorded) {
 
 fetchSubscribers();
 nactiTabulky();
+
