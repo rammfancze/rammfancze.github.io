@@ -38,14 +38,21 @@ h1, h2, .font-orbitron {
 
     /* Upravený TD pro mobil, aby držel 57px a centroval */
     td {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        text-align: right;
-        padding-left: 0.75rem !important;
-        padding-right: 0.75rem !important;
-        border-bottom: 1px solid rgba(75, 85, 99, 0.2) !important;
-    }
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    
+    /* --- TADY JSOU TY KLÍČOVÉ ZMĚNY --- */
+    height: 57px !important;     /* Zamkne výšku pro všechna ostrá data */
+    min-height: 57px !important; 
+    max-height: 57px !important;
+    /* ---------------------------------- */
+
+    text-align: right;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    border-bottom: 1px solid rgba(75, 85, 99, 0.2) !important;
+}
 
     td:last-child {
         border-bottom: none !important;
@@ -148,4 +155,5 @@ td[data-label="YT"] a:hover {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
+
 
