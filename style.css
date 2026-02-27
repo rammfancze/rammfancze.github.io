@@ -127,17 +127,45 @@ td[data-label="YT"] a:hover {
     transform: scale(1.1);
 }
 
+/* --- SKELETON ANIMACE (Univerzální) --- */
 .skeleton-bar {
-    height: 1rem;
-    background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+    height: 14px;
+    background: #1e293b;
+    background-image: linear-gradient(90deg, #1e293b 0px, #334155 50px, #1e293b 100px);
     background-size: 200% 100%;
-    animation: loading 1.5s infinite;
-    border-radius: 0.25rem;
+    animation: loading 1.5s infinite linear;
+    border-radius: 4px;
+    /* Desktop šířka */
+    width: 80%; 
+    display: inline-block;
+}
+
+/* --- FIX PRO DESKTOP (Zabrání skákání) --- */
+#upcoming-tbody td, #recorded-tbody td {
+    height: 57px !important; /* Musí odpovídat tvému nastavení, aby řádek neuhnul */
+}
+
+/* --- FIX PRO MOBIL (Vložit do tvého @media 768px) --- */
+@media (max-width: 768px) {
+    tr.animate-skeleton td {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        min-height: 57px !important;
+    }
+
+    /* Na mobilu donutíme skeleton, aby byl vidět vpravo */
+    .skeleton-bar {
+        width: 140px !important; /* Pevná šířka na mobilu */
+        flex-shrink: 0; /* Zabrání smrštění na nulu */
+        margin-left: auto;
+    }
 }
 
 @keyframes loading {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
+
 
 
