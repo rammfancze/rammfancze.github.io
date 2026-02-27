@@ -71,7 +71,6 @@ h1, h2, .font-orbitron {
     .audio-wrapper {
         width: 100% !important;
         max-width: 220px;
-        margin-left: auto;
         margin-right: 16;
         display: flex;
         align-items: center;
@@ -179,6 +178,7 @@ td[data-label="YT"] a:hover {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
+
 
 
 
