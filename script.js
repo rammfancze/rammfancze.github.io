@@ -28,60 +28,42 @@ async function fetchSubscribers() {
 }
 
 async function nactiTabulky() {
-    // 1. PŘÍPRAVA SKELETONŮ
-    // Horní tabulka (3 sloupce)
-    const upcomingSkeleton = `
-        <tr class="skeleton-row md:border-b md:border-gray-800">
-            <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist"><div class="skeleton-bar"></div></td>
-            <td class="px-4 py-3" data-label="Date"><div class="skeleton-bar"></div></td>
-            <td class="px-4 py-3" data-label="Venue"><div class="skeleton-bar"></div></td>
-        </tr>`.repeat(5);
+    // 1. Definujeme si řádky, které tam budou svítit při načítání
+    const upcomingSkel = `<tr class="animate-skeleton">
+        <td class="px-4 py-3" data-label="Artist"><div class="skeleton-bar"></div></td>
+        <td class="px-4 py-3" data-label="Date"><div class="skeleton-bar"></div></td>
+        <td class="px-4 py-3" data-label="Venue"><div class="skeleton-bar"></div></td>
+    </tr>`.repeat(4);
 
-    // Spodní tabulka (7 sloupců)
-    const recordedSkeleton = `
-        <tr class="skeleton-row md:border-b md:border-gray-800">
-            <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist"><div class="skeleton-bar"></div></td>
-            <td class="px-4 py-3" data-label="Date"><div class="skeleton-bar"></div></td>
-            <td class="px-4 py-3" data-label="Venue"><div class="skeleton-bar"></div></td>
-            <td class="px-4 py-3 text-right md:text-center" data-label="YT"><div class="skeleton-bar-small"></div></td>
-            <td class="px-4 py-3 text-right md:text-center" data-label="IEM"><div class="skeleton-bar-small"></div></td>
-            <td class="px-4 py-3 text-right md:text-center" data-label="Format"><div class="skeleton-bar-small"></div></td>
-            <td class="px-4 py-3 md:table-cell" data-label="Audio"></td>
-        </tr>`.repeat(8);
+    const recordedSkel = `<tr class="animate-skeleton">
+        <td class="px-4 py-3" data-label="Artist"><div class="skeleton-bar"></div></td>
+        <td class="px-4 py-3" data-label="Date"><div class="skeleton-bar"></div></td>
+        <td class="px-4 py-3" data-label="Venue"><div class="skeleton-bar"></div></td>
+        <td class="px-4 py-3 text-center" data-label="YT"><div class="skeleton-bar" style="width:20px"></div></td>
+        <td class="px-4 py-3 text-center" data-label="IEM"><div class="skeleton-bar" style="width:20px"></div></td>
+        <td class="px-4 py-3 text-center" data-label="Format"><div class="skeleton-bar" style="width:40px"></div></td>
+        <td class="px-4 py-3" data-label="Audio"></td>
+    </tr>`.repeat(6);
 
-    // 2. OKAMŽITÉ ZOBRAZENÍ (zabrání odskočení)
-    const upcomingTbody = document.getElementById('upcoming-tbody');
-    const recordedTbody = document.getElementById('recorded-tbody');
-    
-    if (upcomingTbody) upcomingTbody.innerHTML = upcomingSkeleton;
-    if (recordedTbody) recordedTbody.innerHTML = recordedSkeleton;
+    // 2. Vložíme je tam OKAMŽITĚ
+    document.getElementById('upcoming-tbody').innerHTML = upcomingSkel;
+    document.getElementById('recorded-tbody').innerHTML = recordedSkel;
 
     const stahni = async (url, targetId, isRecorded) => {
         try {
             const res = await fetch(url);
-            if (!res.ok) throw new Error("Chyba stahování");
+            if (!res.ok) throw new Error("Chyba");
             const text = await res.text();
             
-            // Jakmile jsou data, skeletony se přepíšou reálnými řádky
+            // Funkce vykresli() pak tyto skeletony nahradí ostrými daty
             vykresli(text, targetId, isRecorded);
             
-            if (isRecorded) {
-                plyrInstances.forEach(p => p.destroy());
-                plyrInstances = Plyr.setup('.js-player', {
-                    controls: ['play', 'progress', 'mute', 'volume'],
-                    settings: []
-                });
-                
-                if (typeof refreshFsLightbox === "function") {
-                    refreshFsLightbox();
-                }
-            }
+            // ... zbytek tvého kódu pro Plyr atd.
         } catch (e) {
             console.error(e);
             document.getElementById(targetId).innerHTML = '<tr><td colspan="7" class="p-4 text-red-400 text-center">Data momentálně nejsou dostupná.</td></tr>';
         }
     };
-
     stahni(URL_RECORDED, 'recorded-tbody', true);
     stahni(URL_UPCOMING, 'upcoming-tbody', false);
 }
@@ -137,5 +119,6 @@ function vykresli(data, targetId, jeToRecorded) {
 
 fetchSubscribers();
 nactiTabulky();
+
 
 
