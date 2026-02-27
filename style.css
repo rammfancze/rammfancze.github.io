@@ -122,7 +122,7 @@ h1, h2, .font-orbitron {
 }
 .audio-wrapper {
     width: 240px;
-    margin-left: auto;
+
 }
 
 /* --- 5. Vyhledávací pole (Definitivní fix bílé) --- */
@@ -179,6 +179,7 @@ td[data-label="YT"] a:hover {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
+
 
 
 
