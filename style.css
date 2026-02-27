@@ -95,7 +95,31 @@ h1, h2, .font-orbitron {
     padding: 0 !important;
     color: #d1d5db !important;
 }
+/* --- Zmenšení volume posuvníku --- */
+/* 1. Zkrácení celé šířky volume sekce */
+.plyr__volume {
+    max-width: 80px; /* Původně bývá kolem 110px, klidně sniž dle potřeby */
+}
 
+/* 2. Zmenšení samotné tloušťky lišty a kuličky (thumb) */
+.plyr--audio input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px; /* Tloušťka linky */
+}
+
+.plyr--audio input[type="range"]::-webkit-slider-thumb {
+    height: 12px; /* Velikost kuličky */
+    width: 12px;
+    margin-top: -4px; /* Vycentrování kuličky ( (výška tracku - výška thumb) / 2 ) */
+}
+
+/* Fix pro Firefox */
+.plyr--audio input[type="range"]::-moz-range-track {
+    height: 4px;
+}
+.plyr--audio input[type="range"]::-moz-range-thumb {
+    height: 12px;
+    width: 12px;
+}
 .audio-wrapper {
     width: 240px;
     margin-left: auto;
@@ -155,5 +179,6 @@ td[data-label="YT"] a:hover {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
+
 
 
