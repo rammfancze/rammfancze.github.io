@@ -69,6 +69,17 @@ h1, h2, .font-orbitron {
         display: flex;
         align-items: center;
     }
+    .animate-skeleton td {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        min-height: 57px !important; /* Drží výšku řádku */
+    }
+
+    .animate-skeleton .skeleton-bar {
+        width: 130px !important; /* Fixní šířka na mobilu */
+        flex-shrink: 0;
+    }
 }
 
 /* --- 4. Plyr & Audio --- */
@@ -137,3 +148,4 @@ td[data-label="YT"] a:hover {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
+
