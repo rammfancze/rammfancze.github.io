@@ -69,22 +69,6 @@ h1, h2, .font-orbitron {
         display: flex;
         align-items: center;
     }
-    /* Tohle zajistí, aby skeleton bar byl vidět i ve flexboxu */
-    .skeleton-bar {
-        display: block !important;
-        height: 14px !important;
-        min-width: 120px; /* Tohle ho donutí se ukázat */
-        background-color: #2a3547; /* Viditelnější barva pro test */
-        margin-left: auto; /* Přitlačí ho k pravému okraji vedle labelu */
-    }
-
-    /* Oprava pro řádky, které zrovna načítají (skeletony) */
-    tr.animate-skeleton td {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        min-height: 57px !important; /* Aby to neodskočilo */
-    }
 }
 
     
@@ -155,4 +139,5 @@ td[data-label="YT"] a:hover {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
+
 
