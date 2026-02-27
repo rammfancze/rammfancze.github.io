@@ -28,37 +28,24 @@ async function fetchSubscribers() {
 }
 
 async function nactiTabulky() {
-    // 1. Definujeme si řádky, které tam budou svítit při načítání
-    const upcomingSkel = `<tr class="animate-skeleton">
-        <td class="px-4 py-3" data-label="Artist"><div class="skeleton-bar"></div></td>
-        <td class="px-4 py-3" data-label="Date"><div class="skeleton-bar"></div></td>
-        <td class="px-4 py-3" data-label="Venue"><div class="skeleton-bar"></div></td>
-    </tr>`.repeat(4);
-
-    const recordedSkel = `<tr class="animate-skeleton">
-        <td class="px-4 py-3" data-label="Artist"><div class="skeleton-bar"></div></td>
-        <td class="px-4 py-3" data-label="Date"><div class="skeleton-bar"></div></td>
-        <td class="px-4 py-3" data-label="Venue"><div class="skeleton-bar"></div></td>
-        <td class="px-4 py-3 text-center" data-label="YT"><div class="skeleton-bar" style="width:20px"></div></td>
-        <td class="px-4 py-3 text-center" data-label="IEM"><div class="skeleton-bar" style="width:20px"></div></td>
-        <td class="px-4 py-3 text-center" data-label="Format"><div class="skeleton-bar" style="width:40px"></div></td>
-        <td class="px-4 py-3" data-label="Audio"></td>
-    </tr>`.repeat(6);
-
-    // 2. Vložíme je tam OKAMŽITĚ
-    document.getElementById('upcoming-tbody').innerHTML = upcomingSkel;
-    document.getElementById('recorded-tbody').innerHTML = recordedSkel;
-
     const stahni = async (url, targetId, isRecorded) => {
         try {
             const res = await fetch(url);
-            if (!res.ok) throw new Error("Chyba");
+            if (!res.ok) throw new Error("Chyba stahování");
             const text = await res.text();
-            
-            // Funkce vykresli() pak tyto skeletony nahradí ostrými daty
             vykresli(text, targetId, isRecorded);
             
-            // ... zbytek tvého kódu pro Plyr atd.
+            if (isRecorded) {
+                plyrInstances.forEach(p => p.destroy());
+                plyrInstances = Plyr.setup('.js-player', {
+                    controls: ['play', 'progress', 'mute', 'volume'],
+                    settings: []
+                });
+                
+                if (typeof refreshFsLightbox === "function") {
+                    refreshFsLightbox();
+                }
+            }
         } catch (e) {
             console.error(e);
             document.getElementById(targetId).innerHTML = '<tr><td colspan="7" class="p-4 text-red-400 text-center">Data momentálně nejsou dostupná.</td></tr>';
@@ -119,6 +106,3 @@ function vykresli(data, targetId, jeToRecorded) {
 
 fetchSubscribers();
 nactiTabulky();
-
-
-
