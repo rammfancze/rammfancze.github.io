@@ -52,7 +52,12 @@ h1, h2, .font-orbitron {
         color: #9ca3af;
     }
 }
-
+/* Změna barvy play a pause ikony na bílou */
+.plyr--audio .plyr__controls [data-plyr="play"],
+.plyr--audio .plyr__controls [data-plyr="pause"] {
+    color: #ffffff !important;
+    opacity: 1 !important; /* Zajistí, že nebude poloprůhledná */
+}
 /* --- 4. Vyhledávací pole (Zarovnání DOPRAVA na PC) --- */
 .search-wrapper {
     position: relative;
