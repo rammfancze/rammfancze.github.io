@@ -84,23 +84,80 @@ td {
     #recorded-table th:nth-child(7) { width: 25% !important; }
 }
 
-/* --- 2. NASTAVENÍ PRO TELEFON (Mobil) --- */
 @media (max-width: 768px) {
-    /* Na mobilu musíme fixní rozložení VYPNOUT, aby fungovaly ty tvoje karty */
-    table:first-of-type, #recorded-table {
-        table-layout: auto !important;
+    /* 1. Reset tabulky na bloky (karty) */
+    table, thead, tbody, th, td, tr {
+        display: block !important;
         width: 100% !important;
     }
 
-    /* Každá buňka (sloupec) se na mobilu chová jako samostatný řádek karty */
-    td, th {
-        width: 100% !important;
-        display: block !important;
+    /* Schovat hlavičku tabulky, na mobilu je v data-label */
+    thead {
+        display: none !important;
     }
-    
-    /* Skeletony na mobilu roztáhneme na celou šířku karty */
+
+    /* 2. Styl samotné karty (řádku) */
+    tr {
+        margin-bottom: 1.5rem !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        background: rgba(30, 41, 59, 0.5) !important;
+        border-radius: 12px !important;
+        padding: 0.5rem !important;
+        height: auto !important; /* Zrušíme fixních 64px z desktopu */
+    }
+
+    /* 3. Styl jednotlivých buněk uvnitř karty */
+    td {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 0.75rem 1rem !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        min-height: 45px !important;
+        height: auto !important;
+        text-align: right !important; /* Data budou vpravo */
+        white-space: normal !important; /* Povolí zalomení dlouhého textu */
+    }
+
+    td:last-child {
+        border-bottom: none !important;
+    }
+
+    /* 4. Vykreslení popisků (ARTIST, DATE...) na levé straně */
+    td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        color: #ffffff !important; /* Popisky svítí bíle */
+        text-align: left;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+
+    /* 5. Vyhledávací pole a ikona na mobilu */
+    .search-wrapper {
+        position: relative !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .search-input {
+        padding-left: 3rem !important; /* Prostor pro lupu */
+        height: 45px !important;
+    }
+
+    .search-icon {
+        position: absolute !important;
+        left: 1rem !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        margin: 0 !important;
+    }
+
+    /* 6. Skeletony na mobilu */
     .skeleton-bar {
-        width: 100% !important;
+        width: 120px !important;
+        margin-left: auto;
     }
 }
 
