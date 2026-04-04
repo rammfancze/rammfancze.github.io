@@ -147,40 +147,38 @@ tbody td {
     color: #6b7280;
 }
 
-/* --- 5. AUDIO & PLYR (Sjednocení barev s textem) --- */
+/* --- 5. AUDIO & PLYR (Sjednocení barev a fixy) --- */
 
 .plyr--audio .plyr__controls {
     background: transparent !important;
     padding: 0 !important;
-    /* Barva textu v přehrávači (čas atd.) */
     color: #c6c6c6 !important; 
 }
 
-/* Ikony: Play, Pause, Volume, atd. */
+/* Ikony: Play, Pause, Mute - OPRAVENÉ ČÁRKY */
 .plyr--audio .plyr__controls [data-plyr="play"],
 .plyr--audio .plyr__controls [data-plyr="pause"],
-.plyr--audio .plyr__controls [data-plyr="mute"]
+.plyr--audio .plyr__controls [data-plyr="mute"], /* Tady chyběla čárka */
 .plyr--audio .plyr__controls svg {
-    color: #c6c6c6 !important; /* Tlumená šedá jako text v td */
+    color: #c6c6c6 !important;
     fill: #c6c6c6 !important;
     opacity: 1 !important;
     transition: color 0.2s ease;
 }
 
-/* Hover efekt: Při najetí myší může trochu zbělat, aby uživatel věděl, že na to sahá */
+/* Hover efekt - OPRAVENÉ ČÁRKY */
 .plyr--audio .plyr__controls [data-plyr="play"]:hover svg,
-.plyr--audio .plyr__controls [data-plyr="pause"]:hover svg
-.plyr--audio .plyr__controls [data-plyr="mute"]:hover svg {
+.plyr--audio .plyr__controls [data-plyr="pause"]:hover svg,
+.plyr--audio .plyr__controls [data-plyr="mute"]:hover svg { /* Tady chyběla čárka */
     color: #ffffff !important;
     fill: #ffffff !important;
 }
 
-/* Globální proměnná pro barvu ovládání */
+/* Toto nechat mimo media query, pokud chceš barvy všude stejné */
 :root {
     --plyr-audio-control-color: #c6c6c6 !important;
     --plyr-audio-control-color-hover: #ffffff !important;
 }
-
 /* Fix pro mobilní karty, aby i tam byla barva tlumená */
 @media (max-width: 768px) {
     .plyr--audio .plyr__controls svg {
