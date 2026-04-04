@@ -213,6 +213,50 @@ tbody td {
 
 .audio-wrapper { width: 240px; margin-left: auto; }
 
+/* --- 6. SHOW MORE / LESS LOGIKA --- */
+
+/* Ve výchozím stavu skryjeme řádky od indexu 6 dále */
+#upcoming-table tbody tr:nth-child(n+6) {
+    display: none !important;
+}
+
+/* Když má tabulka třídu is-expanded, řádky se zobrazí */
+#upcoming-table.is-expanded tbody tr:nth-child(n+6) {
+    display: table-row !important;
+}
+
+/* Fix pro mobil (protože tam máš display: block) */
+@media (max-width: 768px) {
+    #upcoming-table.is-expanded tbody tr:nth-child(n+6) {
+        display: block !important;
+    }
+}
+
+/* Vzhled minimalistického tlačítka */
+#show-more-wrapper {
+    text-align: center;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.minimal-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #9ca3af;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.minimal-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
 /* Ostatní */
 .skeleton-bar {
     height: 1rem;
