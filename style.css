@@ -68,6 +68,11 @@ tbody td {
     /* Skeletony šířky */
     #recorded-table td:nth-child(1) .skeleton-bar { width: 80%; }
     #recorded-table td:nth-child(3) .skeleton-bar { width: 90%; }
+    
+    :root {
+        /* Zkrácení volume slideru na polovinu (původní je cca 100px) */
+        --plyr-volume-range-max-width: 60px !important;
+    }
 }
 
 /* --- 4. MOBIL (Karty pod sebou) --- */
