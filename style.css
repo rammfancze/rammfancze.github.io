@@ -113,9 +113,8 @@ h1, h2, .font-orbitron {
 /* Změna délky (šířky) volume baru */
 .plyr__volume {
     /* Nastaví základní šířku - můžeš měnit dle potřeby (např. 60px až 100px) */
-    flex-basis: 70px !important; 
+
     min-width: 70px !important;
-    max-width: 80px !important;
     
     /* Toto zajistí, že barva ikony reproduktoru a posuvníku bude lícovat */
     margin-right: -2px !important; 
