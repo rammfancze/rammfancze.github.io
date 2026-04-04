@@ -1,4 +1,8 @@
 /* --- 1. Základní nastavení a Fonty --- */
+html {
+    overflow-y: scroll; /* Vynutí scrollbar, aby se stránka "necukala" */
+}
+
 body {
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -6,7 +10,7 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
-    overflow-x: hidden; /* Fix pro PC: zabrání přetékání obsahu do stran */
+    overflow-x: hidden;
 }
 
 h1, h2, .font-orbitron {
@@ -25,10 +29,7 @@ h1, h2, .font-orbitron {
 
 /* --- 3. Mobilní zobrazení (Karty) --- */
 @media (max-width: 768px) {
-    thead {
-        display: none;
-    }
-
+    thead { display: none; }
     tr {
         display: block;
         margin-bottom: 1.5rem;
@@ -36,9 +37,7 @@ h1, h2, .font-orbitron {
         border: 1px solid rgba(75, 85, 99, 0.4);
         border-radius: 0.75rem;
         padding: 0.5rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
-
     td {
         display: flex !important;
         justify-content: space-between !important;
@@ -48,11 +47,7 @@ h1, h2, .font-orbitron {
         padding-right: 0.75rem !important;
         border-bottom: 1px solid rgba(75, 85, 99, 0.2) !important;
     }
-
-    td:last-child {
-        border-bottom: none !important;
-    }
-
+    td:last-child { border-bottom: none !important; }
     td::before {
         content: attr(data-label);
         font-weight: 600;
@@ -62,52 +57,47 @@ h1, h2, .font-orbitron {
         margin-right: 1rem;
         text-align: left;
     }
-
-    .audio-wrapper {
+    .audio-container {
         width: 100% !important;
         max-width: 220px;
         margin-left: auto;
-        margin-right: -4px !important; /* Vyrovnání lícování na mobilu */
-    }
-
-    .animate-skeleton td {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        min-height: 57px !important;
     }
 }
 
-/* --- 4. Plyr & Audio --- */
+/* --- 4. Plyr & Audio (Fix Volume a Zarovnání) --- */
+.audio-container {
+    width: 250px;
+    margin-left: auto;
+}
+
 .plyr--audio .plyr__controls {
     background: transparent !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important; /* Odstraní vnitřní mezeru vpravo */
+    padding: 0 !important;
     color: #d1d5db !important;
 }
 
-/* Ovládání červené barvy posuvníku (Volume & Progress) */
+/* Fix pro volume bar, aby nečouhal z karty vpravo */
+.plyr__volume {
+    min-width: 60px !important;
+    max-width: 80px !important;
+    margin-right: -4px !important; /* Mírný posun k okraji */
+}
+
 .plyr--full-ui.plyr--audio input[type=range] {
-    color: #ef4444 !important; /* Tailwind red-500 */
+    color: #ef4444 !important; /* Červená barva */
 }
 
-.audio-wrapper {
-    width: 240px;
-    margin-left: auto;
-    margin-right: -2px; /* Zarovnání k pravému okraji tabulky */
-}
-
-/* --- 5. Vyhledávací pole --- */
+/* --- 5. Vyhledávací pole (Zarovnání vpravo na PC) --- */
 .search-wrapper {
     position: relative;
     width: 100%;
+    margin-bottom: 1rem;
 }
 
-/* Na PC omezíme šířku, aby to nevypadalo blbě, ale zarovnáme vpravo */
 @media (min-width: 768px) {
     .search-wrapper {
-        max-width: 350px; 
-        margin-left: auto;
+        max-width: 350px;
+        margin-left: auto; /* Dotlačí pole doprava nad konec tabulky */
     }
 }
 
@@ -116,17 +106,8 @@ h1, h2, .font-orbitron {
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding: 0.5rem 1rem 0.5rem 2.5rem;
     border-radius: 4px;
-    outline: none;
-    transition: all 0.2s;
     width: 100%;
     color: white !important;
-    appearance: none;
-    -webkit-appearance: none;
-}
-
-.search-input:-webkit-autofill {
-    -webkit-text-fill-color: white !important;
-    -webkit-box-shadow: 0 0 0px 1000px #1e293b inset !important;
 }
 
 .search-icon {
@@ -135,32 +116,32 @@ h1, h2, .font-orbitron {
     top: 50%;
     transform: translateY(-50%);
     color: #6b7280;
-    z-index: 10;
 }
 
-/* --- 6. FIX PRO FSLIGHTBOX (Ztmavení pozadí na PC) --- */
+/* --- 6. DEFINITIVNÍ FIX PRO FSLIGHTBOX (Světlý pruh vpravo) --- */
+/* Vynutíme, aby overlay pokryl i prostor po scrollbaru */
 .fslightbox-container {
-    width: 100% !important;
-    height: 100% !important;
-    background: rgba(0, 0, 0, 0.9) !important;
-    z-index: 999999 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    background: #000 !important; /* Čistě černá, aby nebyly vidět rozdíly */
+    z-index: 99999999 !important;
 }
 
-/* Zabrání "cuknutí" stránky při otevření Lightboxu na Windows */
-.fslightbox-open {
-    overflow: hidden !important;
+/* Odstraníme vynucený padding, který dělá ten pruh */
+body.fslightbox-open {
     padding-right: 0 !important;
+    overflow: hidden !important;
 }
 
-/* --- 7. Ostatní doplňky --- */
+/* --- 7. Ostatní --- */
 td[data-label="YT"] a {
     display: inline-flex;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s;
 }
-
-td[data-label="YT"] a:hover {
-    transform: scale(1.1);
-}
+td[data-label="YT"] a:hover { transform: scale(1.1); }
 
 .skeleton-bar {
     height: 1rem;
