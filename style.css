@@ -49,6 +49,18 @@ thead th {
     padding-bottom: 1rem;
 }
 
+table {
+    table-layout: fixed; /* Nutné, aby prohlížeč respektoval nastavené šířky % */
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Aby se dlouhý text v buňkách nezalamoval ošklivě, ale zkrátil tečkami */
+td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 /* --- 3. Mobilní zobrazení (Karty) --- */
 @media (max-width: 768px) {
     thead { display: none; }
@@ -190,4 +202,25 @@ thead th {
         color: #ffffff !important;
         fill: #ffffff !important;
     }
+}/* Šířky sloupců pro Recorded shows */
+#recorded-table th:nth-child(1) { width: 20%; } /* Artist */
+#recorded-table th:nth-child(2) { width: 12%; } /* Date */
+#recorded-table th:nth-child(3) { width: 23%; } /* Venue */
+#recorded-table th:nth-child(4) { width: 5%; }  /* YT */
+#recorded-table th:nth-child(5) { width: 5%; }  /* IEM */
+#recorded-table th:nth-child(6) { width: 10%; } /* Format */
+#recorded-table th:nth-child(7) { width: 25%; } /* Audio Sample */
+
+/* Úprava skeleton barů, aby odpovídaly reálným datům */
+#recorded-table td:nth-child(1) .skeleton-bar { width: 80%; } /* Artist je delší */
+#recorded-table td:nth-child(2) .skeleton-bar { width: 60%; } /* Datum je krátké */
+#recorded-table td:nth-child(3) .skeleton-bar { width: 90%; } /* Venue je dlouhá */
+#recorded-table td:nth-child(7) .skeleton-bar { width: 95%; } /* Audio Sample bar */
+
+/* Vycentrování skeletonů v úzkých sloupcích (YT, IEM, Format) */
+#recorded-table td:nth-child(4) .skeleton-bar,
+#recorded-table td:nth-child(5) .skeleton-bar,
+#recorded-table td:nth-child(6) .skeleton-bar {
+    width: 30px;
+    margin: 0 auto;
 }
