@@ -88,6 +88,19 @@ h1, h2, .font-orbitron {
     padding: 0 !important;
     color: #d1d5db !important;
 }
+/* Tato část v style.css zajistí barvu na PC i mobilu */
+.plyr--audio .plyr__controls [data-plyr="play"],
+.plyr--audio .plyr__controls [data-plyr="pause"],
+.plyr--audio .plyr__controls .plyr__volume svg {
+    color: #d1d5db !important; /* Stejná barva jako text v tabulce */
+    opacity: 0.9;
+}
+
+.plyr--audio .plyr__controls [data-plyr="play"]:hover,
+.plyr--audio .plyr__controls [data-plyr="pause"]:hover {
+    color: #ffffff !important;
+    opacity: 1;
+}
 
 .audio-wrapper {
     width: 240px;
