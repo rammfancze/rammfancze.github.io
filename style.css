@@ -173,11 +173,13 @@ thead th {
 .plyr--full-ui.plyr--audio input[type=range] { color: #3b82f6 !important; }
 
 .skeleton-bar {
-    height: 1rem;
+    /* Výška 1.25rem (cca 20px) + paddingy v buňce vytvoří stejný prostor jako text */
+    height: 1.25rem; 
     background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
     background-size: 200% 100%;
     animation: loading 1.5s infinite;
     border-radius: 4px;
+    margin: 2px 0; /* Jemný margin pro vertikální vycentrování */
 }
 @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
