@@ -69,9 +69,15 @@ tbody td {
     #recorded-table td:nth-child(1) .skeleton-bar { width: 80%; }
     #recorded-table td:nth-child(3) .skeleton-bar { width: 90%; }
     
-    :root {
-        /* Zkrácení volume slideru na polovinu (původní je cca 100px) */
-        --plyr-volume-range-max-width: 60px !important;
+/* --- FIX VOLUME SLIDERU (Force) --- */
+    .plyr--audio .plyr__volume {
+        max-width: 1100px !important; /* Celková šířka ikony + slideru */
+        min-width: 20 !important;
+        flex-basis: 80px !important;
+    }
+
+    .plyr--audio .plyr__volume input[type="range"] {
+        max-width: 50px !important; /* Samotná posuvná lišta */
     }
 }
 
