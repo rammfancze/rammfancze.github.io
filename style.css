@@ -253,9 +253,17 @@ tbody td {
 
 /* Vzhled minimalistického tlačítka */
 #show-more-wrapper {
-    text-align: center;
+    min-height: 42px; /* Přesná výška tvého tlačítka včetně paddingu */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-top: 1.5rem;
     margin-bottom: 2rem;
+}
+
+/* Tlačítko zůstane v dokumentu, ale nebude vidět, dokud mu nedáme tuhle třídu */
+.btn-visible {
+    visibility: visible !important;
 }
 
 .minimal-btn {
