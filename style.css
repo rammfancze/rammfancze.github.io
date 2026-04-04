@@ -1,11 +1,10 @@
-/* --- 1. Základní nastavení a Fix pozadí --- */
+/* --- 1. Základní nastavení a Skrytí Scrollbaru --- */
 html {
-    background-color: #0f172a; 
-    scrollbar-width: none; /* Schová scrollbar ve Firefoxu */
-    -ms-overflow-style: none; /* Schová scrollbar v IE a Edge */
+    background-color: #0f172a;
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
 }
 
-/* Schová scrollbar v Chrome, Safari a novém Edge */
 html::-webkit-scrollbar {
     display: none;
 }
@@ -18,10 +17,15 @@ body {
     padding: 0;
     width: 100%;
     min-height: 100vh;
-    overflow-x: hidden; /* Jistota, že nic neuteče do stran */
+    overflow-y: overlay;
 }
-/* --- 2. Tabulka a Sjednocení výšek --- */
-/* Změněno: Aplikuje se na 'tbody tr' a 'tbody td', takže to sjednotí obě tabulky */
+
+/* VRÁCENÍ FONRU PRO NADPISY */
+h1, h2, .font-orbitron {
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* --- 2. Tabulky a Sjednocení výšek --- */
 tbody tr {
     height: 64px;
 }
@@ -31,7 +35,20 @@ tbody td {
     vertical-align: middle;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+    /* TEXT V TABULCE: Tlumená barva, aby nesvítil */
+    color: #9ca3af !important; 
 }
+
+/* NÁZVY SLOUPCŮ: Tyto jediné budou svítit bíle */
+thead th {
+    color: #ffffff !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    padding-bottom: 1rem;
+}
+
 /* --- 3. Mobilní zobrazení (Karty) --- */
 @media (max-width: 768px) {
     thead { display: none; }
@@ -42,7 +59,7 @@ tbody td {
         border: 1px solid rgba(75, 85, 99, 0.4);
         border-radius: 0.75rem;
         padding: 0.5rem;
-        height: auto !important; /* Na mobilu musí být výška flexibilní */
+        height: auto !important;
     }
     td {
         display: flex !important;
@@ -50,8 +67,7 @@ tbody td {
         align-items: center !important;
         padding: 0.75rem !important;
         border-bottom: 1px solid rgba(75, 85, 99, 0.2) !important;
-        height: auto !important; /* Reset výšky pro mobil */
-        min-height: 40px;
+        height: auto !important;
     }
     td:last-child { border-bottom: none !important; }
     td::before {
@@ -59,11 +75,12 @@ tbody td {
         font-weight: 600;
         text-transform: uppercase;
         font-size: 0.75rem;
-        color: #9ca3af;
+        /* Názvy polí na mobilu taky svítí trochu víc */
+        color: #d1d5db; 
     }
 }
 
-/* --- 4. Vyhledávací pole (Zarovnání DOPRAVA na PC) --- */
+/* --- 4. Vyhledávací pole --- */
 .search-wrapper {
     position: relative;
     width: 100%;
@@ -86,15 +103,7 @@ tbody td {
     color: white !important;
 }
 
-.search-icon {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6b7280;
-}
-
-/* --- 5. Audio & Plyr (Zarovnání a lícování) --- */
+/* --- 5. Audio & Plyr --- */
 .audio-wrapper {
     width: 240px;
     margin-left: auto;
@@ -105,45 +114,32 @@ tbody td {
     padding-right: 0 !important;
 }
 
+/* Barva ikon v přehrávači - sladěno s tlumeným textem */
+.plyr--audio .plyr__controls [data-plyr="play"],
+.plyr--audio .plyr__controls [data-plyr="pause"],
+.plyr--audio .plyr__controls svg {
+    color: #9ca3af !important;
+}
+
 .plyr__volume {
     margin-right: -2px !important;
 }
 
-/* --- 6. DEFINITIVNÍ FIX GRADIENTU A PRUHU (Lightbox) --- */
+/* --- 6. Lightbox Fixes --- */
 .fslightbox-container {
     background: rgba(15, 23, 42, 0.95) !important; 
     width: 100vw !important;
     height: 100vh !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    z-index: 999999 !important;
 }
 
-/* Fix "odseknutých" obdélníků pod tlačítky */
 .fslightbox-toolbar,
 .fslightbox-toolbar-button,
 .fslightbox-slide-btn {
-    background: transparent !important; /* Odstraní výchozí černý obdélník */
+    background: transparent !important;
 }
 
-/* Sladění barvy ikon Lightboxu se zbytkem webu (stříbrná -> bílá) */
 .fslightbox-svg-path {
-    fill: #d1d5db !important; 
-    transition: fill 0.2s ease;
-}
-
-.fslightbox-toolbar-button:hover .fslightbox-svg-path,
-.fslightbox-slide-btn:hover .fslightbox-svg-path {
-    fill: #ffffff !important;
-}
-
-.fslightbox-source {
-    box-shadow: 0 0 50px rgba(0,0,0,0.5); 
-}
-
-/* Zajištění, aby obrázek měl trochu stínu pro hloubku */
-.fslightbox-source {
-    box-shadow: 0 0 50px rgba(0,0,0,0.5); 
+    fill: #d1d5db !important;
 }
 
 /* --- 7. Ostatní --- */
