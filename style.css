@@ -124,15 +124,16 @@ thead th {
     padding-right: 0 !important;
 }
 
-/* Barva ikon v přehrávači - sladěno s tlumeným textem */
+/* Změna barvy play a pause ikony na bílou */
 .plyr--audio .plyr__controls [data-plyr="play"],
-.plyr--audio .plyr__controls [data-plyr="pause"],
-.plyr--audio .plyr__controls svg {
-    color: #9ca3af !important;
+.plyr--audio .plyr__controls [data-plyr="pause"] {
+    color: #ffffff !important;
+    opacity: 1 !important; /* Zajistí, že nebude poloprůhledná */
 }
 
-.plyr__volume {
-    margin-right: -2px !important;
+/* Volitelně: Pokud chceš, aby zbělely všechny ikony (i hlasitost) */
+:root {
+    --plyr-audio-control-color: #ffffff;
 }
 
 /* --- 6. Lightbox Fixes --- */
