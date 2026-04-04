@@ -98,27 +98,43 @@ tbody td {
     .plyr--audio .plyr__volume input[type="range"] {
         max-width: 50px !important; /* Samotná posuvná lišta */
     }
-    /* 1. Nastavení šířek pro Desktop (vynutíme je, aby se sloupce nesrážely) */
+/* --- DEFINITIVNÍ FIX: DESKTOP VS MOBIL --- */
+
+/* 1. Pravidla POUZE pro PC/Desktop (min-width: 769px) */
 @media (min-width: 769px) {
-    #recorded-table th:nth-child(4), #recorded-table td:nth-child(4) { width: 50px !important; }  /* YT */
-    #recorded-table th:nth-child(5), #recorded-table td:nth-child(5) { width: 50px !important; }  /* IEM */
-    #recorded-table th:nth-child(6), #recorded-table td:nth-child(6) { width: 80px !important; }  /* Format */
+    /* Fixní šířky sloupců */
+    #recorded-table th:nth-child(4), #recorded-table td:nth-child(4) { width: 60px !important; } 
+    #recorded-table th:nth-child(5), #recorded-table td:nth-child(5) { width: 60px !important; } 
+    #recorded-table th:nth-child(6), #recorded-table td:nth-child(6) { width: 90px !important; } 
+
+    /* Centrování obsahu v těchto sloupcích */
+    #recorded-table th:nth-child(4), #recorded-table td:nth-child(4),
+    #recorded-table th:nth-child(5), #recorded-table td:nth-child(5),
+    #recorded-table th:nth-child(6), #recorded-table td:nth-child(6) {
+        text-align: center !important;
+        display: table-cell !important; /* Důležité pro správné chování tabulky */
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
 }
 
-/* 2. Samotné centrování textu a ikon */
-#recorded-table th:nth-child(4), #recorded-table td:nth-child(4),
-#recorded-table th:nth-child(5), #recorded-table td:nth-child(5),
-#recorded-table th:nth-child(6), #recorded-table td:nth-child(6) {
-    text-align: center !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
+/* 2. Pravidla POUZE pro Mobil (max-width: 768px) */
+@media (max-width: 768px) {
+    #recorded-table td:nth-child(4), 
+    #recorded-table td:nth-child(5), 
+    #recorded-table td:nth-child(6) {
+        width: 100% !important;       /* Vrátíme plnou šířku karty */
+        display: flex !important;     /* Zapneme flex pro data-label a hodnotu */
+        justify-content: space-between !important; /* Štítek vlevo, ikona vpravo */
+        text-align: right !important; /* Samotný text/ikona doprava k okraji */
+        padding: 0.75rem 1rem !important;
+    }
 
-/* 3. Bonus: zarovnání ikon na střed, aby neuhýbaly */
-#recorded-table td:nth-child(4) i, 
-#recorded-table td:nth-child(5) i {
-    display: inline-block;
-    width: 100%;
+    /* Pokud chceš ikony na mobilu přesto raději vycentrované (v rámci té pravé strany): */
+    #recorded-table td:nth-child(4) i, 
+    #recorded-table td:nth-child(5) i {
+        margin-left: auto; /* Dotlačí ikonu k pravému okraji mobilní karty */
+    }
 }
 }
 
