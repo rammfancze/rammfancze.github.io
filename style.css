@@ -173,8 +173,8 @@ thead th {
 .plyr--audio .plyr__controls [data-plyr="play"], 
 .plyr--audio .plyr__controls [data-plyr="pause"],
 .plyr--audio .plyr__controls svg {
-    color: #ffffff !important;
-    fill: #ffffff !important;
+    color: #9ca3af !important;
+    fill: #9ca3af !important;
     opacity: 1 !important;
 }
 
