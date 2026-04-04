@@ -110,6 +110,24 @@ h1, h2, .font-orbitron {
 .plyr__volume {
     margin-right: -2px !important; /* Aby volume lícovalo s okrajem tabulky */
 }
+/* Změna délky (šířky) volume baru */
+.plyr__volume {
+    /* Nastaví základní šířku - můžeš měnit dle potřeby (např. 60px až 100px) */
+    flex-basis: 70px !important; 
+    min-width: 70px !important;
+    max-width: 80px !important;
+    
+    /* Toto zajistí, že barva ikony reproduktoru a posuvníku bude lícovat */
+    margin-right: -2px !important; 
+}
+
+/* Pokud chceš, aby byl na mobilu trochu širší pro lepší ovládání prstem */
+@media (max-width: 768px) {
+    .plyr__volume {
+        flex-basis: 90px !important;
+        max-width: 100px !important;
+    }
+}
 
 /* --- 6. DEFINITIVNÍ FIX GRADIENTU A PRUHU (Lightbox) --- */
 /* Tento blok řeší ten pruh vpravo na tvém screenshotu */
