@@ -52,8 +52,8 @@ tbody td {
 
     /* Šířky Upcoming */
     table:first-of-type th:nth-child(1) { width: 20% !important; }
-    table:first-of-type th:nth-child(2) { width: 13% !important; }
-    table:first-of-type th:nth-child(3) { width: 67% !important; }
+    table:first-of-type th:nth-child(2) { width: 14% !important; }
+    table:first-of-type th:nth-child(3) { width: 66% !important; }
 
     /* Šířky Recorded */
 
