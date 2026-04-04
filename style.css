@@ -295,15 +295,28 @@ tbody td {
 @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
 /* --- 7. CENTROVÁNÍ SLOUPCŮ YT, IEM A FORMAT --- */
+@media (min-width: 769px) {
+    /* Cílíme na YT, IEM a FORMAT v Recorded tabulce */
+    #recorded-table th:nth-child(4), 
+    #recorded-table td:nth-child(4),
+    #recorded-table th:nth-child(5), 
+    #recorded-table td:nth-child(5),
+    #recorded-table th:nth-child(6), 
+    #recorded-table td:nth-child(6) {
+        text-align: center !important;
+        /* Zrušíme boční odsazení, které může text odsouvat */
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        width: 1% !important; /* Necháme prohlížeč, aby šířku určil podle hlavičky */
+    }
 
-/* Pro počítače (Desktop) */
-#recorded-table th:nth-child(4), 
-#recorded-table th:nth-child(5), 
-#recorded-table th:nth-child(6),
-#recorded-table td:nth-child(4), 
-#recorded-table td:nth-child(5), 
-#recorded-table td:nth-child(6) {
-    text-align: center !important;
+    /* Vynucení, aby se i nadpisy v hlavičce chovaly jako vycentrované bloky */
+    #recorded-table thead th:nth-child(4),
+    #recorded-table thead th:nth-child(5),
+    #recorded-table thead th:nth-child(6) {
+        text-align: center !important;
+        display: table-cell !important;
+    }
 }
 
 /* Vypnutí pozadí pro horní lištu a boční šipky */
