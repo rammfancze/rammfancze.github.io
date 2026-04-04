@@ -147,36 +147,44 @@ tbody td {
     color: #6b7280;
 }
 
-/* --- 5. AUDIO & PLYR (Oprava průhlednosti a barev) --- */
+/* --- 5. AUDIO & PLYR (Sjednocení barev s textem) --- */
 
-/* Odstranění šedého pozadí a nastavení průhlednosti */
 .plyr--audio .plyr__controls {
     background: transparent !important;
     padding: 0 !important;
-    color: #ffffff !important;
+    /* Barva textu v přehrávači (čas atd.) */
+    color: #9ca3af !important; 
 }
 
-/* Vynucení bílé barvy pro ikony (Play, Pause, Volume) */
+/* Ikony: Play, Pause, Volume, atd. */
 .plyr--audio .plyr__controls [data-plyr="play"],
 .plyr--audio .plyr__controls [data-plyr="pause"],
 .plyr--audio .plyr__controls svg {
+    color: #9ca3af !important; /* Tlumená šedá jako text v td */
+    fill: #9ca3af !important;
+    opacity: 1 !important;
+    transition: color 0.2s ease;
+}
+
+/* Hover efekt: Při najetí myší může trochu zbělat, aby uživatel věděl, že na to sahá */
+.plyr--audio .plyr__controls [data-plyr="play"]:hover svg,
+.plyr--audio .plyr__controls [data-plyr="pause"]:hover svg {
     color: #ffffff !important;
     fill: #ffffff !important;
-    opacity: 1 !important;
 }
 
-/* Odstranění modrého/tmavého pozadí při kliknutí na mobilu (Focus state) */
-.plyr--audio .plyr__control.plyr__tab-focus,
-.plyr--audio .plyr__control:hover,
-.plyr--audio .plyr__control[aria-expanded="true"] {
-    background: transparent !important;
-    color: #ffffff !important;
-}
-
-/* Globální barva ovládacích prvků Plyru */
+/* Globální proměnná pro barvu ovládání */
 :root {
-    --plyr-audio-control-color: #ffffff !important;
-    --plyr-control-spacing: 8px;
+    --plyr-audio-control-color: #9ca3af !important;
+    --plyr-audio-control-color-hover: #ffffff !important;
+}
+
+/* Fix pro mobilní karty, aby i tam byla barva tlumená */
+@media (max-width: 768px) {
+    .plyr--audio .plyr__controls svg {
+        fill: #9ca3af !important;
+        color: #9ca3af !important;
+    }
 }
 
 .audio-wrapper { 
