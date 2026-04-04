@@ -38,7 +38,7 @@ thead th {
 
 tbody td {
     vertical-align: middle;
-    color: #9ca3af !important; /* Tlumená barva textu */
+    color: #c6c6c6 !important; /* Tlumená barva textu */
 }
 
 /* --- 3. DESKTOP (Počítač - šířky a stabilita) --- */
@@ -153,7 +153,7 @@ tbody td {
     background: transparent !important;
     padding: 0 !important;
     /* Barva textu v přehrávači (čas atd.) */
-    color: #9ca3af !important; 
+    color: #c6c6c6 !important; 
 }
 
 /* Ikony: Play, Pause, Volume, atd. */
@@ -161,8 +161,8 @@ tbody td {
 .plyr--audio .plyr__controls [data-plyr="pause"],
 .plyr--audio .plyr__controls [data-plyr="mute"]
 .plyr--audio .plyr__controls svg {
-    color: #9ca3af !important; /* Tlumená šedá jako text v td */
-    fill: #9ca3af !important;
+    color: #c6c6c6 !important; /* Tlumená šedá jako text v td */
+    fill: #c6c6c6 !important;
     opacity: 1 !important;
     transition: color 0.2s ease;
 }
@@ -177,7 +177,7 @@ tbody td {
 
 /* Globální proměnná pro barvu ovládání */
 :root {
-    --plyr-audio-control-color: #9ca3af !important;
+    --plyr-audio-control-color: #c6c6c6 !important;
     --plyr-audio-control-color-hover: #ffffff !important;
 }
 
