@@ -1,9 +1,13 @@
 /* --- 1. Základní nastavení a Fix pozadí --- */
 html {
     background-color: #0f172a; 
-    /* Moderní fix: drží trvale rezervované místo pro scrollbar, 
-       takže stránka neposkočí doprava, když scrollbar zmizí */
-    scrollbar-gutter: stable; 
+    scrollbar-width: none; /* Schová scrollbar ve Firefoxu */
+    -ms-overflow-style: none; /* Schová scrollbar v IE a Edge */
+}
+
+/* Schová scrollbar v Chrome, Safari a novém Edge */
+html::-webkit-scrollbar {
+    display: none;
 }
 
 body {
@@ -14,13 +18,8 @@ body {
     padding: 0;
     width: 100%;
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: hidden; /* Jistota, že nic neuteče do stran */
 }
-
-h1, h2, .font-orbitron {
-    font-family: 'Orbitron', sans-serif;
-}
-
 /* --- 2. Tabulka a Sjednocení výšek --- */
 /* Změněno: Aplikuje se na 'tbody tr' a 'tbody td', takže to sjednotí obě tabulky */
 tbody tr {
