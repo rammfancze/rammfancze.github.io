@@ -1,6 +1,8 @@
-/* --- 1. Základní nastavení a Fonty --- */
+/* --- 1. Základní nastavení a Fix pozadí --- */
 html {
-    overflow-y: scroll; /* Vynutí scrollbar, aby se stránka "necukala" */
+    /* Fix pro gradient: barva musí být i v html tagu, aby neprosvítala bílá/černá */
+    background-color: #0f172a; 
+    overflow-y: scroll; /* Vynutí scrollbar, aby se stránka při otevření fotky nehnula */
 }
 
 body {
@@ -10,20 +12,16 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
-    overflow-x: hidden;
+    min-height: 100vh;
 }
 
 h1, h2, .font-orbitron {
     font-family: 'Orbitron', sans-serif;
 }
 
-/* --- 2. Sjednocení výšek (Desktop i Mobil) --- */
+/* --- 2. Tabulka a Sjednocení výšek --- */
 #recorded-table td {
     height: 57px !important;
-    min-height: 57px !important;
-    max-height: 57px !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
     vertical-align: middle;
 }
 
@@ -42,9 +40,7 @@ h1, h2, .font-orbitron {
         display: flex !important;
         justify-content: space-between !important;
         align-items: center !important;
-        text-align: right;
-        padding-left: 0.75rem !important;
-        padding-right: 0.75rem !important;
+        padding: 0.75rem !important;
         border-bottom: 1px solid rgba(75, 85, 99, 0.2) !important;
     }
     td:last-child { border-bottom: none !important; }
@@ -54,40 +50,10 @@ h1, h2, .font-orbitron {
         text-transform: uppercase;
         font-size: 0.75rem;
         color: #9ca3af;
-        margin-right: 1rem;
-        text-align: left;
-    }
-    .audio-container {
-        width: 100% !important;
-        max-width: 220px;
-        margin-left: auto;
     }
 }
 
-/* --- 4. Plyr & Audio (Fix Volume a Zarovnání) --- */
-.audio-container {
-    width: 250px;
-    margin-left: auto;
-}
-
-.plyr--audio .plyr__controls {
-    background: transparent !important;
-    padding: 0 !important;
-    color: #d1d5db !important;
-}
-
-/* Fix pro volume bar, aby nečouhal z karty vpravo */
-.plyr__volume {
-    min-width: 60px !important;
-    max-width: 80px !important;
-    margin-right: -4px !important; /* Mírný posun k okraji */
-}
-
-.plyr--full-ui.plyr--audio input[type=range] {
-    color: #ef4444 !important; /* Červená barva */
-}
-
-/* --- 5. Vyhledávací pole (Zarovnání vpravo na PC) --- */
+/* --- 4. Vyhledávací pole (Zarovnání DOPRAVA na PC) --- */
 .search-wrapper {
     position: relative;
     width: 100%;
@@ -97,7 +63,7 @@ h1, h2, .font-orbitron {
 @media (min-width: 768px) {
     .search-wrapper {
         max-width: 350px;
-        margin-left: auto; /* Dotlačí pole doprava nad konec tabulky */
+        margin-left: auto; /* Tohle ho hodí doprava nad konec tabulky */
     }
 }
 
@@ -118,31 +84,44 @@ h1, h2, .font-orbitron {
     color: #6b7280;
 }
 
-/* --- 6. DEFINITIVNÍ FIX PRO FSLIGHTBOX (Světlý pruh vpravo) --- */
-/* Vynutíme, aby overlay pokryl i prostor po scrollbaru */
-.fslightbox-container {
-    width: 100vw !important;
-    height: 100vh !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    background: #000 !important; /* Čistě černá, aby nebyly vidět rozdíly */
-    z-index: 99999999 !important;
+/* --- 5. Audio & Plyr (Zarovnání a lícování) --- */
+.audio-wrapper {
+    width: 240px;
+    margin-left: auto;
 }
 
-/* Odstraníme vynucený padding, který dělá ten pruh */
+.plyr--audio .plyr__controls {
+    background: transparent !important;
+    padding-right: 0 !important;
+}
+
+.plyr__volume {
+    margin-right: -2px !important; /* Aby volume lícovalo s okrajem tabulky */
+}
+
+/* --- 6. DEFINITIVNÍ FIX GRADIENTU A PRUHU (Lightbox) --- */
+/* Tento blok řeší ten pruh vpravo na tvém screenshotu */
+
+.fslightbox-container {
+    /* Použijeme barvu tvého pozadí s vysokou průhledností místo čisté černé */
+    background: rgba(15, 23, 42, 0.9) !important; 
+    width: 100vw !important; /* Vynutíme šířku celého monitoru */
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Lightbox si přidává padding na body, což dělá ten pruh - tady to vypneme */
 body.fslightbox-open {
     padding-right: 0 !important;
     overflow: hidden !important;
 }
 
-/* --- 7. Ostatní --- */
-td[data-label="YT"] a {
-    display: inline-flex;
-    transition: transform 0.2s;
+/* Zajištění, aby gradient pod lightboxem nezmizel nebo se neposunul */
+.fslightbox-source {
+    box-shadow: 0 0 50px rgba(0,0,0,0.5); /* Trochu stínu pod obrázek */
 }
-td[data-label="YT"] a:hover { transform: scale(1.1); }
 
+/* --- 7. Ostatní --- */
 .skeleton-bar {
     height: 1rem;
     background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
