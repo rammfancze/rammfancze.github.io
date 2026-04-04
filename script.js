@@ -49,7 +49,7 @@ async function nactiTabulky() {
     document.getElementById('upcoming-tbody').innerHTML = vytvorSkeletony(5, 3, labelsUpcoming);
     document.getElementById('recorded-tbody').innerHTML = vytvorSkeletony(8, 7, labelsRecorded);
 
-    // --- SAMOTNÉ STAHOVÁNÍ DAT ---
+// --- SAMOTNÉ STAHOVÁNÍ DAT ---
     const stahni = async (url, targetId, isRecorded) => {
         try {
             const res = await fetch(url);
@@ -58,6 +58,12 @@ async function nactiTabulky() {
             
             // Jakmile jsou data, skeletony zmizí a nahradí se daty
             vykresli(text, targetId, isRecorded);
+            
+            // >>> PŘIDEJ TYTO ŘÁDKY ZDE <<<
+            if (targetId === 'upcoming-tbody') {
+                initUpcomingToggle();
+            }
+            // >>> KONEC PŘIDANÝCH ŘÁDKŮ <<<
             
             if (isRecorded) {
                 plyrInstances.forEach(p => p.destroy());
