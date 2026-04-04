@@ -33,7 +33,7 @@ thead th {
     table:first-of-type, #recorded-table { table-layout: fixed !important; }
 
     #recorded-table tbody td {
-        height: 54px !important;
+        height: 54px !important; /* Fixní výška pro srovnání všech řádků */
         padding-top: 0 !important;
         padding-bottom: 0 !important;
         vertical-align: middle !important;
@@ -68,7 +68,6 @@ thead th {
         height: 32px !important;
         padding: 0 !important;
     }
-    /* Na PC ovládání hlasitosti ponecháme */
     .plyr__volume { flex-basis: 80px !important; }
 }
 
@@ -114,7 +113,7 @@ thead th {
         display: flex;
         justify-content: flex-end; 
         align-items: center;
-        max-width: 180px; /* Zmenšeno, protože už nepotřebujeme místo na volume */
+        width: 160px;
     }
 
     .plyr--audio .plyr__controls {
@@ -123,18 +122,12 @@ thead th {
         padding: 0 !important;
     }
 
-    /* SKRYTÍ HLASITOSTI NA MOBILU (Sjednocení s iPhonem) */
-    .plyr__volume { 
-        display: none !important; 
-    }
-
-    /* Aby Play button a progress bar byly hezky u sebe */
-    .plyr__controls > *:last-child {
-        margin-right: 0 !important;
-    }
+    /* Skrytí hlasitosti pro iPhone look */
+    .plyr__volume { display: none !important; }
+    .plyr__controls > *:last-child { margin-right: 0 !important; }
 }
 
-/* --- 4. OSTATNÍ (Hledání, Barvy, Skeleton) --- */
+/* --- 4. KOMPONENTY (Hledání, Tlačítko, Skeleton) --- */
 .search-wrapper { position: relative; display: flex; width: 100%; margin-bottom: 1rem; }
 @media (min-width: 768px) { .search-wrapper { max-width: 350px; margin-left: auto; } }
 
@@ -148,6 +141,33 @@ thead th {
 }
 .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; z-index: 10; }
 
+/* FIX: Tlačítko Show More, které neodskakuje */
+#show-more-wrapper { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    margin: 1.5rem 0;
+    min-height: 42px; /* Rezervuje prostor hned při načítání */
+    width: 100%;
+}
+
+.minimal-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #9ca3af;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 0.85rem;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.minimal-btn:hover { background: rgba(255, 255, 255, 0.05); color: #fff; border-color: rgba(255, 255, 255, 0.3); }
+
+/* Ostatní styly */
 .plyr--audio .plyr__controls { color: #c6c6c6 !important; }
 .plyr--audio .plyr__controls svg { fill: #c6c6c6 !important; }
 .plyr--full-ui.plyr--audio input[type=range] { color: #3b82f6 !important; }
