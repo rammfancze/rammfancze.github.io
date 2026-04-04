@@ -136,6 +136,11 @@ thead th {
 
     /* --- ÚPRAVA PRO MOBILNÍ AUDIO --- */
     /* Úprava pro mobilní audio - posun úplně doprava */
+td[data-label="Audio"] {
+    padding-right: 1rem !important; 
+}
+
+/* 2. Zarovnání wrapperu a zrušení dřívějších posunů */
 .audio-wrapper { 
     display: flex;
     justify-content: flex-end; 
@@ -143,17 +148,14 @@ thead th {
     width: 100%;
     max-width: 180px; 
     margin-left: auto;
-    margin-right: -8px; /* Kompenzace vnitřního paddingu přehrávače */
+    margin-right: 0 !important; /* Zrušení toho posunu doprava */
 }
 
-/* Odstranění paddingu buňky pro audio, aby mohl player až ke kraji */
-td[data-label="Audio"] {
-    padding-right: 0.5rem !important; 
-}
-
+/* 3. Klíčová úprava: odstranění vnitřního paddingu samotného Plyru */
 .plyr--audio .plyr__controls {
     background: transparent !important;
-    padding: 0 !important; /* Odstraní vnitřní odsazení Plyru */
+    padding: 0 !important; 
+    margin: 0 !important;
     justify-content: flex-end !important;
 }
 
