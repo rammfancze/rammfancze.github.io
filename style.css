@@ -98,6 +98,28 @@ tbody td {
     .plyr--audio .plyr__volume input[type="range"] {
         max-width: 50px !important; /* Samotná posuvná lišta */
     }
+    /* 1. Nastavení šířek pro Desktop (vynutíme je, aby se sloupce nesrážely) */
+@media (min-width: 769px) {
+    #recorded-table th:nth-child(4), #recorded-table td:nth-child(4) { width: 50px !important; }  /* YT */
+    #recorded-table th:nth-child(5), #recorded-table td:nth-child(5) { width: 50px !important; }  /* IEM */
+    #recorded-table th:nth-child(6), #recorded-table td:nth-child(6) { width: 80px !important; }  /* Format */
+}
+
+/* 2. Samotné centrování textu a ikon */
+#recorded-table th:nth-child(4), #recorded-table td:nth-child(4),
+#recorded-table th:nth-child(5), #recorded-table td:nth-child(5),
+#recorded-table th:nth-child(6), #recorded-table td:nth-child(6) {
+    text-align: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* 3. Bonus: zarovnání ikon na střed, aby neuhýbaly */
+#recorded-table td:nth-child(4) i, 
+#recorded-table td:nth-child(5) i {
+    display: inline-block;
+    width: 100%;
+}
 }
 
 /* --- 4. MOBIL (Karty pod sebou) --- */
@@ -295,28 +317,7 @@ tbody td {
 @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
 
-/* 1. Nastavení šířek pro Desktop (vynutíme je, aby se sloupce nesrážely) */
-@media (min-width: 769px) {
-    #recorded-table th:nth-child(4), #recorded-table td:nth-child(4) { width: 50px !important; }  /* YT */
-    #recorded-table th:nth-child(5), #recorded-table td:nth-child(5) { width: 50px !important; }  /* IEM */
-    #recorded-table th:nth-child(6), #recorded-table td:nth-child(6) { width: 80px !important; }  /* Format */
-}
 
-/* 2. Samotné centrování textu a ikon */
-#recorded-table th:nth-child(4), #recorded-table td:nth-child(4),
-#recorded-table th:nth-child(5), #recorded-table td:nth-child(5),
-#recorded-table th:nth-child(6), #recorded-table td:nth-child(6) {
-    text-align: center !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-/* 3. Bonus: zarovnání ikon na střed, aby neuhýbaly */
-#recorded-table td:nth-child(4) i, 
-#recorded-table td:nth-child(5) i {
-    display: inline-block;
-    width: 100%;
-}
 
 /* Vypnutí pozadí pro horní lištu a boční šipky */
 .fslightbox-toolbar,
