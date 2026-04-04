@@ -32,7 +32,6 @@ thead th {
 @media (min-width: 769px) {
     table:first-of-type, #recorded-table { table-layout: fixed !important; }
 
-    /* Sjednocení výšky všech řádků na 54px */
     #recorded-table tbody td {
         height: 54px !important;
         padding-top: 0 !important;
@@ -44,7 +43,6 @@ thead th {
         text-overflow: ellipsis;
     }
 
-    /* Šířky sloupců na PC */
     #recorded-table th:nth-child(1) { width: 20% !important; } 
     #recorded-table th:nth-child(2) { width: 14% !important; } 
     #recorded-table th:nth-child(3) { width: 24% !important; } 
@@ -53,7 +51,6 @@ thead th {
     #recorded-table th:nth-child(6) { width: 85px !important; } 
     #recorded-table th:nth-child(7) { width: 25% !important; } 
 
-    /* Centrování ikonových sloupců */
     #recorded-table th:nth-child(4), #recorded-table td:nth-child(4),
     #recorded-table th:nth-child(5), #recorded-table td:nth-child(5),
     #recorded-table th:nth-child(6), #recorded-table td:nth-child(6) {
@@ -71,6 +68,8 @@ thead th {
         height: 32px !important;
         padding: 0 !important;
     }
+    /* Na PC ovládání hlasitosti ponecháme */
+    .plyr__volume { flex-basis: 80px !important; }
 }
 
 /* --- 3. MOBIL (Panely/Karty - do 768px) --- */
@@ -82,17 +81,14 @@ thead th {
     
     thead { display: none !important; }
 
-    /* Karta (Panel) */
     tr {
         margin-bottom: 1.5rem !important;
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
         background: rgba(30, 41, 59, 0.5) !important;
         border-radius: 12px !important;
         padding: 0.5rem !important;
-        height: auto !important;
     }
 
-    /* Řádek v kartě */
     td {
         display: flex !important;
         justify-content: space-between !important; 
@@ -105,7 +101,6 @@ thead th {
 
     td:last-child { border-bottom: none !important; }
 
-    /* Popisky vlevo (ARTIST, DATE...) */
     td::before {
         content: attr(data-label);
         font-weight: 600;
@@ -113,17 +108,13 @@ thead th {
         font-size: 0.7rem;
         color: #ffffff;
         text-align: left;
-        flex-shrink: 0;
     }
 
-    /* FIX: Precizní zarovnání přehrávače na pravou hranu */
     .audio-wrapper { 
         display: flex;
         justify-content: flex-end; 
         align-items: center;
-        width: 100%;
-        max-width: 220px; /* Fixní maximální šířka, ať to není moc roztažené */
-        margin-right: 0 !important; 
+        max-width: 180px; /* Zmenšeno, protože už nepotřebujeme místo na volume */
     }
 
     .plyr--audio .plyr__controls {
@@ -132,18 +123,18 @@ thead th {
         padding: 0 !important;
     }
 
-    /* Odstranění schovaných mezer na konci Plyru, aby lícoval s textem */
+    /* SKRYTÍ HLASITOSTI NA MOBILU (Sjednocení s iPhonem) */
+    .plyr__volume { 
+        display: none !important; 
+    }
+
+    /* Aby Play button a progress bar byly hezky u sebe */
     .plyr__controls > *:last-child {
         margin-right: 0 !important;
     }
-    
-    /* Vynucení barvy a tloušťky posuvníku pro lepší vzhled na mobilu */
-    .plyr__volume {
-        max-width: 70px !important; /* Lehce zkrácený slider hlasitosti na mobilu */
-    }
 }
 
-/* --- 4. KOMPONENTY (Hledání, Barvy) --- */
+/* --- 4. OSTATNÍ (Hledání, Barvy, Skeleton) --- */
 .search-wrapper { position: relative; display: flex; width: 100%; margin-bottom: 1rem; }
 @media (min-width: 768px) { .search-wrapper { max-width: 350px; margin-left: auto; } }
 
@@ -157,12 +148,10 @@ thead th {
 }
 .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; z-index: 10; }
 
-/* Barvy přehrávače */
-.plyr--audio .plyr__controls { background: transparent !important; color: #c6c6c6 !important; }
+.plyr--audio .plyr__controls { color: #c6c6c6 !important; }
 .plyr--audio .plyr__controls svg { fill: #c6c6c6 !important; }
 .plyr--full-ui.plyr--audio input[type=range] { color: #3b82f6 !important; }
 
-/* Skeleton Animace */
 .skeleton-bar {
     height: 1rem;
     background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
@@ -172,7 +161,6 @@ thead th {
 }
 @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-/* Show/Hide Logic */
 #upcoming-table tbody tr:nth-child(n+6) { display: none !important; }
 #upcoming-table.is-expanded tbody tr:nth-child(n+6) { display: table-row !important; }
 @media (max-width: 768px) { #upcoming-table.is-expanded tbody tr:nth-child(n+6) { display: block !important; } }
