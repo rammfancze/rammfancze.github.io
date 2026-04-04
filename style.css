@@ -30,12 +30,13 @@ thead th {
 
 /* --- 2. DESKTOP (PC - od 769px výše) --- */
 @media (min-width: 769px) {
-    table:first-of-type, #recorded-table { table-layout: fixed !important; }
+    table:first-of-type, #recorded-table, #upcoming-table { table-layout: fixed !important; }
 
-    #recorded-table tbody td {
-        height: 54px !important; /* Fixní výška pro srovnání všech řádků */
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
+    /* FIX: Obě tabulky mají teď řádky striktně 54px vysoké */
+    #recorded-table tbody td, 
+    #upcoming-table tbody td {
+        height: 54px !important;
+        padding: 0 0.5rem !important; /* Fixní padding pro stabilitu */
         vertical-align: middle !important;
         color: #c6c6c6 !important;
         white-space: nowrap;
@@ -43,6 +44,7 @@ thead th {
         text-overflow: ellipsis;
     }
 
+    /* Šířky sloupců (Recorded) */
     #recorded-table th:nth-child(1) { width: 20% !important; } 
     #recorded-table th:nth-child(2) { width: 14% !important; } 
     #recorded-table th:nth-child(3) { width: 24% !important; } 
@@ -50,12 +52,6 @@ thead th {
     #recorded-table th:nth-child(5) { width: 60px !important; } 
     #recorded-table th:nth-child(6) { width: 85px !important; } 
     #recorded-table th:nth-child(7) { width: 25% !important; } 
-
-    #recorded-table th:nth-child(4), #recorded-table td:nth-child(4),
-    #recorded-table th:nth-child(5), #recorded-table td:nth-child(5),
-    #recorded-table th:nth-child(6), #recorded-table td:nth-child(6) {
-        text-align: center !important;
-    }
 
     .audio-wrapper {
         height: 54px;
@@ -68,16 +64,11 @@ thead th {
         height: 32px !important;
         padding: 0 !important;
     }
-    .plyr__volume { flex-basis: 80px !important; }
 }
 
 /* --- 3. MOBIL (Panely/Karty - do 768px) --- */
 @media (max-width: 768px) {
-    table, thead, tbody, th, td, tr { 
-        display: block !important; 
-        width: 100% !important; 
-    }
-    
+    table, thead, tbody, th, td, tr { display: block !important; width: 100% !important; }
     thead { display: none !important; }
 
     tr {
@@ -95,7 +86,7 @@ thead th {
         padding: 0.75rem 1rem !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
         color: #c6c6c6 !important;
-        min-height: 48px !important;
+        min-height: 48px !important; /* Fixní výška karty na mobilu */
     }
 
     td:last-child { border-bottom: none !important; }
@@ -106,7 +97,6 @@ thead th {
         text-transform: uppercase;
         font-size: 0.7rem;
         color: #ffffff;
-        text-align: left;
     }
 
     .audio-wrapper { 
@@ -116,72 +106,41 @@ thead th {
         width: 160px;
     }
 
-    .plyr--audio .plyr__controls {
-        width: 100% !important;
-        background: transparent !important;
-        padding: 0 !important;
-    }
-
-    /* Skrytí hlasitosti pro iPhone look */
     .plyr__volume { display: none !important; }
-    .plyr__controls > *:last-child { margin-right: 0 !important; }
 }
 
 /* --- 4. KOMPONENTY (Hledání, Tlačítko, Skeleton) --- */
-.search-wrapper { position: relative; display: flex; width: 100%; margin-bottom: 1rem; }
-@media (min-width: 768px) { .search-wrapper { max-width: 350px; margin-left: auto; } }
+#show-more-wrapper { 
+    display: flex; justify-content: center; align-items: center;
+    margin: 1.5rem 0; min-height: 42px; 
+}
+
+.minimal-btn {
+    background: transparent; border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #9ca3af; padding: 8px 20px; border-radius: 6px;
+    height: 38px; display: flex; align-items: center;
+}
+
+/* FIX: Skeleton, který přesně nahrazuje text a nemění výšku buňky */
+.skeleton-bar {
+    display: inline-block;
+    height: 18px; /* Odpovídá výšce běžného Inter fontu */
+    width: 80%;
+    background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+
+@keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
 .search-input {
     background: rgba(30, 41, 59, 0.4) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding: 0.6rem 1rem 0.6rem 2.8rem !important;
-    border-radius: 6px;
-    width: 100%;
-    color: white !important;
+    border-radius: 6px; width: 100%; color: white !important;
 }
-.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; z-index: 10; }
-
-/* FIX: Tlačítko Show More, které neodskakuje */
-#show-more-wrapper { 
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-    margin: 1.5rem 0;
-    min-height: 42px; /* Rezervuje prostor hned při načítání */
-    width: 100%;
-}
-
-.minimal-btn {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #9ca3af;
-    padding: 8px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.2s;
-    font-size: 0.85rem;
-    height: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.minimal-btn:hover { background: rgba(255, 255, 255, 0.05); color: #fff; border-color: rgba(255, 255, 255, 0.3); }
-
-/* Ostatní styly */
-.plyr--audio .plyr__controls { color: #c6c6c6 !important; }
-.plyr--audio .plyr__controls svg { fill: #c6c6c6 !important; }
-.plyr--full-ui.plyr--audio input[type=range] { color: #3b82f6 !important; }
-
-.skeleton-bar {
-    /* Výška 1.25rem (cca 20px) + paddingy v buňce vytvoří stejný prostor jako text */
-    height: 1.25rem; 
-    background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
-    background-size: 200% 100%;
-    animation: loading 1.5s infinite;
-    border-radius: 4px;
-    margin: 2px 0; /* Jemný margin pro vertikální vycentrování */
-}
-@keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
 #upcoming-table tbody tr:nth-child(n+6) { display: none !important; }
 #upcoming-table.is-expanded tbody tr:nth-child(n+6) { display: table-row !important; }
