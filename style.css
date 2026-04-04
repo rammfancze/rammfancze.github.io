@@ -135,24 +135,31 @@ thead th {
     }
 
     /* --- ÚPRAVA PRO MOBILNÍ AUDIO --- */
-    .audio-wrapper { 
-        display: flex;
-        justify-content: flex-end; 
-        align-items: center;
-        width: 100%;
-        max-width: 160px; /* Zmenšeno pro lepší zarovnání bez volume ikony */
-        margin-left: auto; /* Tlačí wrapper doprava */
-    }
+    /* Úprava pro mobilní audio - posun úplně doprava */
+.audio-wrapper { 
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    width: 100%;
+    max-width: 180px; 
+    margin-left: auto;
+    margin-right: -8px; /* Kompenzace vnitřního paddingu přehrávače */
+}
+
+/* Odstranění paddingu buňky pro audio, aby mohl player až ke kraji */
+td[data-label="Audio"] {
+    padding-right: 0.5rem !important; 
+}
+
+.plyr--audio .plyr__controls {
+    background: transparent !important;
+    padding: 0 !important; /* Odstraní vnitřní odsazení Plyru */
+    justify-content: flex-end !important;
+}
 
     /* Úplné skrytí ikony zvuku a ovládání hlasitosti na mobilu */
     .audio-wrapper .plyr__volume {
         display: none !important;
-    }
-
-    /* Zarovnání zbylých prvků (play, progress) k pravé hraně */
-    .plyr__controls {
-        width: 100%;
-        justify-content: flex-end !important;
     }
 
     .skeleton-bar { width: 120px !important; margin-left: auto; }
