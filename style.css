@@ -166,3 +166,27 @@ thead th {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
+/* --- FINÁLNÍ OPRAVA BAREV IKON (PC I MOBIL) --- */
+
+/* 1. Vynucení bílé barvy pro konkrétní tlačítka Play/Pause */
+.plyr--audio .plyr__controls [data-plyr="play"],
+.plyr--audio .plyr__controls [data-plyr="pause"],
+.plyr--audio .plyr__controls button svg {
+    color: #ffffff !important;
+    fill: #ffffff !important; /* Plyr ikony jsou SVG, někdy potřebují fill */
+    opacity: 1 !important;
+}
+
+/* 2. Globální přenastavení proměnných Plyru */
+:root {
+    --plyr-audio-control-color: #ffffff !important;
+    --plyr-audio-control-color-hover: #ffffff !important;
+}
+
+/* 3. Pojistka pro mobilní karty (pokud máš ikony v nich) */
+@media (max-width: 768px) {
+    .plyr--audio .plyr__controls svg {
+        color: #ffffff !important;
+        fill: #ffffff !important;
+    }
+}
