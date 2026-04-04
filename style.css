@@ -224,3 +224,19 @@ td {
     width: 30px;
     margin: 0 auto;
 }
+
+/* První tabulka na stránce (Upcoming) */
+table:first-of-type {
+    table-layout: fixed !important; /* Toto je nejdůležitější řádek proti odskakování */
+    width: 100% !important;
+}
+
+/* Nastavení šířek sloupců pro první tabulku */
+table:first-of-type th:nth-child(1), 
+table:first-of-type td:nth-child(1) { width: 40% !important; } /* Artist / Event */
+
+table:first-of-type th:nth-child(2), 
+table:first-of-type td:nth-child(2) { width: 18% !important; } /* Date */
+
+table:first-of-type th:nth-child(3), 
+table:first-of-type td:nth-child(3) { width: 42% !important; } /* Venue */
