@@ -58,8 +58,8 @@ tbody td {
     /* Šířky Recorded */
 
     #recorded-table th:nth-child(1) { width: 20% !important; } /* Artist - zúženo */
-    #recorded-table th:nth-child(2) { width: 10% !important; } /* Date - zúženo */
-    #recorded-table th:nth-child(3) { width: 28% !important; } /* Venue - ZVĚTŠENO */
+    #recorded-table th:nth-child(2) { width: 14% !important; } /* Date - zúženo */
+    #recorded-table th:nth-child(3) { width: 24% !important; } /* Venue - ZVĚTŠENO */
     #recorded-table th:nth-child(4) { width: 5% !important; }  /* YT */
     #recorded-table th:nth-child(5) { width: 5% !important; }  /* IEM */
     #recorded-table th:nth-child(6) { width: 7% !important; }  /* Format */
