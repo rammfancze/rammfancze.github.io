@@ -129,3 +129,35 @@ function vykresli(data, targetId, jeToRecorded) {
 fetchSubscribers();
 nactiTabulky();
 
+// --- LOGIKA PRO SHOW MORE / SHOW LESS U UPCOMING SHOWS ---
+function initUpcomingToggle() {
+    const table = document.getElementById('upcoming-table');
+    const tbody = document.getElementById('upcoming-tbody');
+    const rows = tbody.getElementsByTagName('tr');
+    const wrapper = document.getElementById('show-more-wrapper');
+    const btn = document.getElementById('toggle-upcoming');
+
+    // Zkontrolujeme, jestli je řádků víc než 5
+    if (rows.length > 5) {
+        wrapper.classList.remove('hidden'); // Zobrazíme tlačítko (odstraníme Tailwind class)
+
+        // Odstraníme starý listener (pokud by se funkce volala víckrát)
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+
+        newBtn.addEventListener('click', function() {
+            table.classList.toggle('is-expanded');
+            
+            if (table.classList.contains('is-expanded')) {
+                newBtn.textContent = 'Show less';
+            } else {
+                newBtn.textContent = 'Show all upcoming shows';
+                // Jemné odskrolování zpět nahoru k tabulce
+                table.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    } else {
+        // Pokud je řádků 5 a méně, ujistíme se, že tlačítko zůstane skryté
+        wrapper.classList.add('hidden');
+    }
+}
