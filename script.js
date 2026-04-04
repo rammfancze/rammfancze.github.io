@@ -142,10 +142,11 @@ function initUpcomingToggle() {
     const rows = tbody.getElementsByTagName('tr');
     const btn = document.getElementById('toggle-upcoming');
 
-    // Pokud je řádků víc než 5, jen tlačítko zviditelníme
+    // Pokud je řádků víc než 5
     if (rows.length > 5) {
-        btn.classList.add('btn-visible');
-        btn.style.visibility = 'visible'; // Pojistka
+        // ZOBRAZÍME TLAČÍTKO (odstraníme Tailwind třídu 'hidden')
+        btn.classList.remove('hidden');
+        btn.style.display = 'inline-block';
 
         const newBtn = btn.cloneNode(true);
         btn.parentNode.replaceChild(newBtn, btn);
@@ -160,8 +161,8 @@ function initUpcomingToggle() {
             }
         });
     } else {
-        // Pokud je řádků málo, tlačítko prostě zůstane skryté, ale místo pod ním zůstane prázdné
-        btn.classList.remove('btn-visible');
-        btn.style.visibility = 'hidden';
+        // Pokud je řádků 5 a méně, tlačítko natvrdo skryjeme
+        btn.classList.add('hidden');
+        btn.style.display = 'none';
     }
 }
