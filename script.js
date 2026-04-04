@@ -157,7 +157,6 @@ function initUpcomingToggle() {
                 newBtn.textContent = 'Show less';
             } else {
                 newBtn.textContent = 'Show all upcoming shows';
-                table.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
     } else {
