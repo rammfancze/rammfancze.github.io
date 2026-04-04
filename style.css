@@ -117,7 +117,29 @@ tbody td {
     height: 100vh !important;
     margin: 0 !important;
     padding: 0 !important;
-    z-index: 999999 !important; /* Jistota, že je nade vším */
+    z-index: 999999 !important;
+}
+
+/* Fix "odseknutých" obdélníků pod tlačítky */
+.fslightbox-toolbar,
+.fslightbox-toolbar-button,
+.fslightbox-slide-btn {
+    background: transparent !important; /* Odstraní výchozí černý obdélník */
+}
+
+/* Sladění barvy ikon Lightboxu se zbytkem webu (stříbrná -> bílá) */
+.fslightbox-svg-path {
+    fill: #d1d5db !important; 
+    transition: fill 0.2s ease;
+}
+
+.fslightbox-toolbar-button:hover .fslightbox-svg-path,
+.fslightbox-slide-btn:hover .fslightbox-svg-path {
+    fill: #ffffff !important;
+}
+
+.fslightbox-source {
+    box-shadow: 0 0 50px rgba(0,0,0,0.5); 
 }
 
 /* Zajištění, aby obrázek měl trochu stínu pro hloubku */
