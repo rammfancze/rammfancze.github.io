@@ -134,28 +134,25 @@ thead th {
 }
 .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; z-index: 10; }
 
-/* FIX: Permanentní místo pro tlačítko Show More */
+/* FIX: Tady je to "zabetonované" místo */
 #upcoming-table {
-    margin-bottom: 0 !important; /* Spodní hranu tabulky necháme na nule */
+    /* Rezervujeme 70px (výška tlačítka + marginy) přímo pod tabulkou napořád */
+    margin-bottom: 70px !important; 
 }
 
 #show-more-wrapper { 
+    /* JS ovládá display: none / flex. */
+    /* Díky tomu, že tabulka má margin-bottom, tak i když je tady display: none, 
+       zbytek stránky zůstane dole pod tou 70px mezerou. */
     display: none; 
     justify-content: center; 
     align-items: center;
-    /* Tyto dva řádky drží mezeru neustále, i když JS nastaví display: none */
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-    height: 38px; /* Výška samotného buttonu */
-    box-sizing: content-box; 
+    width: 100%;
+    height: 38px;
+    /* Margin-top nás posune do té mezery, kterou drží tabulka výše */
+    margin-top: -54px; 
 }
 
-/* Aby mezera zůstala, i když je display: none, musíme ji vynutit přes rodiče nebo siblinga */
-#upcoming-table + #show-more-wrapper {
-    margin-bottom: 0;
-}
-
-/* Pokud tvůj JS přepíná display: none / flex, tohle zajistí stabilitu */
 .minimal-btn {
     background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.1);
