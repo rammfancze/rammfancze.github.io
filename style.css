@@ -110,15 +110,6 @@ h1, h2, .font-orbitron {
 .plyr__volume {
     margin-right: -2px !important; /* Aby volume lícovalo s okrajem tabulky */
 }
-/* Změna délky (šířky) volume baru */
-.plyr__volume {
-    /* Nastaví základní šířku - můžeš měnit dle potřeby (např. 60px až 100px) */
-
-    min-width: 70px !important;
-    
-    /* Toto zajistí, že barva ikony reproduktoru a posuvníku bude lícovat */
-    margin-right: -2px !important; 
-}
 
 /* Pokud chceš, aby byl na mobilu trochu širší pro lepší ovládání prstem */
 @media (max-width: 768px) {
