@@ -146,13 +146,49 @@ tbody td {
     color: #6b7280;
 }
 
-/* Plyr barvy */
-.plyr--audio .plyr__control--overlaid, 
-.plyr--audio .plyr__controls [data-plyr="play"], 
+/* --- 5. AUDIO & PLYR (Oprava průhlednosti a barev) --- */
+
+/* Odstranění šedého pozadí a nastavení průhlednosti */
+.plyr--audio .plyr__controls {
+    background: transparent !important;
+    padding: 0 !important;
+    color: #ffffff !important;
+}
+
+/* Vynucení bílé barvy pro ikony (Play, Pause, Volume) */
+.plyr--audio .plyr__controls [data-plyr="play"],
 .plyr--audio .plyr__controls [data-plyr="pause"],
 .plyr--audio .plyr__controls svg {
-    color: #9ca3af !important;
-    fill: #9ca3af !important;
+    color: #ffffff !important;
+    fill: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Odstranění modrého/tmavého pozadí při kliknutí na mobilu (Focus state) */
+.plyr--audio .plyr__control.plyr__tab-focus,
+.plyr--audio .plyr__control:hover,
+.plyr--audio .plyr__control[aria-expanded="true"] {
+    background: transparent !important;
+    color: #ffffff !important;
+}
+
+/* Globální barva ovládacích prvků Plyru */
+:root {
+    --plyr-audio-control-color: #ffffff !important;
+    --plyr-control-spacing: 8px;
+}
+
+.audio-wrapper { 
+    width: 240px; 
+    margin-left: auto; 
+}
+
+/* Fix pro mobil: Aby audio v kartě bylo bílé */
+@media (max-width: 768px) {
+    .plyr--audio .plyr__controls svg {
+        fill: #ffffff !important;
+        color: #ffffff !important;
+    }
 }
 
 .audio-wrapper { width: 240px; margin-left: auto; }
