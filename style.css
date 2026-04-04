@@ -83,8 +83,18 @@ thead th {
 /* --- 4. Vyhledávací pole --- */
 .search-wrapper {
     position: relative;
+    display: flex; /* Přidej tohle */
     width: 100%;
-    margin-bottom: 1rem;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%); /* Tohle ji vycentruje výškově */
+    color: #6b7280;
+    pointer-events: none;
+    z-index: 10;
 }
 
 @media (min-width: 768px) {
