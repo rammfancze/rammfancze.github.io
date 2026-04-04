@@ -115,7 +115,7 @@ function vykresli(data, targetId, jeToRecorded) {
                 <td class="px-4 py-3 text-right md:text-center" data-label="Format">        
                     ${imgUrl ? `<a data-fslightbox="gallery" href="${imgUrl}" class="hover:text-white underline decoration-gray-600">${formatText}</a>` : formatText}
                 </td>
-                <td class="px-4 py-3 md:table-cell" data-label="Audio">
+                <td class="px-2 py-3 md:table-cell" data-label="Audio">
                     <div class="audio-wrapper">
                         ${audioUrl.includes('http') ? `<audio class="js-player" controls src="${audioUrl}"></audio>` : ''}
                     </div>
