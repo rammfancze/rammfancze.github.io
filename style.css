@@ -68,7 +68,26 @@ tbody td {
     /* Skeletony šířky */
     #recorded-table td:nth-child(1) .skeleton-bar { width: 80%; }
     #recorded-table td:nth-child(3) .skeleton-bar { width: 90%; }
-    
+
+    /* Rezervace místa pro Upcoming tabulku, aby obsah neodskakoval */
+    #upcoming-table {
+    min-height: 320px; /* Přibližná výška hlavičky + 5 řádků */
+    }
+
+    /* Zajištění, že wrapper pro tlačítko nezabírá místo, dokud není potřeba, 
+       ale zároveň nezpůsobí obří skok */
+    #show-more-wrapper {
+    min-height: 50px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Pokud je vyloženě hidden, tak ať nezabírá nic, 
+   ale my ho v JS raději budeme jen zviditelňovat */
+#show-more-wrapper.hidden {
+    display: none !important;
+}
 /* --- FIX VOLUME SLIDERU (Force) --- */
     .plyr--audio .plyr__volume {
         max-width: 1100px !important; /* Celková šířka ikony + slideru */
