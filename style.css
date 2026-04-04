@@ -56,13 +56,14 @@ tbody td {
     table:first-of-type th:nth-child(3) { width: 42% !important; }
 
     /* Šířky Recorded */
-    #recorded-table th:nth-child(1) { width: 20% !important; }
-    #recorded-table th:nth-child(2) { width: 12% !important; }
-    #recorded-table th:nth-child(3) { width: 23% !important; }
-    #recorded-table th:nth-child(4) { width: 5% !important; }
-    #recorded-table th:nth-child(5) { width: 5% !important; }
-    #recorded-table th:nth-child(6) { width: 10% !important; }
-    #recorded-table th:nth-child(7) { width: 25% !important; }
+
+    #recorded-table th:nth-child(1) { width: 15% !important; } /* Artist - zúženo */
+    #recorded-table th:nth-child(2) { width: 10% !important; } /* Date - zúženo */
+    #recorded-table th:nth-child(3) { width: 33% !important; } /* Venue - ZVĚTŠENO */
+    #recorded-table th:nth-child(4) { width: 5% !important; }  /* YT */
+    #recorded-table th:nth-child(5) { width: 5% !important; }  /* IEM */
+    #recorded-table th:nth-child(6) { width: 7% !important; }  /* Format */
+    #recorded-table th:nth-child(7) { width: 25% !important; } /* Audio Sample */
 
     /* Skeletony šířky */
     #recorded-table td:nth-child(1) .skeleton-bar { width: 80%; }
