@@ -159,6 +159,7 @@ tbody td {
 /* Ikony: Play, Pause, Volume, atd. */
 .plyr--audio .plyr__controls [data-plyr="play"],
 .plyr--audio .plyr__controls [data-plyr="pause"],
+.plyr--audio .plyr__controls [data-plyr="mute"]
 .plyr--audio .plyr__controls svg {
     color: #9ca3af !important; /* Tlumená šedá jako text v td */
     fill: #9ca3af !important;
@@ -168,7 +169,8 @@ tbody td {
 
 /* Hover efekt: Při najetí myší může trochu zbělat, aby uživatel věděl, že na to sahá */
 .plyr--audio .plyr__controls [data-plyr="play"]:hover svg,
-.plyr--audio .plyr__controls [data-plyr="pause"]:hover svg {
+.plyr--audio .plyr__controls [data-plyr="pause"]:hover svg
+.plyr--audio .plyr__controls [data-plyr="mute"]:hover svg {
     color: #ffffff !important;
     fill: #ffffff !important;
 }
