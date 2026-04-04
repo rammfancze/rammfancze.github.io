@@ -1,4 +1,4 @@
-/* --- 1. ZÁKLADNÍ NASTAVENÍ (Společné pro vše) --- */
+/* --- 1. ZÁKLADNÍ NASTAVENÍ (Společné) --- */
 html {
     background-color: #0f172a;
     scrollbar-width: none;
@@ -14,19 +14,11 @@ body {
     padding: 0;
     width: 100%;
     min-height: 100vh;
-    overflow-y: overlay;
 }
 
-h1, h2, .font-orbitron {
-    font-family: 'Orbitron', sans-serif;
-}
+h1, h2, .font-orbitron { font-family: 'Orbitron', sans-serif; }
 
-/* --- 2. TABULKY - ZÁKLADNÍ VZHLED --- */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
+table { width: 100%; border-collapse: collapse; }
 thead th {
     color: #ffffff !important;
     font-weight: 600;
@@ -36,50 +28,78 @@ thead th {
     padding-bottom: 1rem;
 }
 
-tbody td {
-    vertical-align: middle;
-    color: #c6c6c6 !important; /* Tlumená barva textu */
-}
-
-/* --- 3. DESKTOP (Počítač - šířky a stabilita) --- */
+/* --- 2. DESKTOP (Počítač - 769px a více) --- */
 @media (min-width: 769px) {
-    table:first-of-type, #recorded-table {
-        table-layout: fixed !important;
+    table:first-of-type, #recorded-table { table-layout: fixed !important; }
+
+    /* Sjednocení výšky řádků na 54px */
+    #recorded-table tbody td {
+        height: 54px !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        vertical-align: middle !important;
+        color: #c6c6c6 !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    tbody tr { height: 54px; }
-    tbody td { height: 54px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    /* Odsazení krajů (Artist blíž k levé hraně) */
+    #recorded-table th:first-child, #recorded-table td:first-child { padding-left: 0.5rem !important; }
+    #recorded-table th:last-child, #recorded-table td:last-child { padding-right: 0.5rem !important; }
 
-    /* Šířky Upcoming */
-    table:first-of-type th:nth-child(1) { width: 18% !important; }
-    table:first-of-type th:nth-child(2) { width: 14% !important; }
-    table:first-of-type th:nth-child(3) { width: 68% !important; }
+    /* Šířky sloupců Recorded */
+    #recorded-table th:nth-child(1) { width: 20% !important; } /* Artist */
+    #recorded-table th:nth-child(2) { width: 14% !important; } /* Date */
+    #recorded-table th:nth-child(3) { width: 24% !important; } /* Venue */
+    #recorded-table th:nth-child(4) { width: 60px !important; } /* YT */
+    #recorded-table th:nth-child(5) { width: 60px !important; } /* IEM */
+    #recorded-table th:nth-child(6) { width: 85px !important; } /* Format */
+    #recorded-table th:nth-child(7) { width: 25% !important; } /* Audio */
 
-    /* Šířky Recorded */
+    /* Centrování ikonových sloupců */
+    #recorded-table th:nth-child(4), #recorded-table td:nth-child(4),
+    #recorded-table th:nth-child(5), #recorded-table td:nth-child(5),
+    #recorded-table th:nth-child(6), #recorded-table td:nth-child(6) {
+        text-align: center !important;
+        display: table-cell !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
 
-    #recorded-table th:nth-child(1) { width: 18% !important; } /* Artist - zúženo */
-    #recorded-table th:nth-child(2) { width: 14% !important; } /* Date - zúženo */
-    #recorded-table th:nth-child(3) { width: 26% !important; } /* Venue - ZVĚTŠENO */
-    #recorded-table th:nth-child(4) { width: 5% !important; }  /* YT */
-    #recorded-table th:nth-child(5) { width: 5% !important; }  /* IEM */
-    #recorded-table th:nth-child(6) { width: 7% !important; }  /* Format */
-    #recorded-table th:nth-child(7) { width: 25% !important; } /* Audio Sample */
+    /* Fix výšky přehrávače Plyr */
+    .audio-wrapper {
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+    .plyr--audio .plyr__controls {
+        background: transparent !important;
+        height: 32px !important;
+        padding: 0 !important;
+    }
+    .plyr__volume { flex-basis: 80px !important; }
 
-    /* Skeletony šířky */
-    #recorded-table td:nth-child(1) .skeleton-bar { width: 80%; }
-    #recorded-table td:nth-child(3) .skeleton-bar { width: 90%; }
+    /* Malé skeletony na PC */
+    #recorded-table td:nth-child(4) .skeleton-bar,
+    #recorded-table td:nth-child(5) .skeleton-bar,
+    #recorded-table td:nth-child(6) .skeleton-bar {
+        width: 25px !important;
+        margin: 0 auto !important;
+    }
 }
 
-/* --- 4. MOBIL (Karty pod sebou) --- */
+/* --- 3. MOBIL (Panely/Karty - 768px a méně) --- */
 @media (max-width: 768px) {
-    table, thead, tbody, th, td, tr {
-        display: block !important;
-        width: 100% !important;
-        table-layout: auto !important;
+    table, thead, tbody, th, td, tr { 
+        display: block !important; 
+        width: 100% !important; 
     }
+    
+    thead { display: none !important; } /* Skryjeme hlavičku tabulky */
 
-    thead { display: none !important; }
-
+    /* Styl karty (Panelu) */
     tr {
         margin-bottom: 1.5rem !important;
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -89,133 +109,87 @@ tbody td {
         height: auto !important;
     }
 
+    /* Styl řádku uvnitř karty */
     td {
         display: flex !important;
         justify-content: space-between !important;
         align-items: center !important;
         padding: 0.75rem 1rem !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-        min-height: 45px !important;
-        height: auto !important;
         text-align: right !important;
-        white-space: normal !important; /* Povolí zalomení dlouhého textu */
+        color: #c6c6c6 !important;
+        min-height: 45px !important;
     }
 
     td:last-child { border-bottom: none !important; }
 
+    /* Zobrazení popisku (ARTIST, DATE...) vlevo */
     td::before {
         content: attr(data-label);
         font-weight: 600;
         text-transform: uppercase;
         font-size: 0.7rem;
-        color: #ffffff !important;
+        color: #ffffff;
         text-align: left;
         margin-right: 1rem;
         flex-shrink: 0;
     }
 
+    .audio-wrapper { 
+        display: flex;
+        justify-content: flex-end; 
+        align-items: center;
+        width: 100%;
+        max-width: 220px; /* Fixní maximální šířka, ať to není moc roztažené */
+        margin-right: 0 !important; 
+    }
     .skeleton-bar { width: 120px !important; margin-left: auto; }
 }
 
-/* --- 5. KOMPONENTY (Hledání, Audio) --- */
-.search-wrapper {
-    position: relative !important;
-    display: flex;
-    width: 100%;
-    align-items: center;
-}
-
-@media (min-width: 768px) {
-    .search-wrapper { max-width: 350px; margin-left: auto; }
-}
+/* --- 4. KOMPONENTY (Hledání, Plyr, Skeletons) --- */
+.search-wrapper { position: relative; display: flex; width: 100%; margin-bottom: 1rem; }
+@media (min-width: 768px) { .search-wrapper { max-width: 350px; margin-left: auto; } }
 
 .search-input {
-    background-color: rgba(30, 41, 59, 0.4) !important; /* Průhledné pozadí */
+    background: rgba(30, 41, 59, 0.4) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding: 0.6rem 1rem 0.6rem 2.8rem !important;
-    border-radius: 4px;
+    border-radius: 6px;
     width: 100%;
     color: white !important;
 }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; z-index: 10; }
 
-.search-icon {
-    position: absolute !important;
-    left: 12px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    z-index: 20;
-    color: #6b7280;
-}
-
-/* --- 5. AUDIO & PLYR (Sjednocení barev s textem) --- */
-
-.plyr--audio .plyr__controls {
-    background: transparent !important;
-    padding: 0 !important;
-    /* Barva textu v přehrávači (čas atd.) */
-    color: #c6c6c6 !important; 
-}
-
-/* Ikony: Play, Pause, Volume, atd. */
-.plyr--audio .plyr__controls [data-plyr="play"],
-.plyr--audio .plyr__controls [data-plyr="pause"],
-.plyr--audio .plyr__controls [data-plyr="mute"]
-.plyr--audio .plyr__controls svg {
-    color: #c6c6c6 !important; /* Tlumená šedá jako text v td */
-    fill: #c6c6c6 !important;
-    opacity: 1 !important;
-    transition: color 0.2s ease;
-}
-
-/* Hover efekt: Při najetí myší může trochu zbělat, aby uživatel věděl, že na to sahá */
+/* Barvy Plyr */
+.plyr--audio .plyr__controls { background: transparent !important; color: #c6c6c6 !important; }
+.plyr--audio .plyr__controls svg { fill: #c6c6c6 !important; }
 .plyr--audio .plyr__controls [data-plyr="play"]:hover svg,
-.plyr--audio .plyr__controls [data-plyr="pause"]:hover svg
-.plyr--audio .plyr__controls [data-plyr="mute"]:hover svg {
-    color: #ffffff !important;
-    fill: #ffffff !important;
+.plyr--audio .plyr__controls [data-plyr="mute"]:hover svg { fill: #fff !important; }
+
+/* Tlačítko Show More */
+#show-more-wrapper { display: flex; justify-content: center; margin: 1.5rem 0; min-height: 42px; }
+.minimal-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #9ca3af;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
 }
+.minimal-btn:hover { background: rgba(255, 255, 255, 0.05); color: #fff; border-color: rgba(255, 255, 255, 0.3); }
 
-/* Globální proměnná pro barvu ovládání */
-:root {
-    --plyr-audio-control-color: #c6c6c6 !important;
-    --plyr-audio-control-color-hover: #ffffff !important;
-}
-
-/* Fix pro mobilní karty, aby i tam byla barva tlumená */
-@media (max-width: 768px) {
-    .plyr--audio .plyr__controls svg {
-        fill: #9ca3af !important;
-        color: #9ca3af !important;
-    }
-}
-
-.audio-wrapper { 
-    width: 240px; 
-    margin-left: auto; 
-}
-
-/* Fix pro mobil: Aby audio v kartě bylo bílé */
-@media (max-width: 768px) {
-    .plyr--audio .plyr__controls svg {
-        fill: #ffffff !important;
-        color: #ffffff !important;
-    }
-}
-
-.audio-wrapper { width: 240px; margin-left: auto; }
-
-/* Ostatní */
+/* Animace Skeletonu */
 .skeleton-bar {
     height: 1rem;
     background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
     background-size: 200% 100%;
     animation: loading 1.5s infinite;
-    border-radius: 0.25rem;
+    border-radius: 4px;
 }
 @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-/* Vypnutí pozadí pro horní lištu a boční šipky */
-.fslightbox-toolbar,
-.fslightbox-slide-btn-container {
-    background: transparent !important;
-}
+/* Logika skrývání řádků */
+#upcoming-table tbody tr:nth-child(n+6) { display: none !important; }
+#upcoming-table.is-expanded tbody tr:nth-child(n+6) { display: table-row !important; }
+@media (max-width: 768px) { #upcoming-table.is-expanded tbody tr:nth-child(n+6) { display: block !important; } }
