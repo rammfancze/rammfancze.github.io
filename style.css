@@ -82,9 +82,10 @@ thead th {
 
 /* --- 4. Vyhledávací pole --- */
 .search-wrapper {
-    position: relative;
-    display: flex; /* Přidej tohle */
+    position: relative !important; /* Nutné pro ukotvení ikony uvnitř */
+    display: flex;
     width: 100%;
+    align-items: center; /* Vertikálně vycentruje obsah */
 }
 
 .search-icon {
