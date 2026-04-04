@@ -61,34 +61,46 @@ td {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-/* --- 3. Mobilní zobrazení (Karty) --- */
+/* --- 1. NASTAVENÍ PRO POČÍTAČ (Desktop) --- */
+@media (min-width: 769px) {
+    /* Vynutíme stabilitu tabulek, aby neodskakovaly */
+    table:first-of-type, #recorded-table {
+        table-layout: fixed !important;
+        width: 100% !important;
+    }
+
+    /* Šířky sloupců pro Upcoming (První tabulka) */
+    table:first-of-type th:nth-child(1) { width: 40% !important; }
+    table:first-of-type th:nth-child(2) { width: 18% !important; }
+    table:first-of-type th:nth-child(3) { width: 42% !important; }
+
+    /* Šířky sloupců pro Recorded (Druhá tabulka) */
+    #recorded-table th:nth-child(1) { width: 20% !important; }
+    #recorded-table th:nth-child(2) { width: 12% !important; }
+    #recorded-table th:nth-child(3) { width: 23% !important; }
+    #recorded-table th:nth-child(4) { width: 5% !important; }
+    #recorded-table th:nth-child(5) { width: 5% !important; }
+    #recorded-table th:nth-child(6) { width: 10% !important; }
+    #recorded-table th:nth-child(7) { width: 25% !important; }
+}
+
+/* --- 2. NASTAVENÍ PRO TELEFON (Mobil) --- */
 @media (max-width: 768px) {
-    thead { display: none; }
-    tr {
-        display: block;
-        margin-bottom: 1.5rem;
-        background: rgba(0, 0, 0, 0.4);
-        border: 1px solid rgba(75, 85, 99, 0.4);
-        border-radius: 0.75rem;
-        padding: 0.5rem;
-        height: auto !important;
+    /* Na mobilu musíme fixní rozložení VYPNOUT, aby fungovaly ty tvoje karty */
+    table:first-of-type, #recorded-table {
+        table-layout: auto !important;
+        width: 100% !important;
     }
-    td {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        padding: 0.75rem !important;
-        border-bottom: 1px solid rgba(75, 85, 99, 0.2) !important;
-        height: auto !important;
+
+    /* Každá buňka (sloupec) se na mobilu chová jako samostatný řádek karty */
+    td, th {
+        width: 100% !important;
+        display: block !important;
     }
-    td:last-child { border-bottom: none !important; }
-    td::before {
-        content: attr(data-label);
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        /* Názvy polí na mobilu taky svítí trochu víc */
-        color: #d1d5db; 
+    
+    /* Skeletony na mobilu roztáhneme na celou šířku karty */
+    .skeleton-bar {
+        width: 100% !important;
     }
 }
 
