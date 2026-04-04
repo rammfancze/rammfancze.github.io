@@ -30,10 +30,11 @@ thead th {
 
 /* --- 2. DESKTOP (Počítač - 769px a více) --- */
 @media (min-width: 769px) {
-    table:first-of-type, #recorded-table { table-layout: fixed !important; }
+    table:first-of-type, #recorded-table, #upcoming-table { table-layout: fixed !important; }
 
-    /* Sjednocení výšky řádků na 54px */
-    #recorded-table tbody td {
+    /* Sjednocení výšky řádků na 54px pro OBĚ tabulky */
+    #recorded-table tbody td, 
+    #upcoming-table tbody td {
         height: 54px !important;
         padding-top: 0 !important;
         padding-bottom: 0 !important;
@@ -44,18 +45,21 @@ thead th {
         text-overflow: ellipsis;
     }
 
-    /* Odsazení krajů (Artist blíž k levé hraně) */
-    #recorded-table th:first-child, #recorded-table td:first-child { padding-left: 0.5rem !important; }
-    #recorded-table th:last-child, #recorded-table td:last-child { padding-right: 0.5rem !important; }
+    /* Odsazení krajů */
+    #recorded-table th:first-child, #recorded-table td:first-child,
+    #upcoming-table th:first-child, #upcoming-table td:first-child { padding-left: 0.5rem !important; }
+    
+    #recorded-table th:last-child, #recorded-table td:last-child,
+    #upcoming-table th:last-child, #upcoming-table td:last-child { padding-right: 0.5rem !important; }
 
     /* Šířky sloupců Recorded */
-    #recorded-table th:nth-child(1) { width: 20% !important; } /* Artist */
-    #recorded-table th:nth-child(2) { width: 14% !important; } /* Date */
-    #recorded-table th:nth-child(3) { width: 24% !important; } /* Venue */
-    #recorded-table th:nth-child(4) { width: 60px !important; } /* YT */
-    #recorded-table th:nth-child(5) { width: 60px !important; } /* IEM */
-    #recorded-table th:nth-child(6) { width: 85px !important; } /* Format */
-    #recorded-table th:nth-child(7) { width: 25% !important; } /* Audio */
+    #recorded-table th:nth-child(1) { width: 20% !important; }
+    #recorded-table th:nth-child(2) { width: 14% !important; }
+    #recorded-table th:nth-child(3) { width: 24% !important; }
+    #recorded-table th:nth-child(4) { width: 60px !important; }
+    #recorded-table th:nth-child(5) { width: 60px !important; }
+    #recorded-table th:nth-child(6) { width: 85px !important; }
+    #recorded-table th:nth-child(7) { width: 25% !important; }
 
     /* Centrování ikonových sloupců */
     #recorded-table th:nth-child(4), #recorded-table td:nth-child(4),
@@ -67,7 +71,6 @@ thead th {
         padding-right: 0 !important;
     }
 
-    /* Fix výšky přehrávače Plyr */
     .audio-wrapper {
         height: 54px;
         display: flex;
@@ -81,7 +84,6 @@ thead th {
     }
     .plyr__volume { flex-basis: 80px !important; }
 
-    /* Malé skeletony na PC */
     #recorded-table td:nth-child(4) .skeleton-bar,
     #recorded-table td:nth-child(5) .skeleton-bar,
     #recorded-table td:nth-child(6) .skeleton-bar {
@@ -97,9 +99,8 @@ thead th {
         width: 100% !important; 
     }
     
-    thead { display: none !important; } /* Skryjeme hlavičku tabulky */
+    thead { display: none !important; }
 
-    /* Styl karty (Panelu) */
     tr {
         margin-bottom: 1.5rem !important;
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -109,7 +110,6 @@ thead th {
         height: auto !important;
     }
 
-    /* Styl řádku uvnitř karty */
     td {
         display: flex !important;
         justify-content: space-between !important;
@@ -123,7 +123,6 @@ thead th {
 
     td:last-child { border-bottom: none !important; }
 
-    /* Zobrazení popisku (ARTIST, DATE...) vlevo */
     td::before {
         content: attr(data-label);
         font-weight: 600;
@@ -135,14 +134,27 @@ thead th {
         flex-shrink: 0;
     }
 
+    /* --- ÚPRAVA PRO MOBILNÍ AUDIO --- */
     .audio-wrapper { 
         display: flex;
         justify-content: flex-end; 
         align-items: center;
         width: 100%;
-        max-width: 220px; /* Fixní maximální šířka, ať to není moc roztažené */
-        margin-right: 0 !important; 
+        max-width: 160px; /* Zmenšeno pro lepší zarovnání bez volume ikony */
+        margin-left: auto; /* Tlačí wrapper doprava */
     }
+
+    /* Úplné skrytí ikony zvuku a ovládání hlasitosti na mobilu */
+    .audio-wrapper .plyr__volume {
+        display: none !important;
+    }
+
+    /* Zarovnání zbylých prvků (play, progress) k pravé hraně */
+    .plyr__controls {
+        width: 100%;
+        justify-content: flex-end !important;
+    }
+
     .skeleton-bar { width: 120px !important; margin-left: auto; }
 }
 
@@ -160,13 +172,11 @@ thead th {
 }
 .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; z-index: 10; }
 
-/* Barvy Plyr */
 .plyr--audio .plyr__controls { background: transparent !important; color: #c6c6c6 !important; }
 .plyr--audio .plyr__controls svg { fill: #c6c6c6 !important; }
 .plyr--audio .plyr__controls [data-plyr="play"]:hover svg,
 .plyr--audio .plyr__controls [data-plyr="mute"]:hover svg { fill: #fff !important; }
 
-/* Tlačítko Show More */
 #show-more-wrapper { display: flex; justify-content: center; margin: 1.5rem 0; min-height: 42px; }
 .minimal-btn {
     background: transparent;
@@ -179,7 +189,6 @@ thead th {
 }
 .minimal-btn:hover { background: rgba(255, 255, 255, 0.05); color: #fff; border-color: rgba(255, 255, 255, 0.3); }
 
-/* Animace Skeletonu */
 .skeleton-bar {
     height: 1rem;
     background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
