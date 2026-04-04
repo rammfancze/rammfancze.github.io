@@ -294,6 +294,18 @@ tbody td {
 }
 @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
+/* --- 7. CENTROVÁNÍ SLOUPCŮ YT, IEM A FORMAT --- */
+
+/* Pro počítače (Desktop) */
+#recorded-table th:nth-child(4), 
+#recorded-table th:nth-child(5), 
+#recorded-table th:nth-child(6),
+#recorded-table td:nth-child(4), 
+#recorded-table td:nth-child(5), 
+#recorded-table td:nth-child(6) {
+    text-align: center !important;
+}
+
 /* Vypnutí pozadí pro horní lištu a boční šipky */
 .fslightbox-toolbar,
 .fslightbox-slide-btn-container {
