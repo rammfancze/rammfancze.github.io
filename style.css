@@ -22,21 +22,12 @@ h1, h2, .font-orbitron {
 }
 
 /* --- 2. Tabulka a Sjednocení výšek --- */
-#recorded-table tr {
-    height: 64px; /* Vynutí stejnou výšku pro všechny řádky na PC */
+/* Změněno: Aplikuje se na 'tbody tr' a 'tbody td', takže to sjednotí obě tabulky */
+tbody tr {
+    height: 64px;
 }
 
-#recorded-table td {
-    height: 64px !important;
-    vertical-align: middle;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-}
-#upcoming-table tr {
-    height: 64px; /* Vynutí stejnou výšku pro všechny řádky na PC */
-}
-
-#upcoming-table td {
+tbody td {
     height: 64px !important;
     vertical-align: middle;
     padding-top: 0 !important;
