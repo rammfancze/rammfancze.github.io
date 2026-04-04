@@ -211,3 +211,9 @@ tbody td {
     border-radius: 0.25rem;
 }
 @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* Vypnutí pozadí pro horní lištu a boční šipky */
+.fslightbox-toolbar,
+.fslightbox-slide-btn-container {
+    background: transparent !important;
+}
