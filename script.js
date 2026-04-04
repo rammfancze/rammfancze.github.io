@@ -129,7 +129,7 @@ function vykresli(data, targetId, jeToRecorded) {
 fetchSubscribers();
 nactiTabulky();
 
-// --- LOGIKA PRO SHOW MORE / SHOW LESS U UPCOMING SHOWS ---
+// --- SHOW MORE / SHOW LESS U UPCOMING SHOWS ---
 function initUpcomingToggle() {
     const table = document.getElementById('upcoming-table');
     const tbody = document.getElementById('upcoming-tbody');
@@ -139,7 +139,9 @@ function initUpcomingToggle() {
 
     // Zkontrolujeme, jestli je řádků víc než 5
     if (rows.length > 5) {
-        wrapper.classList.remove('hidden'); // Zobrazíme tlačítko (odstraníme Tailwind class)
+        // --- POJISTKA: Odstraníme třídu 'hidden' a natvrdo vnutíme zobrazení ---
+        wrapper.classList.remove('hidden'); 
+        wrapper.style.display = 'block';
 
         // Odstraníme starý listener (pokud by se funkce volala víckrát)
         const newBtn = btn.cloneNode(true);
@@ -157,7 +159,7 @@ function initUpcomingToggle() {
             }
         });
     } else {
-        // Pokud je řádků 5 a méně, ujistíme se, že tlačítko zůstane skryté
         wrapper.classList.add('hidden');
+        wrapper.style.display = 'none';
     }
 }
