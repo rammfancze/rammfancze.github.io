@@ -135,7 +135,12 @@ thead th {
         flex-shrink: 0;
     }
 
-    .audio-wrapper { width: 100%; margin-top: 0.5rem; }
+    .audio-wrapper { 
+        display: flex;
+        justify-content: flex-end; /* Přesun na pravou stranu */
+        flex-grow: 1;
+        max-width: 240px; /* Šířka, aby přehrávač nebyl zbytečně obří */
+    }
     .skeleton-bar { width: 120px !important; margin-left: auto; }
 }
 
