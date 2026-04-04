@@ -116,6 +116,12 @@ tbody td {
         padding-left: 0 !important;
         padding-right: 0 !important;
     }
+    #recorded-table td:nth-child(4) .skeleton-bar,
+    #recorded-table td:nth-child(5) .skeleton-bar,
+    #recorded-table td:nth-child(6) .skeleton-bar {
+        width: 25px !important;
+        margin: 0 auto !important;
+    }
 }
 
 /* 2. Pravidla POUZE pro Mobil (max-width: 768px) */
@@ -135,7 +141,12 @@ tbody td {
     #recorded-table td:nth-child(5) i {
         margin-left: auto; /* Dotlačí ikonu k pravému okraji mobilní karty */
     }
-}
+    #recorded-table td:nth-child(4) .skeleton-bar,
+    #recorded-table td:nth-child(5) .skeleton-bar,
+    #recorded-table td:nth-child(6) .skeleton-bar {
+        width: 40px !important;
+        margin-left: auto !important; /* Na mobilu k pravému okraji jako text */
+    }
 }
 
 /* --- 4. MOBIL (Karty pod sebou) --- */
