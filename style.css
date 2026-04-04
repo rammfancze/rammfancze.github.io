@@ -1,8 +1,9 @@
 /* --- 1. Základní nastavení a Fix pozadí --- */
 html {
-    /* Fix pro gradient: barva musí být i v html tagu, aby neprosvítala bílá/černá */
     background-color: #0f172a; 
-    overflow-y: scroll; /* Vynutí scrollbar, aby se stránka při otevření fotky nehnula */
+    /* Moderní fix: drží trvale rezervované místo pro scrollbar, 
+       takže stránka neposkočí doprava, když scrollbar zmizí */
+    scrollbar-gutter: stable; 
 }
 
 body {
@@ -13,6 +14,7 @@ body {
     padding: 0;
     width: 100%;
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 h1, h2, .font-orbitron {
@@ -20,9 +22,15 @@ h1, h2, .font-orbitron {
 }
 
 /* --- 2. Tabulka a Sjednocení výšek --- */
+#recorded-table tr {
+    height: 64px; /* Vynutí stejnou výšku pro všechny řádky na PC */
+}
+
 #recorded-table td {
-    height: 57px !important;
+    height: 64px !important;
     vertical-align: middle;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 /* --- 3. Mobilní zobrazení (Karty) --- */
@@ -35,6 +43,7 @@ h1, h2, .font-orbitron {
         border: 1px solid rgba(75, 85, 99, 0.4);
         border-radius: 0.75rem;
         padding: 0.5rem;
+        height: auto !important; /* Na mobilu musí být výška flexibilní */
     }
     td {
         display: flex !important;
@@ -42,6 +51,8 @@ h1, h2, .font-orbitron {
         align-items: center !important;
         padding: 0.75rem !important;
         border-bottom: 1px solid rgba(75, 85, 99, 0.2) !important;
+        height: auto !important; /* Reset výšky pro mobil */
+        min-height: 40px;
     }
     td:last-child { border-bottom: none !important; }
     td::before {
@@ -63,7 +74,7 @@ h1, h2, .font-orbitron {
 @media (min-width: 768px) {
     .search-wrapper {
         max-width: 350px;
-        margin-left: auto; /* Tohle ho hodí doprava nad konec tabulky */
+        margin-left: auto;
     }
 }
 
@@ -96,29 +107,22 @@ h1, h2, .font-orbitron {
 }
 
 .plyr__volume {
-    margin-right: -2px !important; /* Aby volume lícovalo s okrajem tabulky */
+    margin-right: -2px !important;
 }
 
 /* --- 6. DEFINITIVNÍ FIX GRADIENTU A PRUHU (Lightbox) --- */
-/* Tento blok řeší ten pruh vpravo na tvém screenshotu */
-
 .fslightbox-container {
-    /* Použijeme barvu tvého pozadí s vysokou průhledností místo čisté černé */
-    background: rgba(15, 23, 42, 0.9) !important; 
-    width: 100vw !important; /* Vynutíme šířku celého monitoru */
+    background: rgba(15, 23, 42, 0.95) !important; 
+    width: 100vw !important;
+    height: 100vh !important;
     margin: 0 !important;
     padding: 0 !important;
+    z-index: 999999 !important; /* Jistota, že je nade vším */
 }
 
-/* Lightbox si přidává padding na body, což dělá ten pruh - tady to vypneme */
-body.fslightbox-open {
-    padding-right: 0 !important;
-    overflow: hidden !important;
-}
-
-/* Zajištění, aby gradient pod lightboxem nezmizel nebo se neposunul */
+/* Zajištění, aby obrázek měl trochu stínu pro hloubku */
 .fslightbox-source {
-    box-shadow: 0 0 50px rgba(0,0,0,0.5); /* Trochu stínu pod obrázek */
+    box-shadow: 0 0 50px rgba(0,0,0,0.5); 
 }
 
 /* --- 7. Ostatní --- */
