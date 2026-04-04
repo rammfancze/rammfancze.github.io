@@ -51,9 +51,9 @@ tbody td {
     tbody td { height: 64px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* Šířky Upcoming */
-    table:first-of-type th:nth-child(1) { width: 40% !important; }
-    table:first-of-type th:nth-child(2) { width: 18% !important; }
-    table:first-of-type th:nth-child(3) { width: 42% !important; }
+    table:first-of-type th:nth-child(1) { width: 20% !important; }
+    table:first-of-type th:nth-child(2) { width: 10% !important; }
+    table:first-of-type th:nth-child(3) { width: 70% !important; }
 
     /* Šířky Recorded */
 
