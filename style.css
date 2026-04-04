@@ -32,7 +32,16 @@ h1, h2, .font-orbitron {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
 }
+#upcoming-table tr {
+    height: 64px; /* Vynutí stejnou výšku pro všechny řádky na PC */
+}
 
+#upcoming-table td {
+    height: 64px !important;
+    vertical-align: middle;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
 /* --- 3. Mobilní zobrazení (Karty) --- */
 @media (max-width: 768px) {
     thead { display: none; }
