@@ -88,13 +88,12 @@ thead th {
 }
 
 .search-icon {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%); /* Tohle ji vycentruje výškově */
-    color: #6b7280;
+    position: absolute !important;
+    left: 12px !important; /* Fixní vzdálenost od levého okraje pole */
+    top: 50% !important;
+    transform: translateY(-50%) !important; /* Dokonalý střed */
+    z-index: 20;
     pointer-events: none;
-    z-index: 10;
 }
 
 @media (min-width: 768px) {
