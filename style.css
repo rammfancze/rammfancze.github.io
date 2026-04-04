@@ -123,7 +123,7 @@ tbody td {
         margin: 0 auto !important;
     }
 }
-
+}
 /* 2. Pravidla POUZE pro Mobil (max-width: 768px) */
 @media (max-width: 768px) {
     #recorded-table td:nth-child(4), 
