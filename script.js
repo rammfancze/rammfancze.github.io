@@ -140,32 +140,28 @@ function initUpcomingToggle() {
     const table = document.getElementById('upcoming-table');
     const tbody = document.getElementById('upcoming-tbody');
     const rows = tbody.getElementsByTagName('tr');
-    const wrapper = document.getElementById('show-more-wrapper');
     const btn = document.getElementById('toggle-upcoming');
 
-    // Zkontrolujeme, jestli je řádků víc než 5
+    // Pokud je řádků víc než 5, jen tlačítko zviditelníme
     if (rows.length > 5) {
-        // --- POJISTKA: Odstraníme třídu 'hidden' a natvrdo vnutíme zobrazení ---
-        wrapper.classList.remove('hidden'); 
-        wrapper.style.display = 'block';
+        btn.classList.add('btn-visible');
+        btn.style.visibility = 'visible'; // Pojistka
 
-        // Odstraníme starý listener (pokud by se funkce volala víckrát)
         const newBtn = btn.cloneNode(true);
         btn.parentNode.replaceChild(newBtn, btn);
 
         newBtn.addEventListener('click', function() {
             table.classList.toggle('is-expanded');
-            
             if (table.classList.contains('is-expanded')) {
                 newBtn.textContent = 'Show less';
             } else {
                 newBtn.textContent = 'Show all upcoming shows';
-                // Jemné odskrolování zpět nahoru k tabulce
                 table.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
     } else {
-        wrapper.classList.add('hidden');
-        wrapper.style.display = 'none';
+        // Pokud je řádků málo, tlačítko prostě zůstane skryté, ale místo pod ním zůstane prázdné
+        btn.classList.remove('btn-visible');
+        btn.style.visibility = 'hidden';
     }
 }
