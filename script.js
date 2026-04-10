@@ -14,7 +14,7 @@ function filterTable() {
     }
 }
 
-async function fetchSubscribers() {
+// async function fetchSubscribers() {
     const apiKey = 'AIzaSyDDXVwQNZmlOyHiZqQIUYgMZ-w0QgZIX5g';
     const channelId = 'UCRnSUbTJ-cS-ORYCEF9PEsQ';
     try {
