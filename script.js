@@ -105,7 +105,7 @@ function vykresli(data, targetId, jeToRecorded) {
             tr.innerHTML = `
                 <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist">${col[0] || ''}</td>
                 <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
-                <td class="px-4 py-3" data-label="Venue">${col[2] || ''}</td>
+                <td class="px-4 py-3" data-label="Venue"><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(col[2] || '')}" target="_blank" class="map-link">${col[2] || ''}</a></td>
                 <td class="px-4 py-3 text-right md:text-center" data-label="YT">
                     ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-white-600 text-lg hover:text-red-500"><i class="fab fa-youtube"></i></a>` : '<i class="fa-solid fa-xmark text-red-600 text-base"></i>'}
                 </td>
@@ -125,7 +125,7 @@ function vykresli(data, targetId, jeToRecorded) {
             tr.innerHTML = `
                 <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist">${col[0] || ''}</td>
                 <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
-                <td class="px-4 py-3" data-label="Venue">${col[2] || ''}</td>
+                <td class="px-4 py-3" data-label="Venue"><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(col[2] || '')}" target="_blank" class="map-link"> ${col[2] || ''}</a></td>
             `;
         }
         tbody.appendChild(tr);
