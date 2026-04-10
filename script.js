@@ -57,8 +57,9 @@ async function nactiTabulky() {
             if (isRecorded) {
                 plyrInstances.forEach(p => p.destroy());
                 plyrInstances = Plyr.setup('.js-player', {
-                    controls: ['play', 'progress', 'mute', 'volume'],
-                    settings: []
+                controls: ['play', 'progress', 'mute', 'volume'],
+                settings: [],
+                tooltips: { controls: false, seek: false }
                 });
                 if (typeof refreshFsLightbox === "function") refreshFsLightbox();
             }
