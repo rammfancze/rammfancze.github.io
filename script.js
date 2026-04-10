@@ -14,18 +14,18 @@ function filterTable() {
     }
 }
 
-// async function fetchSubscribers() {
-//    const apiKey = 'AIzaSyDDXVwQNZmlOyHiZqQIUYgMZ-w0QgZIX5g';
-//    const channelId = 'UCRnSUbTJ-cS-ORYCEF9PEsQ';
-//    try {
-//        const response = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`);
-//        const data = await response.json();
-//        const count = data.items[0].statistics.subscriberCount;
-//        document.getElementById("subscriber-count").innerText = `${parseInt(count).toLocaleString()} subscribers`;
-//    } catch (err) {
-//        document.getElementById("subscriber-count").innerText = 'YouTube channel';
-//    }
-//}
+ async function fetchSubscribers() {
+    const apiKey = 'AIzaSyDDXVwQNZmlOyHiZqQIUYgMZ-w0QgZIX5g';
+    const channelId = 'UCRnSUbTJ-cS-ORYCEF9PEsQ';
+    try {
+        const response = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`);
+        const data = await response.json();
+        const count = data.items[0].statistics.subscriberCount;
+        document.getElementById("subscriber-count").innerText = `${parseInt(count).toLocaleString()} subscribers`;
+    } catch (err) {
+        document.getElementById("subscriber-count").innerText = 'YouTube channel';
+    }
+}
 
 async function nactiTabulky() {
     // --- POMOCNÁ FUNKCE PRO GENEROVÁNÍ SKELETONŮ ---
