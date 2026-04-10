@@ -190,7 +190,7 @@ thead th {
     .plyr--audio .plyr__control--pressed,
     .plyr--audio .plyr__control:hover,
     .plyr--audio .plyr__control[aria-expanded=true] {
-        background: rgba(255, 255, 255, 0.1) !important; /* Mírné šedé zvýraznění místo modrého */
+        background: transparent !important; /* Průhledná místo modrého */
         color: #ffffff !important;
     }
 
