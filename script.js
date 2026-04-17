@@ -14,8 +14,6 @@ function filterTable() {
     }
 }
 
-
-
 async function nactiTabulky() {
     // --- POMOCNÁ FUNKCE PRO GENEROVÁNÍ SKELETONŮ ---
     const vytvorSkeletony = (pocetRadku, pocetSloupcu, labels) => {
@@ -38,7 +36,7 @@ async function nactiTabulky() {
     document.getElementById('upcoming-tbody').innerHTML = vytvorSkeletony(5, 3, labelsUpcoming);
     document.getElementById('recorded-tbody').innerHTML = vytvorSkeletony(8, 7, labelsRecorded);
 
-// --- SAMOTNÉ STAHOVÁNÍ DAT ---
+    // --- SAMOTNÉ STAHOVÁNÍ DAT ---
     const stahni = async (url, targetId, isRecorded) => {
         try {
             const res = await fetch(url);
@@ -57,9 +55,9 @@ async function nactiTabulky() {
             if (isRecorded) {
                 plyrInstances.forEach(p => p.destroy());
                 plyrInstances = Plyr.setup('.js-player', {
-                controls: ['play', 'progress', 'mute', 'volume'],
-                settings: [],
-                tooltips: { controls: false, seek: false }
+                    controls: ['play', 'progress', 'mute', 'volume'],
+                    settings: [],
+                    tooltips: { controls: false, seek: false }
                 });
                 if (typeof refreshFsLightbox === "function") refreshFsLightbox();
             }
@@ -73,17 +71,47 @@ async function nactiTabulky() {
     stahni(URL_UPCOMING, 'upcoming-tbody', false);
 }
 
+// --- POMOCNÁ FUNKCE PRO PARSOVÁNÍ DATA ---
+function parsujDatum(datumString) {
+    if (!datumString) return null;
+    const casti = datumString.trim().split('.');
+    if (casti.length < 3) return null;
+    
+    const den = parseInt(casti[0]);
+    const mesic = parseInt(casti[1]) - 1; // JS počítá měsíce 0-11
+    const rok = parseInt(casti[2].trim());
+    
+    return new Date(rok, mesic, den);
+}
+
 function vykresli(data, targetId, jeToRecorded) {
     const tbody = document.getElementById(targetId);
+    
+    // Zjistíme dnešní datum (nastavíme čas na 00:00:00 pro správné porovnání)
+    const dnes = new Date();
+    dnes.setHours(0, 0, 0, 0);
+
     let radky = data.split('\n'); 
     radky.shift(); 
-    radky.reverse(); 
+    if (jeToRecorded) {
+        radky.reverse(); 
+    }
     tbody.innerHTML = ''; 
 
     for (let i = 0; i < radky.length; i++) {
         const radek = radky[i].trim();
         if (!radek) continue;
         const col = radek.split('\t'); 
+        
+        // --- LOGIKA PRO SKRÝVÁNÍ PROBĚHLÝCH KONCERTŮ ---
+        if (!jeToRecorded) {
+            const datumKoncertu = parsujDatum(col[1]);
+            // Pokud je datum koncertu starší než dnešek, přeskočíme tento řádek
+            if (datumKoncertu && datumKoncertu < dnes) {
+                continue;
+            }
+        }
+
         const tr = document.createElement('tr');
         tr.className = "md:border-b md:border-gray-800 md:hover:bg-gray-800/30 transition-colors";
 
@@ -95,15 +123,15 @@ function vykresli(data, targetId, jeToRecorded) {
             tr.innerHTML = `
                 <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist">${col[0] || ''}</td>
                 <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
-                <td class="px-4 py-3" data-label="Venue"><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(col[2] || '')}" target="_blank" class="map-link">${col[2] || ''}</a></td>
+                <td class="px-4 py-3" data-label="Venue"><a href="https://maps.google.com/?q=${encodeURIComponent(col[2] || '')}" target="_blank" class="map-link hover:text-red-500 transition-colors">${col[2] || ''}</a></td>
                 <td class="px-4 py-3 text-right md:text-center" data-label="YT">
-                    ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-white-600 text-lg hover:text-red-500"><i class="fab fa-youtube"></i></a>` : '<i class="fa-solid fa-xmark text-red-600 text-base"></i>'}
+                    ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-white text-lg hover:text-red-500 transition-colors"><i class="fab fa-youtube"></i></a>` : '<i class="fa-solid fa-xmark text-red-600 text-base"></i>'}
                 </td>
                 <td class="px-4 py-3 text-right md:text-center" data-label="IEM">
                     ${col[4] === 'Ano' ? '<i class="fa-solid fa-check text-green-400 text-base"></i>' : '<i class="fa-solid fa-xmark text-red-600 text-base"></i>'}
                 </td>
                 <td class="px-4 py-3 text-right md:text-center" data-label="Format">        
-                    ${imgUrl ? `<a data-fslightbox="gallery" href="${imgUrl}" class="hover:text-white underline decoration-gray-600">${formatText}</a>` : formatText}
+                    ${imgUrl ? `<a data-fslightbox="gallery" href="${imgUrl}" class="hover:text-white underline decoration-gray-600 transition-colors">${formatText}</a>` : formatText}
                 </td>
                 <td class="px-2 py-3 md:table-cell" data-label="Audio">
                     <div class="audio-wrapper">
@@ -115,22 +143,26 @@ function vykresli(data, targetId, jeToRecorded) {
             tr.innerHTML = `
                 <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist">${col[0] || ''}</td>
                 <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
-                <td class="px-4 py-3" data-label="Venue"><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(col[2] || '')}" target="_blank" class="map-link"> ${col[2] || ''}</a></td>
+                <td class="px-4 py-3" data-label="Venue"><a href="https://maps.google.com/?q=${encodeURIComponent(col[2] || '')}" target="_blank" class="map-link hover:text-red-500 transition-colors"> ${col[2] || ''}</a></td>
             `;
         }
         tbody.appendChild(tr);
     }
 }
 
-
 nactiTabulky();
 
 // --- SHOW MORE / SHOW LESS U UPCOMING SHOWS ---
 function initUpcomingToggle() {
     const table = document.getElementById('upcoming-table');
+    // Pokud na stránce id="upcoming-table" chybí, funkce se bezpečně ukončí
+    if (!table) return; 
+    
     const tbody = document.getElementById('upcoming-tbody');
     const rows = tbody.getElementsByTagName('tr');
     const btn = document.getElementById('toggle-upcoming');
+    
+    if (!btn) return;
 
     // Pokud je řádků víc než 5
     if (rows.length > 5) {
