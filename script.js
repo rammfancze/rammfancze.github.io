@@ -46,9 +46,11 @@ async function nactiTabulky() {
             // Jakmile jsou data, skeletony zmizí a nahradí se daty
             vykresli(text, targetId, isRecorded);
             
+            // >>> PŘIDEJ TYTO ŘÁDKY ZDE <<<
             if (targetId === 'upcoming-tbody') {
                 initUpcomingToggle();
             }
+            // >>> KONEC PŘIDANÝCH ŘÁDKŮ <<<
             
             if (isRecorded) {
                 plyrInstances.forEach(p => p.destroy());
@@ -72,21 +74,21 @@ async function nactiTabulky() {
 // --- POMOCNÁ FUNKCE PRO PARSOVÁNÍ DATA ---
 function parsujDatum(datumString) {
     if (!datumString) return null;
+
+    // Najde v textu 3 čísla oddělená tečkou (ignoruje jakékoliv mezery kolem)
     const match = datumString.match(/(\d+)\s*\.\s*(\d+)\s*\.\s*(\d+)/);
+    
+    // Pokud nenašel formát D.M.Y, vrátí null a řádek se normálně zobrazí
     if (!match) return null;
     
     const den = parseInt(match[1], 10);
-    const mesic = parseInt(match[2], 10) - 1; 
+    const mesic = parseInt(match[2], 10) - 1; // Měsíce jsou 0-11
     let rok = parseInt(match[3], 10);
     
+    // Záchytná síť pro 2-ciferné roky
     if (rok < 100) rok += 2000;
+    
     return new Date(rok, mesic, den);
-}
-
-// --- POMOCNÁ FUNKCE PRO ZÍSKÁNÍ DNE V TÝDNU ---
-function getDenVTydnu(datum) {
-    if (!datum) return '';
-    return datum.toLocaleDateString('cs-CZ', { weekday: 'long' });
 }
 
 function vykresli(data, targetId, jeToRecorded) {
@@ -120,10 +122,6 @@ function vykresli(data, targetId, jeToRecorded) {
         const tr = document.createElement('tr');
         tr.className = "md:border-b md:border-gray-800 md:hover:bg-gray-800/30 transition-colors";
 
-        const datumObj = parsujDatum(col[1]);
-        const denNazev = datumObj ? getDenVTydnu(datumObj) : '';
-        const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(col[2] || '')}`;
-
         if (jeToRecorded) {
             const formatText = col[5] || '';
             const audioUrl = col[6] ? col[6].trim() : '';
@@ -131,12 +129,8 @@ function vykresli(data, targetId, jeToRecorded) {
 
             tr.innerHTML = `
                 <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist">${col[0] || ''}</td>
-                <td class="px-4 py-3" data-label="Date" title="${denNazev}">${col[1] || ''}</td>
-                <td class="px-4 py-3" data-label="Venue">
-                    <a href="${mapUrl}" target="_blank" class="map-link hover:text-red-500 transition-colors">
-                        ${col[2] || ''}
-                    </a>
-                </td>
+                <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
+                <td class="px-4 py-3" data-label="Venue"><a href="https://maps.google.com/?q=${encodeURIComponent(col[2] || '')}" target="_blank" class="map-link hover:text-red-500 transition-colors">${col[2] || ''}</a></td>
                 <td class="px-4 py-3 text-right md:text-center" data-label="YT">
                     ${col[3]?.includes('http') ? `<a href="${col[3]}" target="_blank" class="text-white text-lg hover:text-red-500 transition-colors"><i class="fab fa-youtube"></i></a>` : '<i class="fa-solid fa-xmark text-red-600 text-base"></i>'}
                 </td>
@@ -155,21 +149,20 @@ function vykresli(data, targetId, jeToRecorded) {
         } else {
             tr.innerHTML = `
                 <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist">${col[0] || ''}</td>
-                <td class="px-4 py-3" data-label="Date" title="${denNazev}">${col[1] || ''}</td>
-                <td class="px-4 py-3" data-label="Venue">
-                    <a href="${mapUrl}" target="_blank" class="map-link hover:text-red-500 transition-colors">
-                        ${col[2] || ''}
-                    </a>
-                </td>
+                <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
+                <td class="px-4 py-3" data-label="Venue"><a href="https://maps.google.com/?q=${encodeURIComponent(col[2] || '')}" target="_blank" class="map-link hover:text-red-500 transition-colors"> ${col[2] || ''}</a></td>
             `;
         }
         tbody.appendChild(tr);
     }
 }
 
+nactiTabulky();
+
 // --- SHOW MORE / SHOW LESS U UPCOMING SHOWS ---
 function initUpcomingToggle() {
     const table = document.getElementById('upcoming-table');
+    // Pokud na stránce id="upcoming-table" chybí, funkce se bezpečně ukončí
     if (!table) return; 
     
     const tbody = document.getElementById('upcoming-tbody');
@@ -178,7 +171,9 @@ function initUpcomingToggle() {
     
     if (!btn) return;
 
+    // Pokud je řádků víc než 5
     if (rows.length > 5) {
+        // ZOBRAZÍME TLAČÍTKO (odstraníme Tailwind třídu 'hidden')
         btn.classList.remove('hidden');
         btn.style.display = 'inline-block';
 
@@ -194,6 +189,7 @@ function initUpcomingToggle() {
             }
         });
     } else {
+        // Pokud je řádků 5 a méně, tlačítko natvrdo skryjeme
         btn.classList.add('hidden');
         btn.style.display = 'none';
     }
