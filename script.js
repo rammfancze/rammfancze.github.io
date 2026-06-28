@@ -126,6 +126,7 @@ function vykresli(data, targetId, jeToRecorded) {
             const formatText = col[5] || '';
             const audioUrl = col[6] ? col[6].trim() : '';
             const imgUrl = col[7] ? col[7].trim() : '';
+            const denNazev = datumObj ? getDenVTydnu(datumObj) : '';
 
             tr.innerHTML = `
                 <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist">${col[0] || ''}</td>
