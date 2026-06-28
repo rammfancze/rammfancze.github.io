@@ -74,12 +74,19 @@ async function nactiTabulky() {
 // --- POMOCNÁ FUNKCE PRO PARSOVÁNÍ DATA ---
 function parsujDatum(datumString) {
     if (!datumString) return null;
-    const casti = datumString.trim().split('.');
-    if (casti.length < 3) return null;
+
+    // Najde v textu 3 čísla oddělená tečkou (ignoruje jakékoliv mezery kolem)
+    const match = datumString.match(/(\d+)\s*\.\s*(\d+)\s*\.\s*(\d+)/);
     
-    const den = parseInt(casti[0]);
-    const mesic = parseInt(casti[1]) - 1; // JS počítá měsíce 0-11
-    const rok = parseInt(casti[2].trim());
+    // Pokud nenašel formát D.M.Y, vrátí null a řádek se normálně zobrazí
+    if (!match) return null;
+    
+    const den = parseInt(match[1], 10);
+    const mesic = parseInt(match[2], 10) - 1; // Měsíce jsou 0-11
+    let rok = parseInt(match[3], 10);
+    
+    // Záchytná síť pro 2-ciferné roky
+    if (rok < 100) rok += 2000;
     
     return new Date(rok, mesic, den);
 }
