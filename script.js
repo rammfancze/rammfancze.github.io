@@ -46,19 +46,20 @@ async function nactiTabulky() {
             // Jakmile jsou data, skeletony zmizí a nahradí se daty
             vykresli(text, targetId, isRecorded);
             
-            // >>> PŘIDEJ TYTO ŘÁDKY ZDE <<<
             if (targetId === 'upcoming-tbody') {
                 initUpcomingToggle();
             }
-            // >>> KONEC PŘIDANÝCH ŘÁDKŮ <<<
             
             if (isRecorded) {
-                plyrInstances.forEach(p => p.destroy());
-                plyrInstances = Plyr.setup('.js-player', {
-                    controls: ['play', 'progress', 'mute', 'volume'],
-                    settings: [],
-                    tooltips: { controls: false, seek: false }
-                });
+                // Přidal jsem pojistku typeof, kdyby se Plyr nenačetl včas, ať to neshodí tabulku
+                if (typeof Plyr !== 'undefined') {
+                    plyrInstances.forEach(p => p.destroy());
+                    plyrInstances = Plyr.setup('.js-player', {
+                        controls: ['play', 'progress', 'mute', 'volume'],
+                        settings: [],
+                        tooltips: { controls: false, seek: false }
+                    });
+                }
                 if (typeof refreshFsLightbox === "function") refreshFsLightbox();
             }
         } catch (e) {
@@ -89,6 +90,14 @@ function parsujDatum(datumString) {
     if (rok < 100) rok += 2000;
     
     return new Date(rok, mesic, den);
+}
+
+// --- NOVÁ FUNKCE PRO ZKRATKU DNE (Po, Út, St...) ---
+function getZkratkaDne(datum) {
+    if (!datum) return '';
+    const zkratka = datum.toLocaleDateString('cs-CZ', { weekday: 'short' });
+    // Udělá první písmeno velké a smaže případnou tečku (z "po." udělá "Po")
+    return zkratka.charAt(0).toUpperCase() + zkratka.slice(1).replace('.', '');
 }
 
 function vykresli(data, targetId, jeToRecorded) {
@@ -122,6 +131,11 @@ function vykresli(data, targetId, jeToRecorded) {
         const tr = document.createElement('tr');
         tr.className = "md:border-b md:border-gray-800 md:hover:bg-gray-800/30 transition-colors";
 
+        // Vytvoříme text data obsahující zkratku dne
+        const datumObj = parsujDatum(col[1]);
+        const zkratkaDne = datumObj ? getZkratkaDne(datumObj) : '';
+        const formatovaneDatum = zkratkaDne ? `${zkratkaDne} ${col[1] || ''}` : (col[1] || '');
+
         if (jeToRecorded) {
             const formatText = col[5] || '';
             const audioUrl = col[6] ? col[6].trim() : '';
@@ -129,7 +143,7 @@ function vykresli(data, targetId, jeToRecorded) {
 
             tr.innerHTML = `
                 <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist">${col[0] || ''}</td>
-                <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
+                <td class="px-4 py-3" data-label="Date">${formatovaneDatum}</td>
                 <td class="px-4 py-3" data-label="Venue">
                 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(col[2] || '')}" target="_blank" class="map-link hover:text-red-500 transition-colors">
                     ${col[2] || ''}
@@ -153,7 +167,7 @@ function vykresli(data, targetId, jeToRecorded) {
         } else {
             tr.innerHTML = `
                 <td class="px-4 py-3 font-semibold md:font-normal" data-label="Artist">${col[0] || ''}</td>
-                <td class="px-4 py-3" data-label="Date">${col[1] || ''}</td>
+                <td class="px-4 py-3" data-label="Date">${formatovaneDatum}</td>
                 <td class="px-4 py-3" data-label="Venue">
                 <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(col[2] || '')}" target="_blank" class="map-link hover:text-red-500 transition-colors">
                     ${col[2] || ''}
