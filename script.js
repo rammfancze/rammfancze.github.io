@@ -95,8 +95,8 @@ function parsujDatum(datumString) {
 // --- NOVÁ FUNKCE PRO ZKRATKU DNE (Po, Út, St...) ---
 function getZkratkaDne(datum) {
     if (!datum) return '';
+    // Vždy v angličtině
     const zkratka = datum.toLocaleDateString('en-US', { weekday: 'short' });
-    // Udělá první písmeno velké a smaže případnou tečku (z "po." udělá "Po")
     return zkratka.charAt(0).toUpperCase() + zkratka.slice(1).replace('.', '');
 }
 
